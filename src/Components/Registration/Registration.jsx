@@ -1,6 +1,7 @@
 import './Registration.css'
 import React, { Component } from 'react'
-
+import {BaseUserManagement} from '../../rest/user-management.js';
+let {register} = BaseUserManagement;
 export default class Registration extends Component {
   render () {
     return (
@@ -90,7 +91,9 @@ export default class Registration extends Component {
             }]
           }
 
-        }
+        },
+        inline: true,
+        onSuccess: register.bind(this)
       })
   }
 
