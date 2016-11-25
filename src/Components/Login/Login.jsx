@@ -26,7 +26,7 @@ export default class Login extends Component {
     return (
       <div className='ui middle aligned center aligned grid test'>
         <div className='column'>
-          <h2 className='ui blue image header'><img src='images/logo.png' className='image' role='presentation'/> <div className='content'> Log-in to your account </div></h2>
+          <h2 className='ui blue image header'><img src='images/logo.png' className='image' role='presentation' /> <div className='content'> Log-in to your account </div></h2>
           <form className='ui large form'>
             <div className='ui stacked segment'>
               <div className='field'>
