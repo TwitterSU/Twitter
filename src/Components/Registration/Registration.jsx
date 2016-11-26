@@ -3,6 +3,9 @@ import React, { Component } from 'react'
 import {BaseUserManagement} from '../../rest/user-management.js';
 let {register} = BaseUserManagement;
 export default class Registration extends Component {
+  constructor(props){
+    super(props);
+  }
   render () {
     return (
       <div className='ui middle aligned center aligned grid'>
