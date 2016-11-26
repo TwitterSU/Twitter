@@ -1,10 +1,10 @@
 import './Registration.css'
 import React, { Component } from 'react'
-import {BaseUserManagement} from '../../rest/user-management.js';
-let {register} = BaseUserManagement;
+import { BaseUserManagement } from '../../rest/user-management.js'
+let {register} = BaseUserManagement
 export default class Registration extends Component {
-  constructor(props){
-    super(props);
+  constructor (props) {
+    super(props)
   }
   render () {
     return (
