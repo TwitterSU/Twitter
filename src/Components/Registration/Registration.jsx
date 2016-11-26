@@ -1,12 +1,12 @@
 import './Registration.css'
 import React, { Component } from 'react'
 import { BaseUserManagement } from '../../rest/user-management.js'
-let {register} = BaseUserManagement
+let { register } = BaseUserManagement
 export default class Registration extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
-  render () {
+  render() {
     return (
       <div className='ui middle aligned center aligned grid'>
         <div className='column'>
@@ -45,6 +45,9 @@ export default class Registration extends Component {
         </div>
       </div>
     )
+  }
+  componentWillUpdate () {
+
   }
   componentDidMount () {
     window.jQuery('.ui.form')

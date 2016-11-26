@@ -11,11 +11,16 @@ function errorHandler (response) {
   console.log(errorMessage)
   return errorMessage
 }
+
+let shouldRedirect = false
+
 function successHandler (response) {
   sessionStorage.setItem('authToken', response._kmd.authtoken)
   console.log('success')
-  return response
+  shouldRedirect = true
+  return {response, shouldRedirect}
 }
+
 export let BaseUserManagement = {
   login: (e) => {
     e.preventDefault()

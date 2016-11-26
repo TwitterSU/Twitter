@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 import './Login.css'
 import { BaseUserManagement } from '../../rest/user-management.js'
 let {login} = BaseUserManagement
 export default class Login extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       email: '',
@@ -11,7 +12,7 @@ export default class Login extends Component {
     }
     this.loginHandler = login
   }
-  onChangeHandler (e) {
+  onChangeHandler(e) {
     if (e.target.name === 'email') {
       this.setState({
         email: e.target.value
@@ -22,7 +23,7 @@ export default class Login extends Component {
       })
     }
   }
-  render () {
+  render() {
     return (
       <div className='ui middle aligned center aligned grid test'>
         <div className='column'>
@@ -56,14 +57,14 @@ export default class Login extends Component {
             <div className='ui error message'></div>
           </form>
           <div className='ui message'>
-            New to us? <a href='#'>Sign Up</a>
+            New to us? <Link to='/registration'>Sign up</Link>
           </div>
         </div>
       </div>
     )
   }
 
-  componentDidMount () {
+  componentDidMount() {
     window.jQuery('.ui.form')
       .form({
         fields: {
