@@ -1,7 +1,7 @@
 import './Registration.css'
 import React, { Component } from 'react'
 
-import { BaseUserManagement } from '../../rest/user-management.js'
+import { register } from '../../rest/register.js'
 
 
 export default class Registration extends Component {
@@ -97,7 +97,7 @@ export default class Registration extends Component {
 
         },
         inline: true,
-        onSuccess: BaseUserManagement.register
+        onSuccess: register
       })
   }
 
