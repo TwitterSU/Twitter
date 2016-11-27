@@ -3,6 +3,7 @@ import { Router, Route, browserHistory } from 'react-router'
 import './App.css'
 import Login from '../Login/Login'
 import Registration from '../Registration/Registration'
+import Main from '../Content/Content'
 import NotFound from '../NotFound/NotFound'
 class App extends Component {
   render () {
@@ -10,6 +11,7 @@ class App extends Component {
       <Router history={browserHistory}>
         <Route path='/' component={Login} />
         <Route path='/registration' component={Registration} />
+        <Route path='twitter' component={Main} />
         <Route path='*' component={NotFound} />
       </Router>
     )
