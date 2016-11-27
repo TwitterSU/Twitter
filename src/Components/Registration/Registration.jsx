@@ -1,16 +1,13 @@
 import './Registration.css'
 import React, { Component } from 'react'
-import { BaseUserManagement } from '../../rest/user-management.js'
 
 import { api } from '../../rest/api.js'
 import $ from '../../../node_modules/jquery/dist/jquery.min'
 import { handlers } from '../../rest/user-management.js'
 
 export default class Registration extends Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
+
+  render () {
     return (
       <div className='ui middle aligned center aligned grid'>
         <div className='column'>

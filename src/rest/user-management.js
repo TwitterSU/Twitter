@@ -9,7 +9,7 @@ function errorHandler (response) {
   if (response.responseJSON && response.responseJSON.description) {
     errorMessage = response.responseJSON.description
   }
-  $('.errorMsg').val('Wrong passsword or username')
+  $('.errorMsg').css('').text('Wrong passsword or username')
   console.log(errorMessage)
   return errorMessage
 }
