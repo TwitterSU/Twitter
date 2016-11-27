@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router'
 import './Login.css'
-import { api } from '../../rest/api.js'
-import $ from '../../../node_modules/jquery/dist/jquery.min'
-import { handlers } from '../../rest/user-management.js'
+import { BaseUserManagement } from '../../rest/user-management.js'
 export default class Login extends Component {
   
   render() {
@@ -79,24 +77,10 @@ export default class Login extends Component {
           }
         },
         inline: true,
-        onSuccess: this.login
+        onSuccess: BaseUserManagement.login
       })
   }
-  login(e) {
-    e.preventDefault()
-    $.ajax({
-      method: 'POST',
-      url: api.serviceBaseUrl + 'user/' + api.appID + '/login',
-      headers: { 'Authorization': 'Basic ' + btoa(api.appID + ':' + api.appSecret) },
-      data: {
-        username: e.target[0].value,
-        password: e.target[1].value
-      },
-      success: handlers.successHandler,
-      error: handlers.errorHandler
-
-    })
-  }
+  
 
 }
 

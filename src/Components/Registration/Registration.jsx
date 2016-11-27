@@ -1,13 +1,12 @@
 import './Registration.css'
 import React, { Component } from 'react'
 
-import { api } from '../../rest/api.js'
-import $ from '../../../node_modules/jquery/dist/jquery.min'
-import { handlers } from '../../rest/user-management.js'
+import { BaseUserManagement } from '../../rest/user-management.js'
+
 
 export default class Registration extends Component {
 
-  render () {
+  render() {
     return (
       <div className='ui middle aligned center aligned grid'>
         <div className='column'>
@@ -98,38 +97,8 @@ export default class Registration extends Component {
 
         },
         inline: true,
-        onSuccess: this.register
+        onSuccess: BaseUserManagement.register
       })
   }
-  register(e) {
-    e.preventDefault()
-    //this.checkForExistingUser(e.target[0].value)
-    $.ajax({
-      method: 'POST',
-      url: api.serviceBaseUrl + 'user/' + api.appID + '/',
-      data: {
-        username: e.target[0].value,
-        password: e.target[3].value,
-        email: e.target[1].value
-      },
-      headers: { 'Authorization': 'Basic ' + btoa(api.appID + ':' + api.appSecret) },
-      success: handlers.successHandler,
-      error: handlers.errorHandler
-    })
-  }
-  // checkForExistingUser (checkUserName) {
-  //   $.ajax({
-  //     method: 'POST',
-  //     url: api.serviceBaseUrl + 'rpc/' + api.appID + '/check-username-exists',
-  //     headers: { 'Authorization': 'Basic ' + btoa(api.appID + ':' + api.appSecret) },
-  //     data: {
-  //       'username': checkUserName
-  //     },
-  //     success: handlers.successHandler,
-  //     error: handlers.errorHandler
-  //   })
-  //   /*{
-  //    "usernameExists": "false" or "true"
-  //    }*/
-  // }
+
 }
