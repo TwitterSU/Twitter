@@ -11,11 +11,19 @@ class App extends Component {
       <Router history={browserHistory}>
         <Route path='/' component={Login} />
         <Route path='/registration' component={Registration} />
-        <Route path='twitter' component={Main} />
+        <Route path='twitter' component={Main} onEnter={checkLoggedIn} />
         <Route path='*' component={NotFound} />
       </Router>
     )
   }
-}
 
+}
+let checkLoggedIn = () => {
+  let user = sessionStorage.getItem('username')
+  if (!user) {
+    browserHistory.push('/')
+  } else {
+    return true
+  }
+}
 export default App
