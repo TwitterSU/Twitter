@@ -14,11 +14,18 @@ export default class TweetList extends Component {
 
 
   render() {
+    let tweetNodes = <h1>Loading</h1>;
+    if(!this.state.loadingData){
+      tweetNodes = this.tweetsData.map((tweets,i) => {
+        return <Tweet tweetData={tweets} key={tweets._id} />
+      })
+    }
+    else{
+      tweetNodes = <h1>Loading</h1>
+    }
     return (
       <div className="ui feed">
-        {this.state.loadingData ? <h1>Loading</h1> : this.tweetsData.map((tweets) => {
-          return <Tweet tweetData={tweets} key={tweets._id} />
-        })}
+        {tweetNodes}
       </div>
     )
   }

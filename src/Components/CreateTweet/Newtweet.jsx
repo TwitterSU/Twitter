@@ -2,14 +2,13 @@ import React, {Component} from 'react';
 import './Newtweet.css'
 
 import {create} from '../../rest/crud/create.js'
-export default class CreateTweet extends Component{
+class CreateTweet extends Component{
   constructor (props) {
     super(props)
   }
   render(){
     return (
-      <div className="ui middle aligned form">
-        <form className="ui middle form">
+        <form className="ui form">
           <div className="field">
             <label>Text</label>
             <textarea name="content">
@@ -22,7 +21,6 @@ export default class CreateTweet extends Component{
           </div>
           <button className="ui button" type="submit">Create</button>
         </form>
-      </div>
     )
   }
   componentDidMount(){
@@ -36,8 +34,8 @@ export default class CreateTweet extends Component{
           identifier: 'hashTags'
         }
       },
-      inline: true,
-      onSuccess: create
+      onSuccess: create.bind(this)
     })
   }
 }
+export default CreateTweet

@@ -7,6 +7,7 @@ export let create = (e)=> {
   e.preventDefault()
   let post = {
     content: e.target[0].value,
+    tags: [...e.target[1].value.split(',')],
     author: sessionStorage.getItem('username')
   }
   $.ajax({
@@ -14,7 +15,10 @@ export let create = (e)=> {
     url: url + 'posts',
     headers: authHeaders,
     data: post,
-    success: handlers.successHandler,
-    error: handlers.errorHandler
+    success: (res,status) => {
+      console.log(this)
+      console.log(res)
+      console.log(status)
+    }
   })
 }

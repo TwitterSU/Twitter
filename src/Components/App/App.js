@@ -5,7 +5,7 @@ import Login from '../Login/Login'
 import Registration from '../Registration/Registration'
 import Main from '../Main/Main'
 import User from '../User/User'
-import TweetList from '../Tweet/TweetList.jsx'
+import Content from '../Content/Content'
 import NotFound from '../NotFound/NotFound'
 
 let checkLoggedIn = () => {
@@ -25,7 +25,7 @@ class App extends Component {
           <IndexRoute component={Login} />
         </Route>
         <Route path='/registration' component={Registration} />
-        <Route path='twitter' component={TweetList} onEnter={checkLoggedIn} />
+        <Route path='twitter' component={Content} onEnter={checkLoggedIn} />
         <Route path='*' component={NotFound} />
       </Router>
     )

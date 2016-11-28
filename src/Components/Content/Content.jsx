@@ -1,9 +1,21 @@
 import React, {Component} from 'react'
 import Navbar from '../Navigation/Nav'
-export default class Main extends Component {
+import TweetList from '../Tweet/TweetList.jsx'
+import CreateTweet from '../CreateTweet/Newtweet'
+export default class Content extends Component {
   render() {
     return (
-      <Navbar />
+      <div className="container">
+        <div className="ui right aligned container">
+          <Navbar />
+        </div>
+        <div >
+          <CreateTweet className='centred' />
+        </div>
+        <div>
+          <TweetList className='centered' />
+        </div>
+      </div>
     )
   }
 }
