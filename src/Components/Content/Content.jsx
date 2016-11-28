@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-
-export default class Main extends Component{
-    render(){
-        return (
-            <div>Hello FROM MAIN </div>
-        )
-    }
+import React, {Component} from 'react'
+import Navbar from '../Navigation/Nav'
+export default class Main extends Component {
+  render() {
+    return (
+      <Navbar />
+    )
+  }
 }
