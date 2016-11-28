@@ -1,4 +1,4 @@
-import { appID, appSecret, serviceBaseUrl } from './api.js'
+import { appID, appSecret, serviceBaseUrl } from '../api.js'
 const url = serviceBaseUrl + 'appdata/' + appID + '/'
 const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
 
