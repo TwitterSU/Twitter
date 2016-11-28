@@ -19,13 +19,14 @@ let checkLoggedIn = () => {
 class App extends Component {
   render () {
     return (
-    <Router history={browserHistory}>
-      <Route path='/' component={Main} />
-        <IndexRoute component={Login} />
-      <Route path='/registration' component={Registration} />
-      <Route path='twitter' component={User} onEnter={checkLoggedIn} />
-      <Route path='*' component={NotFound} />
-    </Router>
+      <Router history={browserHistory}>
+        <Route path='/' component={Main}>
+          <IndexRoute component={Login} />
+        </Route>
+        <Route path='/registration' component={Registration} />
+        <Route path='twitter' component={User} onEnter={checkLoggedIn} />
+        <Route path='*' component={NotFound} />
+      </Router>
     )
   }
 
