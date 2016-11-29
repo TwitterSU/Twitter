@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import Comment from './Comment.jsx'
 import AddComment from '../AddComment/AddComment.jsx'
 class CommentList extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
       comments: null
     }

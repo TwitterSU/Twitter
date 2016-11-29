@@ -29,7 +29,7 @@ class CreateTweet extends Component {
 
       <form className="ui form" onSubmit={this.tweetSubmitHandler.bind(this)}>
         <div className="field">
-          <label>Text</label>
+          <label>New tweet</label>
           <textarea name="content" placeholder="If text contains #tags they will be added...">
           </textarea>
         </div>
@@ -38,7 +38,7 @@ class CreateTweet extends Component {
           <textarea rows="1" placeholder="Separate by ," name="hashTags">
             </textarea>
         </div>
-        <button className="ui button" type="submit">Create</button>
+        <button className="ui button" type="submit">Share</button>
       </form>
     )
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './Nav.css'
+import {logout} from '../../rest/logout.js'
 export default class NavigationBar extends Component{
 
   render(){
@@ -21,7 +22,7 @@ export default class NavigationBar extends Component{
                 <i className="search link icon"></i>
             </div>
           </div>
-          <a className="ui item">
+          <a className="ui item" onClick={logout}>
             Logout
           </a>
         </div>

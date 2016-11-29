@@ -1,12 +1,49 @@
-import React,{Component} from 'react'
-export default class AddComment extends Component{
+import React, {Component} from 'react'
+import KinveyRequest from '../../rest/crud/crud.js'
+export default class AddComment extends Component {
+  constructor() {
+    super()
+    this.state = {
+      comment: ''
+    }
+  }
 
-  render(){
-    return(
+  onChangeHandler(e) {
+    this.setState({
+      comment: e.target.value
+    })
+  }
+
+  onKeyUp(e) {
+    e.preventDefault();
+    if (e.keyCode == 13 && e.target.value.trim() != '') {
+      console.log(e.target.key)
+      console.log(this)
+
+      // KinveyRequest.create('comments', null, this.state.comment)
+      // .then((data) => {
+      //   console.log(data)
+      // })
+      // this.setState({
+      //   comment: ''
+      // });
+    }
+  }
+
+  render() {
+    return (
       <div className="field">
-        <textarea name="content" placeholder="Add comment...">
+        <textarea name="content"
+                  placeholder="Add comment..."
+                  onKeyUp={this.onKeyUp.bind(this)}
+                  onChange={this.onChangeHandler.bind(this)}
+                  content={this.state.comment}
+        >
         </textarea>
       </div>
     )
+  }
+  componentDidMount(){
+
   }
 }

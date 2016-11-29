@@ -3,13 +3,25 @@ import $ from '../../../node_modules/jquery/dist/jquery.min.js'
 const KinveyRequests = (function () {
   const url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
   const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
-  function create(collection,e) {
-    e.preventDefault()
-    let post = {
-      content: e.target[0].value,
-      tags: [...e.target[1].value.split(/\s{0,},\s{0,}/).filter(e=>e)],
-      author: sessionStorage.getItem('username')
+  function create(collection,e,value) {
+    let post;
+    if(e){
+      e.preventDefault()
+      post = {
+        content: e.target[0].value,
+        tags: [...e.target[1].value.split(/\s{0,},\s{0,}/).filter(e=>e)],
+        author: sessionStorage.getItem('username')
+      }
     }
+    else {
+      post = {
+        content: value.content,
+        postId: value.postId,
+        userId: sessionStorage.getItem('userId'),
+        author: sessionStorage.getItem('username')
+      }
+    }
+
     return $.ajax({
       method: 'POST',
       url: url + collection,
