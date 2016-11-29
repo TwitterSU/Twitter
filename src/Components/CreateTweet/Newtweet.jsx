@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './Newtweet.css'
 
-import {create} from '../../rest/crud/create'
+import { create } from '../../rest/crud/create'
 class CreateTweet extends Component {
   constructor(props) {
     super(props)
@@ -10,35 +10,35 @@ class CreateTweet extends Component {
   render() {
     return (
 
-        <form className="ui form">
-          <div className="field">
-            <label>Text</label>
-            <textarea name="content" placeholder="If text contains #tags they will be added...">
+      <form className="ui form">
+        <div className="field">
+
+          <textarea name="content" placeholder="If text contains #tags they will be added...">
           </textarea>
-          </div>
-          <div className="field">
-            <label>Hash tags</label>
-            <textarea rows="1" placeholder="Separate by ," name="hashTags">
-            </textarea>
-          </div>
-          <button className="ui button" type="submit">Create</button>
-        </form>
+        </div>
+        <div className="field">
+          <label>Hash tags</label>
+          <textarea rows="1" placeholder="Separate by ," name="hashTags">
+          </textarea>
+        </div>
+        <button className="ui button" type="submit">Create</button>
+      </form>
     )
   }
 
   componentDidMount() {
     window.jQuery('.ui.form')
-    .form({
-      fields: {
-        content: {
-          identifier: 'content'
+      .form({
+        fields: {
+          content: {
+            identifier: 'content'
+          },
+          hashTags: {
+            identifier: 'hashTags'
+          }
         },
-        hashTags: {
-          identifier: 'hashTags'
-        }
-      },
-      onSuccess: create.bind(this)
-    })
+        onSuccess: create.bind(this)
+      })
   }
 }
 export default CreateTweet

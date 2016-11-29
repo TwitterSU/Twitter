@@ -4,7 +4,7 @@ export default class Navbar extends Component{
 
   render(){
     return(
-      <div className="ui action input">
+      <div className="ui action input center aligned grid ">
         <input type="text" placeholder="Search..."/>
           <div type="submit" className="ui button">Search</div>
       </div>
