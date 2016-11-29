@@ -9,10 +9,10 @@ class CreateTweet extends Component {
       content: '',
       tags: ''
     }
-    this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
   }
 
   tweetSubmitHandler(e) {
+    debugger
     KinveyRequests.create('posts', e)
     .then(this.successCreateHandler.bind(this))
     .catch((error)=>console.log(error))
@@ -27,7 +27,7 @@ class CreateTweet extends Component {
   render() {
     return (
 
-      <form className="ui form" onSubmit={this.tweetSubmitHandler}>
+      <form className="ui form" onSubmit={this.tweetSubmitHandler.bind(this)}>
         <div className="field">
           <label>Text</label>
           <textarea name="content" placeholder="If text contains #tags they will be added...">

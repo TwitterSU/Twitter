@@ -1,10 +1,7 @@
 import React, {Component} from 'react'
 import $ from '../../../node_modules/jquery/dist/jquery.min.js'
+import CommentList from '../Comments/CommentList.jsx'
 export default class Tweet extends Component {
-  constructor() {
-    super()
-  }
-
 
   render() {
 
@@ -32,8 +29,13 @@ export default class Tweet extends Component {
             </a>
           </div>
         </div>
+        <CommentList onChange={this.changeCommentsHandler} />
       </div>
     )
+  }
+  changeCommentsHandler(){
+    debugger
+    console.log('comments status changed')
   }
 
 }

@@ -11,15 +11,12 @@ class Comment extends Component {
           <img src="/images/avatar/small/matt.jpg"/>
         </a>
         <div className="content">
-          <a className="author">Matt</a>
+          <a className="author">{this.props.author}</a>
           <div className="metadata">
-            <span className="date">Today at 5:42PM</span>
+            <span className="date">{this.props.created}</span>
           </div>
           <div className="text">
-            How artistic!
-          </div>
-          <div className="actions">
-            <a className="reply">Reply</a>
+            {this.props.content}
           </div>
         </div>
       </div>
