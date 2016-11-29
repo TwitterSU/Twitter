@@ -3,6 +3,7 @@ import Navbar from '../Navigation/Nav'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/Newtweet'
 export default class Content extends Component {
+
   render() {
     return (
       <div className="container">

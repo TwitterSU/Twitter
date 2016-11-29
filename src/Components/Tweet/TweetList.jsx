@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
-import {retrive} from '../../rest/crud/retrive.js'
+// import {retrive} from '../../rest/crud/retrive.js'
+import KinveyRequests from '../../rest/crud/crud1.js'
 import Tweet from './Tweet.jsx'
 import './TweetList.css'
 export default class TweetList extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {
       tweets: null
     }
@@ -18,6 +19,7 @@ export default class TweetList extends Component {
                       content={tweets.content}
                       author={tweets.author}
                       likes={tweets.likes}
+                      id={tweets._id}
                       key={tweets._id} />
       })
     }
@@ -33,7 +35,7 @@ export default class TweetList extends Component {
 
   componentDidMount() {
     if (sessionStorage.getItem('authToken')) {
-      retrive('posts').then((data)=>{
+      KinveyRequests.retrieve('posts').then((data)=>{
         this.setState({
           tweets: data
         })

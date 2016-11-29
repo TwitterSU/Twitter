@@ -1,52 +1,53 @@
-// import { api } from '../api.js'
-// import $ from '../../../node_modules/jquery/dist/jquery.min.js'
-// const crud = (function () {
-//   const url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
-//   const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
-//   function createTweet(target) {
-//     let post = {
-//       content: target.target[0].value,
-//       tags: [...target.target[1].value.split(',')],
-//       author: sessionStorage.getItem('username')
-//     }
-//     return $.ajax({
-//       method: 'POST',
-//       url: url + 'posts',
-//       headers: authHeaders,
-//       data: post
-//     })
-//   }
-//   function getTweets() {
-//     return $.ajax({
-//       method: 'GET',
-//       url: url + 'posts',
-//       headers: authHeaders,
-//     })
-//
-//   }
-//   function updateTweet(entityId,content) {
-//     return $.ajax({
-//       method: 'PUT',
-//       url: url +  'posts/' + entityId,
-//       headers: authHeaders,
-//       contentType: 'application/json',
-//       data: content,
-//     })
-//   }
-//   function deleteTweet(entityId)  {
-//     return $.ajax({
-//       method: 'DELETE',
-//       url: url +  'posts/' + entityId,
-//       headers: authHeaders,
-//       contentType: 'application/json',
-//
-//     })
-//   }
-//   return {
-//     createTweet,
-//     getTweets,
-//     updateTweet,
-//     deleteTweet
-//   }
-// })()
-// export default crud;
+import { api } from '../api.js'
+import $ from '../../../node_modules/jquery/dist/jquery.min.js'
+const KinveyRequests = (function () {
+  const url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
+  const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
+  function create(collection,e) {
+    e.preventDefault()
+    let post = {
+      content: e.target[0].value,
+      tags: [...e.target[1].value.split(',')],
+      author: sessionStorage.getItem('username')
+    }
+    return $.ajax({
+      method: 'POST',
+      url: url + collection,
+      headers: authHeaders,
+      data: post
+    })
+  }
+  function retrieve(collection) {
+    return $.ajax({
+      method: 'GET',
+      url: url + collection,
+      headers: authHeaders,
+    })
+
+  }
+  function update(entityId,content) {
+    return $.ajax({
+      method: 'PUT',
+      url: url +  'posts/' + entityId,
+      headers: authHeaders,
+      contentType: 'application/json',
+      data: content,
+    })
+  }
+  function remove(collection, entityId)  {
+    return $.ajax({
+      method: 'DELETE',
+      url: url +  collection+'/' + entityId,
+      headers: authHeaders,
+      contentType: 'application/json',
+
+    })
+  }
+  return {
+    create,
+    retrieve,
+    update,
+    remove
+  }
+})()
+export default KinveyRequests;

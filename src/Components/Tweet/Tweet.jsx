@@ -1,13 +1,20 @@
 import React, {Component} from 'react'
+import $ from '../../../node_modules/jquery/dist/jquery.min.js'
 export default class Tweet extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
+    this.addLike = this.addLike.bind(this)
   }
+  addLike(e) {
+    e.preventDefault();
+    console.log(e);
+  }
+
 
   render() {
 
     return (
-      <div className="event">
+      <div className="event" id={this.props.id}>
         <div className="label">
           <img src="/images/avatar/small/elliot.jpg"/>
         </div>
@@ -24,7 +31,7 @@ export default class Tweet extends Component {
             </div>
           </div>
           <div className="meta">
-            <a className="like">
+            <a className="like" onClick={this.addLike}>
               <i className="like icon"></i>
               {this.props.likes? this.props.likes: 0 } likes
             </a>

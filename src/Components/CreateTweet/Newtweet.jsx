@@ -1,44 +1,48 @@
 import React, {Component} from 'react';
 import './Newtweet.css'
-
+import KinveyRequests from '../../rest/crud/crud1.js'
 import {create} from '../../rest/crud/create'
 class CreateTweet extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
+    this.state = {
+      content: '',
+      tags: ''
+    }
+    this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
+  }
+
+  tweetSubmitHandler(e) {
+    KinveyRequests.create('posts', e)
+    .then(this.successCreateHandler.bind(this))
+    .catch((error)=>console.log(error))
+  }
+
+  successCreateHandler(data,status) {
+    console.log(data)
+    console.log(status)
+    console.log(this)
   }
 
   render() {
     return (
 
-        <form className="ui form">
-          <div className="field">
-            <label>Text</label>
-            <textarea name="content" placeholder="If text contains #tags they will be added...">
+      <form className="ui form" onSubmit={this.tweetSubmitHandler}>
+        <div className="field">
+          <label>Text</label>
+          <textarea name="content" placeholder="If text contains #tags they will be added...">
           </textarea>
-          </div>
-          <div className="field">
-            <label>Hash tags</label>
-            <textarea rows="1" placeholder="Separate by ," name="hashTags">
+        </div>
+        <div className="field">
+          <label>Hash tags</label>
+          <textarea rows="1" placeholder="Separate by ," name="hashTags">
             </textarea>
-          </div>
-          <button className="ui button" type="submit">Create</button>
-        </form>
+        </div>
+        <button className="ui button" type="submit">Create</button>
+      </form>
     )
   }
 
-  componentDidMount() {
-    window.jQuery('.ui.form')
-    .form({
-      fields: {
-        content: {
-          identifier: 'content'
-        },
-        hashTags: {
-          identifier: 'hashTags'
-        }
-      },
-      onSuccess: create.bind(this)
-    })
-  }
+
 }
 export default CreateTweet
