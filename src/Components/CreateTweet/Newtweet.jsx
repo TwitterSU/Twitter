@@ -12,7 +12,7 @@ class CreateTweet extends Component {
 
       <form className="ui form">
         <div className="field">
-
+        
           <textarea name="content" placeholder="If text contains #tags they will be added...">
           </textarea>
         </div>
