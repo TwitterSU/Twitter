@@ -8,7 +8,7 @@ export default class Main extends Component {
   render () {
     return (
       <div>
-        {this.props.children} MAIN
+        MAIN
       </div>
     )
   }
