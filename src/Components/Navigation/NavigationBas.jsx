@@ -15,7 +15,7 @@ export default class NavigationBar extends Component{
         <a className="item">
           Friends
         </a>
-        <div className="right menu">
+        <div className="right menu center aligned">
           <div className="item">
             <div className="ui icon input">
               <input type="text" placeholder="Search..."/>

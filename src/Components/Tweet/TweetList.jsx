@@ -43,9 +43,7 @@ export default class TweetList extends Component {
                       key={tweets._id}/>
       })
     }
-    else {
-      tweetNodes = <h1>Loading</h1>
-    }
+    
     return (
       <div className="ui feed">
         {tweetNodes}
