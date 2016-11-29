@@ -4,11 +4,28 @@ export default class NavigationBar extends Component{
 
   render(){
     return(
-      <div className="ui action input center aligned grid ">
-        <input type="text" placeholder="Search..."/>
-          <div type="submit" className="ui button">Search</div>
-      </div>
-    )
+      <div className="ui secondary  menu">
+        <a className="active item">
+          Profile
+        </a>
+        <a className="item">
+          Messages
+        </a>
+        <a className="item">
+          Friends
+        </a>
+        <div className="right menu">
+          <div className="item">
+            <div className="ui icon input">
+              <input type="text" placeholder="Search..."/>
+                <i className="search link icon"></i>
+            </div>
+          </div>
+          <a className="ui item">
+            Logout
+          </a>
+        </div>
+      </div>)
   }
   componentDidMount() {
   }
