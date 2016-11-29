@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Navbar from '../Navigation/NavigationBas'
+import NavigationBar from '../Navigation/NavigationBas'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/Newtweet'
 export default class Twitter extends Component {
@@ -9,7 +9,7 @@ export default class Twitter extends Component {
         {this.props.children}
         <div className="container">
           <div className="ui right aligned container">
-            <Navbar />
+            <NavigationBar />
           </div>
           <div >
             <CreateTweet className='ui grid' />
