@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './Newtweet.css'
-import KinveyRequests from '../../rest/crud/crud1.js'
+import KinveyRequests from '../../rest/crud/crud.js'
 import {create} from '../../rest/crud/create'
 class CreateTweet extends Component {
   constructor() {

@@ -3,11 +3,6 @@ import $ from '../../../node_modules/jquery/dist/jquery.min.js'
 export default class Tweet extends Component {
   constructor() {
     super()
-    this.addLike = this.addLike.bind(this)
-  }
-  addLike(e) {
-    e.preventDefault();
-    console.log(e);
   }
 
 

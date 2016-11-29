@@ -21,7 +21,7 @@ function successHandler (response) {
   sessionStorage.setItem('username', response.username)
   console.log('success')
   browserHistory.push('twitter')
-  return { response}
+  return { response }
 }
 
 export let handlers = {

@@ -12,7 +12,6 @@ export let login = (e) => {
     method: 'POST',
     url: api.serviceBaseUrl + 'user/' + api.appID + '/login',
     headers: { 'Authorization': 'Basic ' + btoa(api.appID + ':' + api.appSecret) },
-    content: 'application/json',
     data: body,
     success: handlers.successHandler,
     error: handlers.errorHandler
