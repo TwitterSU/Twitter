@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './Newtweet.css'
 
-import {create} from '../../rest/crud/create.js'
+import {create} from '../../rest/crud/create'
 class CreateTweet extends Component{
   constructor (props) {
     super(props)

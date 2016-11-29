@@ -12,7 +12,6 @@ export default class TweetList extends Component {
     this.tweetsData = []
   }
 
-
   render() {
     let tweetNodes = <h1>Loading</h1>;
     if(!this.state.loadingData){
@@ -37,6 +36,7 @@ export default class TweetList extends Component {
         url: api.serviceBaseUrl + 'appdata/' + api.appID + '/posts',
         headers: {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')},
         success: (res) => {
+          console.log(res);
           this.tweetsData = res
           return this.setState({
             loadingData: false

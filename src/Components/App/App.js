@@ -7,7 +7,6 @@ import Main from '../Main/Main'
 import User from '../User/User'
 import Content from '../Content/Content'
 import NotFound from '../NotFound/NotFound'
-
 let checkLoggedIn = () => {
   let user = sessionStorage.getItem('username')
   if (!user) {
