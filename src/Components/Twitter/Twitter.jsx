@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Navbar from '../Navigation/Nav'
+import Navbar from '../Navigation/NavigationBas'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/Newtweet'
 export default class Twitter extends Component {
