@@ -14,18 +14,17 @@ export let crud = {
       method: 'POST',
       url: url + collection,
       headers: authHeaders,
-      data: post,
+      data: post
 
     })
   },
-  retrive : (e, collection) => {
+  retrive: (e, collection) => {
     $.ajax({
       method: 'GET',
       url: url + collection,
-      headers: authHeaders,
+      headers: authHeaders
 
     })
-
   },
   update: (collection, changedFields, entityId) => {
     $.ajax({
@@ -33,7 +32,7 @@ export let crud = {
       url: url + collection + '/' + entityId,
       headers: authHeaders,
       contentType: 'application/json',
-      data: changedFields,
+      data: changedFields
 
     })
   },
@@ -42,7 +41,7 @@ export let crud = {
       method: 'DELETE',
       url: url + collection + '/?query=' + entityId,
       headers: authHeaders,
-      contentType: 'application/json',
+      contentType: 'application/json'
 
     })
   }
