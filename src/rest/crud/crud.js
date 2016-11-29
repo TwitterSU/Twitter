@@ -1,24 +1,26 @@
 import { api } from '../api.js'
 import $ from '../../../node_modules/jquery/dist/jquery.min.js'
+const url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
+const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
+
 const KinveyRequests = (function () {
-  const url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
-  const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
-  function create(collection,e,value) {
-    let post;
-    if(e){
+  sessionStorage.clear()
+  function create (collection, e, value) {
+    let post
+    if (e) {
       e.preventDefault()
       post = {
         content: e.target[0].value,
-        tags: [...e.target[1].value.split(/\s{0,},\s{0,}/).filter(e=>e)],
+        tags: [...e.target[1].value.split(/\s{0,},\s{0,}/).filter(e => e)],
         author: sessionStorage.getItem('username')
       }
-    }
-    else {
+    } else {
       post = {
         content: value.content,
         postId: value.postId,
         userId: sessionStorage.getItem('userId'),
-        author: sessionStorage.getItem('username')
+        author: sessionStorage.getItem('username'),
+        authorURL: sessionStorage.getItem('url')
       }
     }
 
@@ -29,32 +31,34 @@ const KinveyRequests = (function () {
       data: post
     })
   }
-  function retrieve(collection) {
+
+  function retrieve (collection) {
     return $.ajax({
       method: 'GET',
       url: url + collection,
-      headers: authHeaders,
+      contentType: 'application/json',
+      headers: authHeaders
     })
-
   }
-  function update(entityId,content) {
+  function update (entityId, content) {
     return $.ajax({
       method: 'PUT',
-      url: url +  'posts/' + entityId,
+      url: url + 'posts/' + entityId,
       headers: authHeaders,
       contentType: 'application/json',
-      data: content,
+      data: content
     })
   }
-  function remove(collection, entityId)  {
+  function remove (collection, entityId) {
     return $.ajax({
       method: 'DELETE',
-      url: url +  collection+'/' + entityId,
+      url: url + collection + '/' + entityId,
       headers: authHeaders,
-      contentType: 'application/json',
+      contentType: 'application/json'
 
     })
   }
+  
   return {
     create,
     retrieve,
@@ -62,4 +66,4 @@ const KinveyRequests = (function () {
     remove
   }
 })()
-export default KinveyRequests;
+export default KinveyRequests

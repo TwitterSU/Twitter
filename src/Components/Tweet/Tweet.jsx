@@ -1,13 +1,14 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import $ from '../../../node_modules/jquery/dist/jquery.min.js'
 import CommentList from '../Comments/CommentList.jsx'
+
 export default class Tweet extends Component {
 
   render() {
     return (
       <div className="event" id={this.props.id}>
         <div className="label">
-          <img src="/images/avatar/small/elliot.jpg"/>
+          <img src={this.props.url} />
         </div>
 
         <div className="content">
@@ -26,18 +27,13 @@ export default class Tweet extends Component {
           <div className="meta">
             <a className="like" onClick={this.addLike}>
               <i className="like icon"></i>
-              {this.props.likes? this.props.likes: 0 } likes
+              {this.props.likes ? this.props.likes : 0}likes
             </a>
           </div>
           <CommentList onChange={this.changeCommentsHandler} />
-          <hr/>
+          <hr />
         </div>
       </div>
     )
   }
-  changeCommentsHandler(){
-    debugger
-    console.log('comments status changed')
-  }
-
 }

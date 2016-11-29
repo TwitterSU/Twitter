@@ -6,6 +6,6 @@ export const retrive = function(col,e){
   return $.ajax({
     method: 'GET',
     url: url + col,
-    headers: authHeaders,
+    headers: authHeaders
   })
 }

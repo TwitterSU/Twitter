@@ -36,6 +36,12 @@ export default class Registration extends Component {
                   <input type='password' name='confirmpassword' placeholder='Confirm Password' />
                 </div>
               </div>
+              <div className='field'>
+                <div className='ui left icon input'>
+                  <i className='user icon' />
+                  <input type='text' name='avatar' placeholder='Avatar URL' />
+                </div>
+              </div>
               <div className='ui fluid large blue submit button'>
                 Register
               </div>

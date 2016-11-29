@@ -1,7 +1,6 @@
 import $ from '../../node_modules/jquery/dist/jquery.min'
 import { browserHistory } from 'react-router'
 
-
 function errorHandler (response) {
   let errorMessage = JSON.stringify(response)
   if (response.readyState === 0) {
@@ -16,15 +15,23 @@ function errorHandler (response) {
 }
 
 function successHandler (response) {
+  sessionStorage.clear()
   sessionStorage.setItem('authToken', response._kmd.authtoken)
   sessionStorage.setItem('userId', response._id)
   sessionStorage.setItem('username', response.username)
+  sessionStorage.setItem('url', response.avatar)
   console.log('success')
   browserHistory.push('twitter')
-  return { response }
+  return { response}
+}
+
+function logoutHandler () {
+  sessionStorage.clear()
+  browserHistory.push('/')
 }
 
 export let handlers = {
   successHandler,
-  errorHandler
+  errorHandler,
+  logoutHandler
 }
