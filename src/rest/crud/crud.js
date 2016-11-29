@@ -1,48 +1,53 @@
-import { appID, appSecret, serviceBaseUrl } from '../api.js'
+import { api } from '../api.js'
 import $ from '../../../node_modules/jquery/dist/jquery.min.js'
-const url = serviceBaseUrl + 'appdata/' + appID + '/'
-const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
-
-export let crud = {
-  create: (collection) => {
+const KinveyRequests = (function () {
+  const url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
+  const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
+  function create(collection,e) {
+    e.preventDefault()
     let post = {
-      author: 'get author from props',
-      content: 'Post content'
+      content: e.target[0].value,
+      tags: [...e.target[1].value.split(/\s{0,},\s{0,}/).filter(e=>e)],
+      author: sessionStorage.getItem('username')
     }
-
-    $.ajax({
+    return $.ajax({
       method: 'POST',
       url: url + collection,
       headers: authHeaders,
       data: post
-
     })
-  },
-  retrive: (e, collection) => {
-    $.ajax({
+  }
+  function retrieve(collection) {
+    return $.ajax({
       method: 'GET',
       url: url + collection,
-      headers: authHeaders
-
+      headers: authHeaders,
     })
-  },
-  update: (collection, changedFields, entityId) => {
-    $.ajax({
+
+  }
+  function update(entityId,content) {
+    return $.ajax({
       method: 'PUT',
-      url: url + collection + '/' + entityId,
+      url: url +  'posts/' + entityId,
       headers: authHeaders,
       contentType: 'application/json',
-      data: changedFields
-
+      data: content,
     })
-  },
-  delete: (collection, entityId) => {
-    $.ajax({
+  }
+  function remove(collection, entityId)  {
+    return $.ajax({
       method: 'DELETE',
-      url: url + collection + '/?query=' + entityId,
+      url: url +  collection+'/' + entityId,
       headers: authHeaders,
-      contentType: 'application/json'
+      contentType: 'application/json',
 
     })
   }
-}
+  return {
+    create,
+    retrieve,
+    update,
+    remove
+  }
+})()
+export default KinveyRequests;

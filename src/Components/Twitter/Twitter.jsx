@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Navbar from '../Navigation/Nav'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/Newtweet'
-export default class Content extends Component {
+export default class Twitter extends Component {
   render() {
     return (
       <div>
