@@ -2,16 +2,18 @@ import React, {Component} from 'react';
 import './Newtweet.css'
 
 import {create} from '../../rest/crud/create'
-class CreateTweet extends Component{
-  constructor (props) {
+class CreateTweet extends Component {
+  constructor(props) {
     super(props)
   }
-  render(){
+
+  render() {
     return (
+
         <form className="ui form">
           <div className="field">
             <label>Text</label>
-            <textarea name="content">
+            <textarea name="content" placeholder="If text contains #tags they will be added...">
           </textarea>
           </div>
           <div className="field">
@@ -23,7 +25,8 @@ class CreateTweet extends Component{
         </form>
     )
   }
-  componentDidMount(){
+
+  componentDidMount() {
     window.jQuery('.ui.form')
     .form({
       fields: {

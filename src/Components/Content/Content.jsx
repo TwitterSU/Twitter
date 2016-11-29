@@ -10,10 +10,10 @@ export default class Content extends Component {
           <Navbar />
         </div>
         <div >
-          <CreateTweet className='centred' />
+          <CreateTweet className='ui grid' />
         </div>
         <div>
-          <TweetList className='centered' />
+          <TweetList className='ui four column grid' />
         </div>
       </div>
     )

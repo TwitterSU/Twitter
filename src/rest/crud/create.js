@@ -8,9 +8,30 @@ export let create = (e)=> {
   e.preventDefault()
   let post = {
     content: e.target[0].value,
-    tags: [...e.target[1].value.split(/\s{0,},\s{0,}/)],
+    tags: [],
     author: sessionStorage.getItem('username')
   }
+  function findHashtags(searchText) {
+    let regexp = /\B\#\w\w+\b/g
+    let result = searchText.match(regexp);
+    if (result) {
+      result.map(function(s){
+          s.trim()
+      })
+      return result
+    } else {
+      return false;
+    }
+  }
+  post.tags.push(...e.target[1].value.split(/\s{0,},\s{0,}/).filter(e=>e))
+  console.log(post.tags)
+  let hashTags = findHashtags(e.target[0].value)
+  if(hashTags){
+    hashTags.forEach(h=>{
+      post.tags.push(h)
+    })
+  }
+
   e.target[0].value = '';
   e.target[1].value = '';
   $.ajax({
