@@ -1,22 +1,24 @@
 import React, {Component} from 'react'
-import $ from '../../../node_modules/jquery/dist/jquery.min'
-import {api} from '../../rest/api.js'
+import {retrive} from '../../rest/crud/retrive.js'
 import Tweet from './Tweet.jsx'
 import './TweetList.css'
 export default class TweetList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loadingData: true
+      tweets: null
     }
-    this.tweetsData = []
   }
 
   render() {
     let tweetNodes = <h1>Loading</h1>;
-    if(!this.state.loadingData){
-      tweetNodes = this.tweetsData.map((tweets,i) => {
-        return <Tweet tweetData={tweets} key={tweets._id} />
+    if(this.state.tweets){
+      tweetNodes = this.state.tweets.reverse().map((tweets,i) => {
+        return <Tweet created={tweets._kmd.lmt}
+                      content={tweets.content}
+                      author={tweets.author}
+                      likes={tweets.likes}
+                      key={tweets._id} />
       })
     }
     else{
@@ -31,17 +33,10 @@ export default class TweetList extends Component {
 
   componentDidMount() {
     if (sessionStorage.getItem('authToken')) {
-      $.ajax({
-        method: 'GET',
-        url: api.serviceBaseUrl + 'appdata/' + api.appID + '/posts',
-        headers: {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')},
-        success: (res) => {
-          console.log(res);
-          this.tweetsData = res
-          return this.setState({
-            loadingData: false
-          })
-        }
+      retrive('posts').then((data)=>{
+        this.setState({
+          tweets: data
+        })
       })
     }
   }

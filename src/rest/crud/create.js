@@ -34,14 +34,17 @@ export let create = (e)=> {
 
   e.target[0].value = '';
   e.target[1].value = '';
-  $.ajax({
+  return $.ajax({
     method: 'POST',
     url: url + 'posts',
     headers: authHeaders,
     data: post,
     success: (res,status) => {
       console.log(this)
-      console.log(res)
+      if(res){
+        console.log(e)
+        return res
+      }
       console.log(status)
     }
   })

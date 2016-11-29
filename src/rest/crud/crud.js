@@ -18,7 +18,7 @@ export let crud = {
 
     })
   },
-  get: (collection) => {
+  retrive : (e, collection) => {
     $.ajax({
       method: 'GET',
       url: url + collection,
