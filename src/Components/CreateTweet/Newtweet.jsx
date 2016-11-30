@@ -11,23 +11,23 @@ class CreateTweet extends Component {
     }
   }
 
-  tweetSubmitHandler(e) {
-    debugger
-    KinveyRequests.create('posts', e)
-    .then(this.successCreateHandler.bind(this))
-    .catch((error)=>console.log(error))
-  }
+  // tweetSubmitHandler(e) {
+  //   debugger
+  //   KinveyRequests.create('posts', e)
+  //   .then(this.successCreateHandler.bind(this))
+  //   .catch((error)=>console.log(error))
+  // }
 
-  successCreateHandler(data,status) {
-    console.log(data)
-    console.log(status)
-    console.log(this)
-  }
+  // successCreateHandler(data,status) {
+  //   console.log(data)
+  //   console.log(status)
+  //   console.log(this)
+  // }
 
   render() {
     return (
 
-      <form className="ui form" onSubmit={this.tweetSubmitHandler.bind(this)}>
+      <form className="ui form" onSubmit={this.props.onsubmit}>
         <div className="field">
           <label>New tweet</label>
           <textarea name="content" placeholder="If text contains #tags they will be added...">

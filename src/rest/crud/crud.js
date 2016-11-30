@@ -23,7 +23,8 @@ const KinveyRequests = (function () {
         authorURL: sessionStorage.getItem('url')
       }
     }
-
+    e.target[0].value = ''
+    e.target[1].value = ''
     return $.ajax({
       method: 'POST',
       url: url + collection,
