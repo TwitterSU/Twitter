@@ -26,7 +26,7 @@ export default class Tweet extends Component {
           <div className="meta">
             <a className="like" onClick={this.addLike}>
               <i className="like icon"></i>
-              {this.props.likes ? this.props.likes : 0}likes
+              {this.props.likes ? this.props.likes : 0}Likes
             </a>
           </div>
           <CommentList onChange={this.changeCommentsHandler} />
