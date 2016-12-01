@@ -21,10 +21,17 @@ export default class Twitter extends Component {
       })
       .catch((error) => console.log(error))
   }
-  handleDelete (itemId, e) {
+  tweetEditHandler(e){
     debugger
-    console.log(e)
-    console.log(itemId)
+  }
+  addLikeHandler(e){
+    debugger
+  }
+  handleDelete (itemId, e) {
+    KinveyRequester.remove('posts',itemId).then((data,status)=>{
+      console.log(data)
+      console.log(status)
+    })
   }
   handleEdit (itemId, e) {
     console.log(e)
@@ -36,13 +43,15 @@ export default class Twitter extends Component {
         {this.props.children}
         < div className='ui container centered' >
           <div className='ui segment'>
-            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)}>
+            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)}
+                          onedit={this.tweetEditHandler.bind(this)}>
             </CreateTweet>
           </div>
           <div className='ui segment'>
             <TweetList className='ui four column grid'
                        edit={this.handleEdit.bind(this)}
                        delete={this.handleDelete.bind(this)}
+                       addLike={this.addLikeHandler}
                        tweets={this.state.tweets} />
           </div>
         </div >

@@ -34,6 +34,7 @@ export default class TweetList extends Component {
           likes={tweets.likes}
           id={tweets._id}
           userAction={editDelete}
+          addLike={this.props.addLike}
           key={tweets._id} />)
       })
     }
