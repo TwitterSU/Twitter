@@ -20,10 +20,10 @@ export default class TweetList extends Component {
         let editDelete
         if (tweets._acl.creator === sessionStorage.getItem('userId')) {
           editDelete = (<div className="ui right">
-            <button className="ui right floated button"
+            <button className="ui right floated button blue"
               style={{ "fontSize": "0.75em" }}
               onClick={this.handleDelete.bind(this, tweets._id)}>Delete</button>
-            <button className="ui right floated button"
+            <button className="ui right floated button blue"
               style={{ "fontSize": "0.75em" }}
               onClick={this.handleEdit.bind(this, tweets._id)}>Edit</button>
           </div>)

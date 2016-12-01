@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import $ from '../../../node_modules/jquery/dist/jquery.min.js'
 import CommentList from '../Comments/CommentList.jsx'
 
 export default class Tweet extends Component {
