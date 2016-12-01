@@ -1,9 +1,9 @@
 import { api } from '../api.js'
-import $ from '../../../node_modules/jquery/dist/jquery.min.js'
+import $ from '../../node_modules/jquery/dist/jquery.min.js'
 const url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
 const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
 
-const KinveyRequests = (function () {
+const KinveyRequester = (function () {
   sessionStorage.clear()
   function create (collection, e, value) {
     let post
@@ -59,7 +59,7 @@ const KinveyRequests = (function () {
 
     })
   }
-  
+
   return {
     create,
     retrieve,
@@ -67,4 +67,4 @@ const KinveyRequests = (function () {
     remove
   }
 })()
-export default KinveyRequests
+export default KinveyRequester

@@ -1,12 +1,12 @@
 import './Registration.css'
 import React, { Component } from 'react'
 
-import { register } from '../../rest/register.js'
+import { register } from '../../Models/User/register.js'
 
 
 export default class Registration extends Component {
 
-  render() {
+  render () {
     return (
       <div className='ui middle aligned center aligned grid'>
         <div className='column'>
@@ -53,7 +53,7 @@ export default class Registration extends Component {
     )
   }
 
-  componentDidMount() {
+  componentDidMount () {
     window.jQuery('.ui.form')
       .form({
         fields: {

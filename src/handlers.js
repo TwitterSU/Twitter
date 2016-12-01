@@ -1,4 +1,4 @@
-import $ from '../../node_modules/jquery/dist/jquery.min'
+import $ from '../node_modules/jquery/dist/jquery.min'
 import { browserHistory } from 'react-router'
 
 function errorHandler (response) {

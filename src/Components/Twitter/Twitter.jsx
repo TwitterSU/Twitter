@@ -1,19 +1,19 @@
 import React, { Component } from 'react'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
-import KinveyRequests from '../../rest/crud/crud.js'
+import KinveyRequester from '../../Controllers/KinveyRequester'
 
 export default class Twitter extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       tweets: null
     }
   }
-  tweetSubmitHandler(e) {
+  tweetSubmitHandler (e) {
     e.preventDefault()
 
-    KinveyRequests.create('posts', e)
+    KinveyRequester.create('posts', e)
       .then((data) => {
         this.setState((prevState, props) => {
           return prevState.tweets.push(data)
@@ -22,7 +22,7 @@ export default class Twitter extends Component {
       .catch((error) => console.log(error))
   }
 
-  render() {
+  render () {
     return (
       <div>
         {this.props.children}
@@ -38,9 +38,9 @@ export default class Twitter extends Component {
       </div>
     )
   }
-  componentDidMount() {
+  componentDidMount () {
     if (sessionStorage.getItem('authToken')) {
-      KinveyRequests.retrieve('posts').then((data) => {
+      KinveyRequester.retrieve('posts').then((data) => {
         this.setState({
           tweets: data
 

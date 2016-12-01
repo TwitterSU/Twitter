@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './Nav.css'
-import { logout } from '../../rest/logout.js'
+import { logout } from '../../Models/User/logout.js'
 export default class NavigationBar extends Component {
 
   render () {
@@ -20,5 +20,5 @@ export default class NavigationBar extends Component {
         </div>
       </div>)
   }
-  
+
 }

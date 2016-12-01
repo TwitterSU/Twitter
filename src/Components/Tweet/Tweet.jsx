@@ -3,7 +3,7 @@ import CommentList from '../Comments/CommentList.jsx'
 
 export default class Tweet extends Component {
 
-  render() {
+  render () {
     return (
       <div className="event" id={this.props.id}>
         <div className="label">

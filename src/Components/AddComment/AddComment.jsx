@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import KinveyRequest from '../../rest/crud/crud.js'
+import KinveyRequester from '../../Controllers/KinveyRequester.js'
 export default class AddComment extends Component {
   constructor() {
     super()

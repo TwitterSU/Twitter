@@ -1,6 +1,6 @@
-import $ from '../../node_modules/jquery/dist/jquery.min'
-import { api } from './api.js'
-import { handlers } from './handlers.js'
+import $ from '../../../node_modules/jquery/dist/jquery.min'
+import { api } from '../../api.js'
+import { handlers } from '../../handlers.js'
 
 export let logout = () => {
   $.ajax({

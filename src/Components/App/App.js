@@ -6,15 +6,7 @@ import Registration from '../Registration/Registration'
 import NavigationBar from '../Navigation/NavigationBar'
 import Twitter from '../Twitter/Twitter'
 import NotFound from '../NotFound/NotFound'
-
-let checkLoggedIn = () => {
-  let user = sessionStorage.getItem('username')
-  if (!user) {
-    browserHistory.push('/')
-  } else {
-    return true
-  }
-}
+import { checkLoggedIn } from '../../utils'
 
 class App extends Component {
 
