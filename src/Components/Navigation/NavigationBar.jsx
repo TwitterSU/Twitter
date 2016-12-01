@@ -3,8 +3,10 @@ import './Nav.css'
 import { logout } from '../../Models/User/logout.js'
 export default class NavigationBar extends Component {
 
-  render () {
+  render() {
+    
     return (
+
       <div className='ui secondary  menu'>
         <a className='active item'>Profile</a>
         <a className='item'>Messages</a>
