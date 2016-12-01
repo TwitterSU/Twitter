@@ -15,7 +15,7 @@ function errorHandler (response) {
 }
 
 function successHandler (response) {
-  sessionStorage.clear()
+ 
   sessionStorage.setItem('authToken', response._kmd.authtoken)
   sessionStorage.setItem('userId', response._id)
   sessionStorage.setItem('username', response.username)

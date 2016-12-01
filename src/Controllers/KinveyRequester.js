@@ -1,10 +1,12 @@
 import { api } from '../api.js'
 import $ from '../../node_modules/jquery/dist/jquery.min.js'
-const url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
-const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
+let url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
 
+
+function getHeaders () {
+  return {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
+}
 const KinveyRequester = (function () {
-  sessionStorage.clear()
   function create (collection, e, value) {
     let post
     if (e) {
@@ -28,7 +30,7 @@ const KinveyRequester = (function () {
     return $.ajax({
       method: 'POST',
       url: url + collection,
-      headers: authHeaders,
+      headers: getHeaders(),
       data: post
     })
   }
@@ -38,14 +40,14 @@ const KinveyRequester = (function () {
       method: 'GET',
       url: url + collection,
       contentType: 'application/json',
-      headers: authHeaders
+      headers: getHeaders()
     })
   }
   function update (entityId, content) {
     return $.ajax({
       method: 'PUT',
       url: url + 'posts/' + entityId,
-      headers: authHeaders,
+      headers: getHeaders(),
       contentType: 'application/json',
       data: content
     })
@@ -54,7 +56,7 @@ const KinveyRequester = (function () {
     return $.ajax({
       method: 'DELETE',
       url: url + collection + '/' + entityId,
-      headers: authHeaders,
+      headers: getHeaders(),
       contentType: 'application/json'
 
     })
@@ -64,7 +66,6 @@ const KinveyRequester = (function () {
     create,
     retrieve,
     update,
-    remove
-  }
+    remove}
 })()
 export default KinveyRequester

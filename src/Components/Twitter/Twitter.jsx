@@ -4,13 +4,13 @@ import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
 
 export default class Twitter extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       tweets: null
     }
   }
-  tweetSubmitHandler (e) {
+  tweetSubmitHandler(e) {
     e.preventDefault()
 
     KinveyRequester.create('posts', e)
@@ -22,7 +22,7 @@ export default class Twitter extends Component {
       .catch((error) => console.log(error))
   }
 
-  render () {
+  render() {
     return (
       <div>
         {this.props.children}
@@ -38,14 +38,14 @@ export default class Twitter extends Component {
       </div>
     )
   }
-  componentDidMount () {
-    if (sessionStorage.getItem('authToken')) {
-      KinveyRequester.retrieve('posts').then((data) => {
-        this.setState({
-          tweets: data
+  componentDidMount() {
+    
+    KinveyRequester.retrieve('posts').then((data) => {
+      this.setState({
+        tweets: data
 
-        })
       })
-    }
+    })
+
   }
 }
