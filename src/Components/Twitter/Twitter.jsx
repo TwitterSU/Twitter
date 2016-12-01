@@ -27,8 +27,8 @@ export default class Twitter extends Component {
   addLikeHandler(e){
     debugger
   }
-  handleDelete (itemId, e) {
-    KinveyRequester.remove('posts',itemId).then((data,status)=>{
+  handleDelete (e) {
+    KinveyRequester.remove('posts',this.props.id).then((data,status)=>{
       console.log(data)
       console.log(status)
     })
@@ -36,6 +36,7 @@ export default class Twitter extends Component {
   handleEdit (itemId, e) {
     console.log(e)
     console.log(itemId)
+    console.log(this)
   }
   render() {
     return (
@@ -49,8 +50,8 @@ export default class Twitter extends Component {
           </div>
           <div className='ui segment'>
             <TweetList className='ui four column grid'
-                       edit={this.handleEdit.bind(this)}
-                       delete={this.handleDelete.bind(this)}
+                       edit={this.handleEdit}
+                       delete={this.handleDelete}
                        addLike={this.addLikeHandler}
                        tweets={this.state.tweets} />
           </div>

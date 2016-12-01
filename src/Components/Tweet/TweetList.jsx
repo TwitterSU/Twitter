@@ -10,30 +10,16 @@ export default class TweetList extends Component {
     let tweetNodes = <h1>Loading</h1>
     if (this.props.tweets) {
       tweetNodes = this.props.tweets.reverse().map((tweets, i) => {
-        let editDelete
-        if (tweets._acl.creator === sessionStorage.getItem('userId')) {
-          editDelete = (<div className='ui right'>
-            <button className='ui right floated button blue'
-                    style={{ 'fontSize': '0.75em' }}
-                    onClick={this.props.delete.bind(this, tweets._id)}>
-              Delete
-                          </button>
-            <button className='ui right floated button blue'
-                    style={{ 'fontSize': '0.75em' }}
-                    onClick={this.props.edit.bind(this, tweets._id)}>
-              Edit
-                          </button>
-          </div>)
-        }
-
         return (<Tweet
+          owner={tweets._acl.creator}
           created={tweets._kmd.lmt}
           url={this.props.url}
           content={tweets.content}
           author={tweets.author}
           likes={tweets.likes}
           id={tweets._id}
-          userAction={editDelete}
+          edit={this.props.edit}
+          delete={this.props.delete}
           addLike={this.props.addLike}
           key={tweets._id} />)
       })
