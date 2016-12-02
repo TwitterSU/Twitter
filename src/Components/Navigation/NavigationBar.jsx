@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
 import './Nav.css'
-import { logout } from '../../Models/User/logout.js'
 export default class NavigationBar extends Component {
 
   render() {
-    
+
     return (
 
       <div className='ui secondary  menu'>
@@ -18,7 +17,7 @@ export default class NavigationBar extends Component {
               <i className='search link icon'></i>
             </div>
           </div>
-          <a className='ui item' onClick={logout}>Logout</a>
+          <a className='ui item' onClick={this.props.onClick}>Logout</a>
         </div>
       </div>)
   }

@@ -3,6 +3,9 @@ import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
 import update from 'react-addons-update'
+import NavigationBar from '../Navigation/NavigationBar'
+import { logout } from '../../Models/User/logout.js'
+
 export default class Twitter extends Component {
   constructor(props) {
     super(props)
@@ -15,6 +18,7 @@ export default class Twitter extends Component {
     this.addLikeHandler = this.addLikeHandler.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
+    this.handleLogout = this.handleLogout.bind(this)
   }
   tweetSubmitHandler(e) {
     e.preventDefault()
@@ -57,14 +61,16 @@ export default class Twitter extends Component {
     console.log(itemId)
     console.log(this)
   }
+  handleLogout() {
+    logout()
+  }
   render() {
     return (
       <div>
-        {this.props.children}
+        <NavigationBar onClick={this.handleLogout} />
         < div className='ui container centered'>
           <div className='ui segment'>
-            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} onedit={this.tweetEditHandler.bind(this)}>
-            </CreateTweet>
+            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} onedit={this.tweetEditHandler.bind(this)} />
           </div>
           <div className='ui segment'>
             <TweetList

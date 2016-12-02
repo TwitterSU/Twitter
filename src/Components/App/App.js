@@ -15,9 +15,7 @@ class App extends Component {
       <Router history={browserHistory}>
         <Route path='/' component={Login} />
         <Route path='/registration' component={Registration} />
-        <Route path='/twitter' component={Twitter} onEnter={checkLoggedIn}>
-          <IndexRoute component={NavigationBar} />
-        </Route>
+        <Route path='/twitter' component={Twitter} onEnter={checkLoggedIn} />
         <Route path='*' component={NotFound} />
       </Router>
     )
