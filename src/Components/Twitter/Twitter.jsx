@@ -10,7 +10,8 @@ export default class Twitter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tweets: null
+      tweets: null,
+      editMode: null
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
@@ -40,8 +41,13 @@ export default class Twitter extends Component {
 
   }
   tweetEditHandler(e) {
+    e.preventDefault()
     console.log(this)
-    console.log(e)
+    console.dir(e.target[0].value)
+
+    this.setState({
+      editMode: null
+    })
   }
   addLikeHandler(e) {
     e.persist()
@@ -86,20 +92,50 @@ export default class Twitter extends Component {
 
   }
   handleEdit(e) {
-    e.persist()
-    console.log(e.target.value)
-    console.log(this.state.tweets)
+    let index = -1
+    let id = e.target.value
+
+    this.state.tweets.map((tweet, i) => {
+      if (id == tweet._id) {
+        index = i
+      }
+    })
+
+    this.setState({
+      editMode: this.state.tweets[index]
+    })
   }
+
   handleLogout() {
     logout()
   }
   render() {
+    let actionNode;
+    if(this.state.editMode){
+      actionNode = (
+          <form className='ui form' onSubmit={this.tweetEditHandler.bind(this)}>
+            <div className='field'>
+              <label>
+                Edit tweet
+              </label>
+              <textarea name='content' defaultValue={this.state.editMode.content} />
+            </div>
+             <button className='ui button blue' type='submit'>
+               Confirm
+             </button>
+
+           </form>
+       )
+     }
+     else {
+      actionNode = <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} />
+    }
     return (
       <div>
         <NavigationBar onClick={this.handleLogout} search={this.search} />
         < div className='ui container centered'>
           <div className='ui segment'>
-            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} />
+            {actionNode}
           </div>
           <div className='ui segment'>
             <TweetList
