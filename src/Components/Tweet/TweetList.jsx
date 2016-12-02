@@ -21,6 +21,7 @@ export default class TweetList extends Component {
           edit={this.props.edit}
           delete={this.props.delete}
           addLike={this.props.addLike}
+          submitComment={this.props.submitComment}
           key={i}
           tags={tweet.tags}
           isLiked={tweet.isLiked}

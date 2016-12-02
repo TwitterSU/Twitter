@@ -41,7 +41,7 @@ export default class Tweet extends Component {
           <div className='meta'>
             <button className='like' onClick={this.props.addLike} value={this.props.id} disabled={this.props.isLiked.split(', ').includes(sessionStorage.getItem('username'))} ><i className='like icon' style={style} ></i>{this.props.likes}Love it </button>
           </div>
-          <CommentList onChange={this.changeCommentsHandler} />
+          <CommentList onSubmit={this.props.submitComment} />
           <hr />
         </div>
       </div>

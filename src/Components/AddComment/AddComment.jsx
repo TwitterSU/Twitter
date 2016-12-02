@@ -17,16 +17,9 @@ export default class AddComment extends Component {
   onKeyUp (e) {
     e.preventDefault()
     if (e.keyCode == 13 && e.target.value.trim() != '') {
-      console.log(e.target.key)
+      console.log(e.target)
       console.log(this)
 
-    // KinveyRequest.create('comments', null, this.state.comment)
-    // .then((data) => {
-    //   console.log(data)
-    // })
-    // this.setState({
-    //   comment: ''
-    // })
     }
   }
 
