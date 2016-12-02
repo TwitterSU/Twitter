@@ -14,7 +14,6 @@ const KinveyRequester = (function () {
         tags.push(word)
       }
     })
-    console.log(tags)
     let post
     if (e) {
       e.preventDefault()
@@ -23,7 +22,7 @@ const KinveyRequester = (function () {
         tags: tags,
         author: sessionStorage.getItem('username'),
         likes: 0,
-        isLiked: null
+        isLiked: ''
       }
     } else {
       post = {

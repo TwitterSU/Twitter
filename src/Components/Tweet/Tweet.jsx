@@ -17,6 +17,8 @@ export default class Tweet extends Component {
       </div>)
     }
     let style = { color: this.props.isLiked ? 'red' : 'grey' }
+    
+
     return (
       <div className='event' id={this.props.id}>
         <div className='label'>
@@ -37,7 +39,7 @@ export default class Tweet extends Component {
             </div>
           </div>
           <div className='meta'>
-            <button className='like' onClick={this.props.addLike} value={this.props.id} disabled={Boolean(this.props.isLiked)}><i className='like icon' style={style} ></i>{this.props.likes}Love it </button>
+            <button className='like' onClick={this.props.addLike} value={this.props.id} disabled={this.props.isLiked.split(', ').includes(sessionStorage.getItem('username'))} ><i className='like icon' style={style} ></i>{this.props.likes}Love it </button>
           </div>
           <CommentList onChange={this.changeCommentsHandler} />
           <hr />
