@@ -6,6 +6,7 @@ export default class AddComment extends Component {
     this.state = {
       comment: ''
     }
+    this.onKeyUp = this.onKeyUp.bind(this)
   }
 
   onChangeHandler (e) {
@@ -19,6 +20,7 @@ export default class AddComment extends Component {
     if (e.keyCode == 13 && e.target.value.trim() != '') {
       console.log(e.target)
       console.log(this)
+      this.state.comment.focus()
 
     }
   }
@@ -29,12 +31,14 @@ export default class AddComment extends Component {
         <textarea
           name='content'
           placeholder='Add comment...'
-          onKeyUp={this.onKeyUp.bind(this)}
+          onKeyUp={this.onKeyUp}
           onChange={this.onChangeHandler.bind(this)}
           content={this.state.comment}>
         </textarea>
       </div>
     )
   }
-  componentDidMount () {}
+  componentDidMount () {
+
+  }
 }
