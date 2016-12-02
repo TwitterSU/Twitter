@@ -63,7 +63,8 @@ export default class Twitter extends Component {
     })
     this.state.tweets[index].likes++
     let content = this.state.tweets[index]
-    this.state.tweets[index].isLiked = true
+
+    this.state.tweets[index].isLiked += (sessionStorage.getItem('username')+', ')
     KinveyRequester.update(id, content).then(data => {
       this.setState({
         tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
@@ -145,7 +146,7 @@ export default class Twitter extends Component {
               delete={this.handleDelete}
               addLike={this.addLikeHandler}
               tweets={this.state.tweets}
-               />
+              />
           </div>
         </div>
       </div>
