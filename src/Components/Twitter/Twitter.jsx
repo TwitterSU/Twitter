@@ -20,13 +20,18 @@ export default class Twitter extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
+    this.search = this.search.bind(this)
+  }
+  search(e) {
+    e.preventDefault()
+    alert('searching')
   }
   tweetSubmitHandler(e) {
     e.preventDefault()
 
     KinveyRequester.create('posts', e)
       .then((data) => {
-      console.log(data)
+        console.log(data)
         let newTweet = this.state.tweets.concat(data).pop();
         this.state.tweets.unshift(newTweet)
         this.setState({
@@ -90,10 +95,10 @@ export default class Twitter extends Component {
   render() {
     return (
       <div>
-        <NavigationBar onClick={this.handleLogout} />
+        <NavigationBar onClick={this.handleLogout} search={this.search} />
         < div className='ui container centered'>
           <div className='ui segment'>
-            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)}  />
+            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} />
           </div>
           <div className='ui segment'>
             <TweetList
