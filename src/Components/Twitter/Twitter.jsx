@@ -63,7 +63,7 @@ export default class Twitter extends Component {
     })
     this.state.tweets[index].likes++
     let content = this.state.tweets[index]
-
+    //RETARDED KINVEY
     this.state.tweets[index].isLiked += (sessionStorage.getItem('username')+', ')
     KinveyRequester.update(id, content).then(data => {
       this.setState({
