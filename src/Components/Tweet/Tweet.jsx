@@ -2,19 +2,20 @@ import React, { Component } from 'react'
 import CommentList from '../Comments/CommentList.jsx'
 
 export default class Tweet extends Component {
-
-  render () {
+  
+  render() {
     let ownerActions
     if (this.props.owner === sessionStorage.getItem('userId')) {
       ownerActions = (<div className='ui right'>
-                        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.delete} value={this.props.id}>
-                          Delete
+        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.delete} value={this.props.id}>
+          Delete
                         </button>
-                        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.edit.bind(this)}>
-                          Edit
+        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.edit.bind(this)}>
+          Edit
                         </button>
-                      </div>)
+      </div>)
     }
+    let style = { color: this.props.liked ? 'red' : 'grey' }
     return (
       <div className='event' id={this.props.id}>
         <div className='label'>
@@ -34,12 +35,13 @@ export default class Tweet extends Component {
             </div>
           </div>
           <div className='meta'>
-            <a className='like' onClick={this.props.addLike.bind(this)}><i className='like icon'></i> {this.props.likes ? this.props.likes : 0}Likes</a>
+            <button className='like' onClick={this.props.addLike} value={this.props.id}><i className='like icon' style={style}></i>{this.props.likes} Love it </button>
           </div>
+          <div className='meta'><span >&nbsp; tags: {this.props.tags} </span></div>
           <CommentList onChange={this.changeCommentsHandler} />
           <hr />
         </div>
-      </div>
+      </div >
     )
   }
 }

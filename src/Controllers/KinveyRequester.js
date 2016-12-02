@@ -2,19 +2,27 @@ import { api } from '../api.js'
 import $ from '../../node_modules/jquery/dist/jquery.min.js'
 let url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
 
-
 function getHeaders () {
   return {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
 }
 const KinveyRequester = (function () {
   function create (collection, e, value) {
+    let text = e.target[0].value.split(' ')
+    let tags = []
+    text.map(word => {
+      if (word[0] == '#') {
+        tags.push(word)
+      }
+    })
+    console.log(tags)
     let post
     if (e) {
       e.preventDefault()
       post = {
         content: e.target[0].value,
-        tags: [...e.target[1].value.split(/\s{0,},\s{0,}/).filter(e => e)],
-        author: sessionStorage.getItem('username')
+        tags: tags,
+        author: sessionStorage.getItem('username'),
+        likes: 0
       }
     } else {
       post = {
@@ -49,7 +57,7 @@ const KinveyRequester = (function () {
       url: url + 'posts/' + entityId,
       headers: getHeaders(),
       contentType: 'application/json',
-      data: content
+      data: JSON.stringify(content)
     })
   }
   function remove (collection, entityId) {
@@ -66,6 +74,6 @@ const KinveyRequester = (function () {
     create,
     retrieve,
     update,
-    remove}
+  remove}
 })()
 export default KinveyRequester
