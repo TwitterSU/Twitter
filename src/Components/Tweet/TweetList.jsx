@@ -21,7 +21,7 @@ export default class TweetList extends Component {
           edit={this.props.edit}
           delete={this.props.delete}
           addLike={this.props.addLike}
-          key={tweets._id}
+          key={i}
           tags={tweets.tags}
           />)
       })

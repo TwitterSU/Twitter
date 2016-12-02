@@ -10,8 +10,7 @@ export default class Twitter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tweets: null,
-      editMode: false
+      tweets: null
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
@@ -22,21 +21,26 @@ export default class Twitter extends Component {
     this.handleLogout = this.handleLogout.bind(this)
   }
   tweetSubmitHandler(e) {
-    e.preventDefault()
 
+    e.preventDefault()
     KinveyRequester.create('posts', e)
-      .then((data) => {
+    .then((data) => {
       console.log(data)
-        let newTweet = this.state.tweets.concat(data).pop();
-        this.state.tweets.unshift(newTweet)
-        this.setState({
-          tweets: this.state.tweets
-        })
+      let newTweet = this.state.tweets.concat(data).pop();
+      this.state.tweets.unshift(newTweet)
+      this.setState({
+        tweets: this.state.tweets
       })
-      .catch((error) => console.log(error))
+    })
+    .catch((error) => console.log(error))
+
   }
   tweetEditHandler(e) {
-    console.log(this)
+    e.preventDefault()
+    debugger
+    this.setState({
+      editMode: false
+    })
     console.log(e)
   }
   addLikeHandler(e) {
@@ -80,23 +84,24 @@ export default class Twitter extends Component {
 
   }
   handleEdit(e) {
-    e.persist()
-    console.log(e.target.value)
-    console.log(this.state.tweets)
+    console.log(e)
+    console.log(this)
   }
+
   handleLogout() {
     logout()
   }
   render() {
     return (
       <div>
-        <NavigationBar onClick={this.handleLogout} />
+        <NavigationBar onClick={this.handleLogout} ref="navBar"/>
         < div className='ui container centered'>
           <div className='ui segment'>
-            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)}  />
+            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} ref="createTweet"/>
           </div>
           <div className='ui segment'>
             <TweetList
+              ref="tweetList"
               className='ui four column grid'
               edit={this.handleEdit}
               delete={this.handleDelete}
@@ -108,10 +113,12 @@ export default class Twitter extends Component {
     )
   }
   componentDidMount() {
-    KinveyRequester.retrieve('posts').then((data) => {
+    KinveyRequester.retrieve('posts').then((tweets) => {
+
       this.setState({
-        tweets: data.reverse()
+        tweets: tweets.reverse()
       })
     })
+
   }
 }
