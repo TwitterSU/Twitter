@@ -9,7 +9,7 @@ export default class TweetList extends Component {
   render() {
     let tweetNodes = <h1>Loading</h1>
     if (this.props.tweets) {
-      tweetNodes = this.props.tweets.reverse().map((tweets, i) => {
+      tweetNodes = this.props.tweets.map((tweets, i) => {
         return (<Tweet
           owner={tweets._acl.creator}
           created={tweets._kmd.lmt}

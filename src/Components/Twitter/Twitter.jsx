@@ -26,8 +26,11 @@ export default class Twitter extends Component {
 
     KinveyRequester.create('posts', e)
       .then((data) => {
+      console.log(data)
+        let newTweet = this.state.tweets.concat(data).pop();
+        this.state.tweets.unshift(newTweet)
         this.setState({
-          tweets: this.state.tweets.concat(data)
+          tweets: this.state.tweets
         })
       })
       .catch((error) => console.log(error))
@@ -107,7 +110,7 @@ export default class Twitter extends Component {
   componentDidMount() {
     KinveyRequester.retrieve('posts').then((data) => {
       this.setState({
-        tweets: data
+        tweets: data.reverse()
       })
     })
   }
