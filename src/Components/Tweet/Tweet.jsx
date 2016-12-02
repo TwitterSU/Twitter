@@ -3,20 +3,20 @@ import CommentList from '../Comments/CommentList.jsx'
 
 export default class Tweet extends Component {
 
-  render () {
+  render() {
     let ownerActions
     if (this.props.owner === sessionStorage.getItem('userId')) {
       ownerActions = (<div className='ui right'>
-                        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.delete} value={this.props.id}>
-                          Delete
+        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.delete} value={this.props.id}>
+          Delete
                         </button>
-                        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.edit}
-                        value={this.props.id}>
-                          Edit
+        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.edit}
+          value={this.props.id}>
+          Edit
                         </button>
-                      </div>)
+      </div>)
     }
-    let style = { color: this.props.liked ? 'red' : 'grey' }
+    let style = { color: this.props.isLiked ? 'red' : 'grey' }
     return (
       <div className='event' id={this.props.id}>
         <div className='label'>
@@ -32,12 +32,12 @@ export default class Tweet extends Component {
             </div>
             {ownerActions}
             <div className='content'>
-              
+
               <h1>{this.props.content}</h1>
             </div>
           </div>
           <div className='meta'>
-            <button className='like' onClick={this.props.addLike} value={this.props.id}><i className='like icon' style={style}></i>{this.props.likes} Love it </button>
+            <button className='like' onClick={this.props.addLike} value={this.props.id} disabled={Boolean(this.props.isLiked)}><i className='like icon' style={style} ></i>{this.props.likes}Love it </button>
           </div>
           <CommentList onChange={this.changeCommentsHandler} />
           <hr />

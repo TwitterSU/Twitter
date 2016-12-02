@@ -22,7 +22,8 @@ const KinveyRequester = (function () {
         content: e.target[0].value,
         tags: tags,
         author: sessionStorage.getItem('username'),
-        likes: 0
+        likes: 0,
+        isLiked: null
       }
     } else {
       post = {

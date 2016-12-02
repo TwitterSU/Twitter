@@ -31,7 +31,7 @@ export default class Twitter extends Component {
     KinveyRequester.create('posts', e)
 
       .then((data) => {
-        
+
         this.setState({
           tweets: [data, ...this.state.tweets]
         })
@@ -57,9 +57,11 @@ export default class Twitter extends Component {
     })
     this.state.tweets[index].likes++
     let content = this.state.tweets[index]
+    this.state.tweets[index].isLiked = true
     KinveyRequester.update(id, content).then(data => {
       this.setState({
         tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
+
       })
     })
 
@@ -106,7 +108,8 @@ export default class Twitter extends Component {
               edit={this.handleEdit}
               delete={this.handleDelete}
               addLike={this.addLikeHandler}
-              tweets={this.state.tweets} />
+              tweets={this.state.tweets}
+               />
           </div>
         </div>
       </div>
