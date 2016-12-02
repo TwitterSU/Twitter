@@ -16,7 +16,6 @@ export default class Twitter extends Component {
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
-    this.tweetEditHandler = this.tweetEditHandler.bind(this)
     this.addLikeHandler = this.addLikeHandler.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
