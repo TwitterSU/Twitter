@@ -13,7 +13,7 @@ export default class TweetList extends Component {
         return (<Tweet
           owner={tweets._acl.creator}
           created={tweets._kmd.lmt}
-          url={this.props.url}
+          url={'./images.jpg'}
           content={tweets.content}
           author={tweets.author}
           likes={tweets.likes}
