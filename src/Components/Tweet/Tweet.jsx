@@ -32,7 +32,8 @@ export default class Tweet extends Component {
             </div>
             {ownerActions}
             <div className='content'>
-              {this.props.content}
+              
+              <h1>{this.props.content}</h1>
             </div>
           </div>
           <div className='meta'>

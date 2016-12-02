@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import NavigationBar from '../Navigation/NavigationBar'
 import { logout } from '../../Models/User/logout.js'
 
@@ -10,7 +10,8 @@ export default class Twitter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tweets: null
+      tweets: null,
+      editMode: false
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
@@ -19,28 +20,28 @@ export default class Twitter extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
+    this.search = this.search.bind(this)
+  }
+  search(e) {
+    e.preventDefault()
+    alert('searching')
   }
   tweetSubmitHandler(e) {
-
     e.preventDefault()
-    KinveyRequester.create('posts', e)
-    .then((data) => {
-      console.log(data)
-      let newTweet = this.state.tweets.concat(data).pop();
-      this.state.tweets.unshift(newTweet)
-      this.setState({
-        tweets: this.state.tweets
-      })
-    })
-    .catch((error) => console.log(error))
 
+    KinveyRequester.create('posts', e)
+      .then((data) => {
+        console.log(data)
+        let newTweet = this.state.tweets.concat(data).pop();
+        this.state.tweets.unshift(newTweet)
+        this.setState({
+          tweets: this.state.tweets
+        })
+      })
+      .catch((error) => console.log(error))
   }
   tweetEditHandler(e) {
-    e.preventDefault()
-    debugger
-    this.setState({
-      editMode: false
-    })
+    console.log(this)
     console.log(e)
   }
   addLikeHandler(e) {
@@ -84,24 +85,23 @@ export default class Twitter extends Component {
 
   }
   handleEdit(e) {
-    console.log(e)
-    console.log(this)
+    e.persist()
+    console.log(e.target.value)
+    console.log(this.state.tweets)
   }
-
   handleLogout() {
     logout()
   }
   render() {
     return (
       <div>
-        <NavigationBar onClick={this.handleLogout} ref="navBar"/>
+        <NavigationBar onClick={this.handleLogout} search={this.search} />
         < div className='ui container centered'>
           <div className='ui segment'>
-            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} ref="createTweet"/>
+            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)}  />
           </div>
           <div className='ui segment'>
             <TweetList
-              ref="tweetList"
               className='ui four column grid'
               edit={this.handleEdit}
               delete={this.handleDelete}
@@ -119,6 +119,5 @@ export default class Twitter extends Component {
         tweets: tweets.reverse()
       })
     })
-
   }
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './CreateTweet.css'
-import Hashtag from '../../Hashtag/Hashtag'
 class CreateTweet extends Component {
   constructor (props) {
     super(props)
