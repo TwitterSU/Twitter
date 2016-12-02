@@ -10,7 +10,8 @@ export default class Tweet extends Component {
                         <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.delete} value={this.props.id}>
                           Delete
                         </button>
-                        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.edit.bind(this)}>
+                        <button className='ui right floated button blue' style={{ 'fontSize': '0.75em' }} onClick={this.props.edit}
+                        value={this.props.id}>
                           Edit
                         </button>
                       </div>)

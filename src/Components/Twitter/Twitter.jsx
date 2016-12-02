@@ -10,7 +10,8 @@ export default class Twitter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tweets: null
+      tweets: null,
+      editMode: false
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
@@ -32,7 +33,8 @@ export default class Twitter extends Component {
       .catch((error) => console.log(error))
   }
   tweetEditHandler(e) {
-    debugger
+    console.log(this)
+    console.log(e)
   }
   addLikeHandler(e) {
     debugger
@@ -56,10 +58,10 @@ export default class Twitter extends Component {
     })
 
   }
-  handleEdit(itemId, e) {
-    console.log(e)
-    console.log(itemId)
-    console.log(this)
+  handleEdit(e) {
+    e.persist()
+    console.log(e.target.value)
+    console.log(this.state.tweets)
   }
   handleLogout() {
     logout()
@@ -70,7 +72,7 @@ export default class Twitter extends Component {
         <NavigationBar onClick={this.handleLogout} />
         < div className='ui container centered'>
           <div className='ui segment'>
-            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} onedit={this.tweetEditHandler.bind(this)} />
+            <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)}  />
           </div>
           <div className='ui segment'>
             <TweetList
