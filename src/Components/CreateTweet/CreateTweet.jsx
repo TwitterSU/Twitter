@@ -13,7 +13,7 @@ class CreateTweet extends Component {
           <label>
             New tweet
           </label>
-          <textarea name='content' placeholder='If text contains #tags they will be added...' />
+          <textarea name='content' placeholder='Tweet...' />
         </div>
         <button className='ui button blue' type='submit'>
           Tweet
