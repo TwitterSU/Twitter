@@ -16,7 +16,7 @@ export default class Tweet extends Component {
                         </button>
       </div>)
     }
-    let style = { color: this.props.isLiked ? 'red' : 'grey' }
+    let style = { color: this.props.isLiked.split(', ').includes(sessionStorage.getItem('username')) ? 'red' : 'grey' }
     
     
     return (
