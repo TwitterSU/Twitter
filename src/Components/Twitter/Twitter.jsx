@@ -144,7 +144,7 @@ export default class Twitter extends Component {
     logout()
   }
   render() {
-    let actionNode;
+    let actionNode
     if (this.state.editMode) {
       let key = Object.keys(this.state.editMode)[0]
       actionNode = (
@@ -197,6 +197,11 @@ export default class Twitter extends Component {
     })
   }
   componentDidMount() {
-    this.getTweets()
+    KinveyRequester.retrieve('posts').then((tweets) => {
+
+      this.setState({
+        tweets: tweets.reverse()
+      })
+    })
   }
 }
