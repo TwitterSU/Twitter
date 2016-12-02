@@ -6,7 +6,7 @@ import './TweetList.css'
 export default class TweetList extends Component {
 
 
-  render () {
+  render() {
     let tweetNodes = <h1>Loading</h1>
     if (this.props.tweets) {
       tweetNodes = this.props.tweets.reverse().map((tweets, i) => {
@@ -21,7 +21,9 @@ export default class TweetList extends Component {
           edit={this.props.edit}
           delete={this.props.delete}
           addLike={this.props.addLike}
-          key={tweets._id} />)
+          key={tweets._id}
+          tags={tweets.tags}
+          />)
       })
     }
 

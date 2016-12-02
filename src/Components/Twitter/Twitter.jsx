@@ -37,7 +37,25 @@ export default class Twitter extends Component {
     console.log(e)
   }
   addLikeHandler(e) {
-    debugger
+    e.persist()
+
+    let index = -1
+    let id = e.target.value
+
+
+    this.state.tweets.map((tweet, i) => {
+      if (id == tweet._id) {
+        index = i
+      }
+    })
+    this.state.tweets[index].likes++
+    let content = this.state.tweets[index]
+    KinveyRequester.update(id, content).then(data => {
+      this.setState({
+        tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
+      })
+    })
+
   }
   handleDelete(e) {
     e.persist()

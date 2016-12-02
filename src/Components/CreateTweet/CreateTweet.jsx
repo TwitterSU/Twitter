@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import './CreateTweet.css'
-
+import Hashtag from '../../Hashtag/Hashtag'
 class CreateTweet extends Component {
+  constructor (props) {
+    super(props)
+  }
 
   render () {
     return (
@@ -11,15 +14,7 @@ class CreateTweet extends Component {
           <label>
             New tweet
           </label>
-          <textarea name='content' placeholder='If text contains #tags they will be added...'>
-          </textarea>
-        </div>
-        <div className='field'>
-          <label>
-            Hash tags
-          </label>
-          <textarea rows='1' placeholder='Separate by ,' name='hashTags'>
-          </textarea>
+          <textarea name='content' placeholder='If text contains #tags they will be added...' />
         </div>
         <button className='ui button blue' type='submit'>
           Tweet
@@ -29,4 +24,5 @@ class CreateTweet extends Component {
   }
 
 }
+
 export default CreateTweet
