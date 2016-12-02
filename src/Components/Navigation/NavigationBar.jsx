@@ -5,25 +5,25 @@ export default class NavigationBar extends Component {
   render() {
 
     return (
-      <form onSubmit={this.props.search}>
 
-        <div className='ui secondary  menu'>
-          <a className='active item'>Profile</a>
-          <a className='item'>Messages</a>
-          <a className='item'>Friends</a>
 
-          <div className='right menu center aligned'>
-            <div className='item'>
-              <div className='ui icon input'>
-                <input type='text' placeholder='Search...' />
-                <i className='search link icon'></i>
-              </div>
+      <div className='ui secondary  menu'>
+        <a className='active item'>Profile</a>
+        <a className='item'>Messages</a>
+        <a className='item'>Friends</a>
+
+        <div className='ui container centered'>
+          <div className='item'>
+            <div className='ui icon input'>
+              <input type='text' placeholder='Search by hashtag...' />
+              <a className='ui item' onClick={this.props.search}>Search</a>
             </div>
-            <a className='ui item' onClick={this.props.onClick}>Logout</a>
           </div>
-
         </div>
-      </form>
+        <a className='ui item' onClick={this.props.onClick}>Logout</a>
+
+      </div>
+
 
     )
   }

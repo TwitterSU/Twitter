@@ -11,7 +11,8 @@ export default class Twitter extends Component {
     super(props)
     this.state = {
       tweets: null,
-      editMode: null
+      editMode: null,
+      searchedTweets: []
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
@@ -21,10 +22,29 @@ export default class Twitter extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
     this.search = this.search.bind(this)
+    this.getTweets = this.getTweets.bind(this)
   }
   search(e) {
-    e.preventDefault()
-    alert('searching')
+    e.persist()
+
+
+    if (e.target.parentNode.children[0].value) {
+      let searched = this.state.searchedTweets.concat(this.state.tweets)
+
+
+      searched = searched.filter(tweet => {
+        return tweet.content.includes(e.target.parentNode.children[0].value)
+
+      })
+      this.setState({
+        tweets: null,
+        searchedTweets: searched
+      })
+    } else {
+      this.getTweets()
+    }
+    e.target.parentNode.children[0].value = ''
+
   }
   tweetSubmitHandler(e) {
     e.preventDefault()
@@ -44,21 +64,21 @@ export default class Twitter extends Component {
     e.persist()
     e.preventDefault()
     let index = e.target[0].id
-    if(this.state.tweets[index].content != e.target[0].value){
+    if (this.state.tweets[index].content != e.target[0].value) {
       let content = this.state.tweets[index]
       this.state.tweets[index].content = e.target[0].value
       KinveyRequester.update(this.state.tweets[index]._id, content).
-      then(data =>{
-        console.log(data)
-        this.setState({
-          editMode: null,
-          tweets: update(this.state.tweets, { index :  { $set: this.state.tweets[index].content }  })
+        then(data => {
+          console.log(data)
+          this.setState({
+            editMode: null,
+            tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content } })
+          })
         })
-      })
     }
-    else{
+    else {
       this.setState({
-        editMode: null,
+        editMode: null
       })
     }
 
@@ -79,7 +99,7 @@ export default class Twitter extends Component {
     this.state.tweets[index].likes++
     let content = this.state.tweets[index]
     //RETARDED KINVEY
-    this.state.tweets[index].isLiked += (sessionStorage.getItem('username')+', ')
+    this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
     KinveyRequester.update(id, content).then(data => {
       this.setState({
         tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
@@ -110,43 +130,43 @@ export default class Twitter extends Component {
   handleEdit(e) {
     let index = -1
     let id = e.target.value
-    this.state.tweets.find((item,i)=>{
-      if(item._id == id){
+    this.state.tweets.find((item, i) => {
+      if (item._id == id) {
         return index = i
       }
     })
 
     this.setState({
-      editMode: {[index]: this.state.tweets[index]}
+      editMode: { [index]: this.state.tweets[index] }
     })
   }
 
-  handleLogout() {
+  handleLogout(e) {
     logout()
   }
   render() {
     let actionNode;
-    if(this.state.editMode){
+    if (this.state.editMode) {
       let key = Object.keys(this.state.editMode)[0]
       actionNode = (
-          <form className='ui form' onSubmit={this.tweetEditHandler.bind(this)}>
-            <div className='field'>
-              <label>
-                Edit tweet
+        <form className='ui form' onSubmit={this.tweetEditHandler.bind(this)}>
+          <div className='field'>
+            <label>
+              Edit tweet
               </label>
-              <textarea name='content'
-                        id={key}
-                        defaultValue={this.state.editMode[key].content} />
-            </div>
-             <button className='ui button blue' type='submit'>
-               Confirm
+            <textarea name='content'
+              id={key}
+              defaultValue={this.state.editMode[key].content} />
+          </div>
+          <button className='ui button blue' type='submit'>
+            Confirm
              </button>
 
-           </form>
-       )
-     }
-     else {
-      actionNode = <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} />
+        </form>
+      )
+    }
+    else {
+      actionNode = this.state.tweets ? <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} /> : <button onClick={this.getTweets} className='ui button blue'>Back</button>
     }
     return (
       <div>
@@ -162,19 +182,22 @@ export default class Twitter extends Component {
               edit={this.handleEdit}
               delete={this.handleDelete}
               addLike={this.addLikeHandler}
-              tweets={this.state.tweets}
+              tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets}
               />
           </div>
         </div>
       </div>
     )
   }
-  componentDidMount() {
+  getTweets() {
     KinveyRequester.retrieve('posts').then((tweets) => {
 
       this.setState({
         tweets: tweets.reverse()
       })
     })
+  }
+  componentDidMount() {
+    this.getTweets()
   }
 }
