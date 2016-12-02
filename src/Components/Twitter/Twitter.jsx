@@ -41,13 +41,28 @@ export default class Twitter extends Component {
 
   }
   tweetEditHandler(e) {
+    e.persist()
     e.preventDefault()
-    console.log(this)
-    console.dir(e.target[0].value)
+    let index = e.target[0].id
+    if(this.state.tweets[index].content != e.target[0].value){
+      let content = this.state.tweets[index]
+      this.state.tweets[index].content = e.target[0].value
+      KinveyRequester.update(this.state.tweets[index]._id, content).
+      then(data =>{
+        console.log(data)
+        this.setState({
+          editMode: null,
+          tweets: update(this.state.tweets, { index :  { $set: this.state.tweets[index].content }  })
+        })
+      })
+    }
+    else{
+      this.setState({
+        editMode: null,
+      })
+    }
 
-    this.setState({
-      editMode: null
-    })
+
   }
   addLikeHandler(e) {
     e.persist()
@@ -95,15 +110,14 @@ export default class Twitter extends Component {
   handleEdit(e) {
     let index = -1
     let id = e.target.value
-
-    this.state.tweets.map((tweet, i) => {
-      if (id == tweet._id) {
-        index = i
+    this.state.tweets.find((item,i)=>{
+      if(item._id == id){
+        return index = i
       }
     })
 
     this.setState({
-      editMode: this.state.tweets[index]
+      editMode: {[index]: this.state.tweets[index]}
     })
   }
 
@@ -113,13 +127,16 @@ export default class Twitter extends Component {
   render() {
     let actionNode;
     if(this.state.editMode){
+      let key = Object.keys(this.state.editMode)[0]
       actionNode = (
           <form className='ui form' onSubmit={this.tweetEditHandler.bind(this)}>
             <div className='field'>
               <label>
                 Edit tweet
               </label>
-              <textarea name='content' defaultValue={this.state.editMode.content} />
+              <textarea name='content'
+                        id={key}
+                        defaultValue={this.state.editMode[key].content} />
             </div>
              <button className='ui button blue' type='submit'>
                Confirm
