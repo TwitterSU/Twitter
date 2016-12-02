@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
-import update from 'react-addons-update'
+import update from 'immutability-helper'
 import NavigationBar from '../Navigation/NavigationBar'
 import { logout } from '../../Models/User/logout.js'
 
