@@ -30,15 +30,13 @@ export default class Twitter extends Component {
 
     KinveyRequester.create('posts', e)
 
-    .then((data) => {
-      console.log(data)
-      let newTweet = this.state.tweets.concat(data).pop();
-      this.state.tweets.unshift(newTweet)
-      this.setState({
-        tweets: this.state.tweets
+      .then((data) => {
+        let arr = [data]
+        this.setState({
+          tweets: arr.concat(this.state.tweets)
+        })
       })
-    })
-    .catch((error) => console.log(error))
+      .catch((error) => console.log(error))
 
   }
   tweetEditHandler(e) {
