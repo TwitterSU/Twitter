@@ -22,7 +22,7 @@ const KinveyRequester = (function () {
         tags: tags,
         author: sessionStorage.getItem('username'),
         likes: 0,
-        isLiked: ''
+        isLiked: 'admin, '
       }
     } else {
       post = {

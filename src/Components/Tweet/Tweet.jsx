@@ -18,7 +18,7 @@ export default class Tweet extends Component {
     }
     let style = { color: this.props.isLiked ? 'red' : 'grey' }
     
-
+    
     return (
       <div className='event' id={this.props.id}>
         <div className='label'>
