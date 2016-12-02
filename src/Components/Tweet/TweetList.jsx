@@ -9,20 +9,21 @@ export default class TweetList extends Component {
   render() {
     let tweetNodes = <h1>Loading</h1>
     if (this.props.tweets) {
-      tweetNodes = this.props.tweets.map((tweets, i) => {
+      tweetNodes = this.props.tweets.map((tweet, i) => {
         return (<Tweet
-          owner={tweets._acl.creator}
-          created={tweets._kmd.lmt}
-          url={'./images.jpg'}
-          content={tweets.content}
-          author={tweets.author}
-          likes={tweets.likes}
-          id={tweets._id}
+          owner={tweet._acl.creator}
+          created={tweet._kmd.lmt}
+          url={this.props.url}
+          content={tweet.content}
+          author={tweet.author}
+          likes={tweet.likes}
+          id={tweet._id}
           edit={this.props.edit}
           delete={this.props.delete}
           addLike={this.props.addLike}
           key={i}
-          tags={tweets.tags}
+          tags={tweet.tags}
+          isLiked={tweet.isLiked}
           />)
       })
     }
