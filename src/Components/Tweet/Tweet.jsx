@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import CommentList from '../Comments/CommentList.jsx'
-import KinveyRequester from '../../Controllers/KinveyRequester'
 import AddComment from '../AddComment/AddComment.jsx'
 export default class Tweet extends Component {
 

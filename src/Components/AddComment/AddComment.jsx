@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-//import KinveyRequester from '../../Controllers/KinveyRequester.js'
 export default class AddComment extends Component {
 
   render () {

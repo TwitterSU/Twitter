@@ -1,4 +1,4 @@
-import $ from '../../../node_modules/jquery/dist/jquery.min.js'
+import $ from '../../node_modules/jquery/dist/jquery.min.js'
 import { api } from '../api.js'
 const url = api.serviceBaseUrl + 'appdata/' + api.appID + '/'
 const authHeaders = {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}

@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-// import {retrive} from '../../rest/crud/retrive.js'
-
 import Tweet from './Tweet.jsx'
 import './TweetList.css'
 export default class TweetList extends Component {
