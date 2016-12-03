@@ -53,7 +53,7 @@ export default class Tweet extends Component {
           </div>
          <div className='ui comments'>
             <h3 className='ui dividing header'>Comments</h3>
-            <AddComment onkeyup={this.props.onkeyup.bind(null, this.props.id)} />
+            <AddComment onkeyup={this.props.onkeyup.bind(null,this)} />
             <CommentList comments={this.props.comments}/>
           </div>
           <hr />

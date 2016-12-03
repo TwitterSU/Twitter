@@ -10,7 +10,7 @@ export default class Twitter extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      tweets: null,
+      tweets: [],
       editMode: null,
       searchedTweets: []
 
@@ -133,27 +133,29 @@ export default class Twitter extends Component {
       editMode: { [index]: this.state.tweets[index] }
     })
   }
-  addComment(postId,e){
+  addComment(baseObj,e,postId){
     e.persist()
     e.preventDefault()
-
     if (e.keyCode == 13 && e.target.value.trim() != '') {
-
+      console.log(baseObj)
+      console.log(postId)
+      console.log(e)
       KinveyRequester.create('comments', null, {
         text: e.target.value.trim(),
         postId: postId,
       }).then((data)=>{
-        // let index = -1
-        // this.state.tweets.map((item, i) => {
-        //   if (item._id == postId) {
-        //     return  index = i
-        //   }
-        // })
-        // console.log(data)
-        // console.log(this.state.tweets[index].comments)
-        // this.setState({
-        //   tweets: update(this.state.tweets[index], {$push: data})
-        // })
+        console.log(data)
+        let index = -1
+        this.state.tweets.map((item, i) => {
+          if (item._id == postId) {
+            return  index = i
+          }
+        })
+        console.log(data)
+        console.log(this.state.tweets[index].comments)
+        this.setState({
+          tweets: update(this.state.tweets[index], {$push: data})
+        })
         console.log(data)
       }).catch(err=>console.log(err))
       e.target.value = ''
