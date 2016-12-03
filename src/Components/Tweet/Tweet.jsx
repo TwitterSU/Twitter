@@ -1,8 +1,36 @@
 import React, {Component} from 'react'
 import CommentList from '../Comments/CommentList.jsx'
 import AddComment from '../AddComment/AddComment.jsx'
-export default class Tweet extends Component {
+import KinveyRequester from '../../Controllers/KinveyRequester.js'
+import update from 'immutability-helper'
 
+export default class Tweet extends Component {
+  constructor(){
+    super()
+    this.state = {
+      comments: []
+    }
+    this.addComment = this.addComment.bind(this)
+  }
+  addComment(e){
+    e.preventDefault()
+    if (e.keyCode == 13 && e.target.value.trim() != '') {
+      e.persist()
+      KinveyRequester.createComment(e, {
+        text: e.target.value.trim(),
+        postId: this.props.id,
+      }).then((data)=>{
+        console.log(data)
+        let newState = update(this.state, {
+            comments: {
+              $push : [data]
+            }
+        })
+        this.setState(newState)
+      }).catch(err=>console.log(err))
+      e.target.value = ''
+    }
+  }
   render() {
     let ownerActions
     if (this.props.owner === sessionStorage.getItem('userId')) {
@@ -21,7 +49,8 @@ export default class Tweet extends Component {
         </button>
       </div>)
     }
-    let style = {color: this.props.isLiked.split(', ').includes(sessionStorage.getItem('username')) ? 'red' : 'grey'}
+    let style = {color: this.props.isLiked.split(', ')
+    .includes(sessionStorage.getItem('username')) ? 'red' : 'grey'}
 
     return (
       <div className='event' id={this.props.id}>
@@ -55,14 +84,22 @@ export default class Tweet extends Component {
           </div>
           <div className='ui comments'>
             <h3 className='ui dividing header'>Comments</h3>
-            <AddComment onkeyup={this.props.onkeyup.bind(null,this)}/>
-            <CommentList comments={this.props.comments}/>
+            <AddComment onkeyup={this.addComment}/>
+            <CommentList comments={this.state.comments}/>
           </div>
           <hr />
         </div>
       </div>
     )
   }
-
+  componentDidMount(){
+    KinveyRequester.getCommentsByPostId(this.props.id).then((comments)=>{
+      console.log(comments)
+      this.setState({
+        comments: comments
+      })
+    })
+      .catch(err=>console.log(err))
+  }
 
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Tweet from './Tweet.jsx'
-import './TweetList.css'
 export default class TweetList extends Component {
 
 
@@ -19,7 +18,6 @@ export default class TweetList extends Component {
           edit={this.props.edit}
           delete={this.props.delete}
           addLike={this.props.addLike}
-          onkeyup={this.props.onkeyup}
           comments={tweet.comments}
           key={i}
           tags={tweet.tags}

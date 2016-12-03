@@ -13,7 +13,6 @@ export default class Twitter extends Component {
       tweets: [],
       editMode: null,
       searchedTweets: []
-
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
@@ -132,36 +131,7 @@ export default class Twitter extends Component {
       editMode: { [index]: this.state.tweets[index] }
     })
   }
-  addComment(postId,e){
-    e.preventDefault()
-    if (e.keyCode == 13 && e.target.value.trim() != '') {
-      e.persist()
-
-      KinveyRequester.createComment(e, {
-        text: e.target.value.trim(),
-        postId: postId.props.id,
-      }).then((data)=>{
-        // KinveyRequester.update('posts')
-        console.log(data)
-        let index = -1
-        this.state.tweets.map((item, i) => {
-          if (item._id == postId.props.id) {
-            return  index = i
-          }
-        })
-        console.log(this)
-        let newState = update(this.state, {
-          tweets: {[index]:  {
-            comments: {
-              $push : [data]
-            }
-          }}
-        })
-        this.setState(newState)
-      }).catch(err=>console.log(err))
-      e.target.value = ''
-    }
-  }
+  
   handleLogout(e) {
     logout()
   }
@@ -201,7 +171,6 @@ export default class Twitter extends Component {
               className='ui four column grid'
               edit={this.handleEdit}
               delete={this.handleDelete}
-              onkeyup={this.addComment.bind(this)}
               addLike={this.addLikeHandler}
               tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets}
             />
@@ -218,9 +187,7 @@ export default class Twitter extends Component {
       })
     }).catch((err)=>console.log(err))
   }
-  getComments(tweet){
-    return KinveyRequester.getCommentsByPostId(tweet._id)
-  }
+  
   componentDidMount() {
     KinveyRequester.retrieve('posts').then((tweets) => {
 
@@ -228,5 +195,8 @@ export default class Twitter extends Component {
         tweets: tweets.reverse()
       })
     }).catch((err)=> console.log(err))
+  }
+  componentWillReceiveProps(){
+    alert('recived props')
   }
 }

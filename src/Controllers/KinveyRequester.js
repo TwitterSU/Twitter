@@ -46,7 +46,9 @@ const KinveyRequester = (function () {
     })
   }
   function createComment (e, value) {
-
+      console.log(e)
+      console.log(value)
+      
       let post = {
         commentText: value.text,
         postId: value.postId,
@@ -91,7 +93,7 @@ const KinveyRequester = (function () {
   function getCommentsByPostId(postId) {
     return $.ajax({
       method: 'GET',
-      url: url + 'comments/' + '?query=' + {postId:[postId]},
+      url: url + 'comments/' + '?query=' + JSON.stringify({postId: postId}),
       headers: getHeaders(),
     })
   }
