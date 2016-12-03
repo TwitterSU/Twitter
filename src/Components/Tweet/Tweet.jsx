@@ -37,7 +37,7 @@ export default class Tweet extends Component {
       ownerActions = (<div className='ui right'>
         <button className='ui right floated button blue'
                 style={{'fontSize': '0.75em'}}
-                onClick={this.props.delete}
+                onClick={this.props.delete.bind(null, this)}
                 value={this.props.id}>
           Delete
         </button>
@@ -93,7 +93,7 @@ export default class Tweet extends Component {
     )
   }
   componentDidMount(){
-    KinveyRequester.getCommentsByPostId(this.props.id).then((comments)=>{
+    KinveyRequester.crudCommentsByPostId(this.props.id,{collection:'comments'}).then((comments)=>{
       console.log(comments)
       this.setState({
         comments: comments

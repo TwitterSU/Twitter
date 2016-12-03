@@ -17,7 +17,6 @@ export default class Twitter extends Component {
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
     this.addLikeHandler = this.addLikeHandler.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
     this.search = this.search.bind(this)
@@ -100,21 +99,34 @@ export default class Twitter extends Component {
     })
 
   }
-  handleDelete(e) {
+  handleDelete(nodeComponent,e) {
     e.persist()
-    KinveyRequester.remove('posts', e.target.value).then(data => {
+    e.preventDefault()
+    
+    KinveyRequester.remove('posts', nodeComponent.props.id).then((response,status) => {
+      if(status == 'success'){
+        console.log(status)
+        KinveyRequester.crudCommentsByPostId(nodeComponent.props.id,{method:'DELETE',collection:'comments'})
+          .then((response, status)=>{
+            console.log(response,status)
+          }).catch((error)=>{console.log(error)})
+      }
       let index = -1
-      let id = e.target.value
-
+      let id = nodeComponent.props.id
+      
       this.state.tweets.map((tweet, i) => {
         if (id == tweet._id) {
           index = i
         }
       })
-
+      
       this.setState({
         tweets: update(this.state.tweets, { $splice: [[index, 1]] })
       })
+      
+      return response
+    }).catch((error)=>{
+      console.log(error)
     })
 
   }
@@ -170,7 +182,7 @@ export default class Twitter extends Component {
             <TweetList
               className='ui four column grid'
               edit={this.handleEdit}
-              delete={this.handleDelete}
+              delete={this.handleDelete.bind(this)}
               addLike={this.addLikeHandler}
               tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets}
             />

@@ -90,10 +90,11 @@ const KinveyRequester = (function () {
 
     })
   }
-  function getCommentsByPostId(postId) {
+  function crudCommentsByPostId(postId, options) {
+    
     return $.ajax({
-      method: 'GET',
-      url: url + 'comments/' + '?query=' + JSON.stringify({postId: postId}),
+      method: options? options.method : 'GET',
+      url: url + options.collection + '/?query=' + JSON.stringify({postId: postId}),
       headers: getHeaders(),
     })
   }
@@ -102,7 +103,7 @@ const KinveyRequester = (function () {
     retrieve,
     update,
     remove,
-    getCommentsByPostId,
+    crudCommentsByPostId,
     createComment}
 })()
 export default KinveyRequester
