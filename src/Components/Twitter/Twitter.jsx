@@ -21,7 +21,6 @@ export default class Twitter extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
-    this.addComment = this.addComment.bind(this)
     this.search = this.search.bind(this)
     this.getTweets = this.getTweets.bind(this)
   }
@@ -133,30 +132,32 @@ export default class Twitter extends Component {
       editMode: { [index]: this.state.tweets[index] }
     })
   }
-  addComment(baseObj,e,postId){
-    e.persist()
+  addComment(postId,e){
     e.preventDefault()
     if (e.keyCode == 13 && e.target.value.trim() != '') {
-      console.log(baseObj)
-      console.log(postId)
-      console.log(e)
-      KinveyRequester.create('comments', null, {
+      e.persist()
+
+      KinveyRequester.createComment(e, {
         text: e.target.value.trim(),
-        postId: postId,
+        postId: postId.props.id,
       }).then((data)=>{
+        // KinveyRequester.update('posts')
         console.log(data)
         let index = -1
         this.state.tweets.map((item, i) => {
-          if (item._id == postId) {
+          if (item._id == postId.props.id) {
             return  index = i
           }
         })
-        console.log(data)
-        console.log(this.state.tweets[index].comments)
-        this.setState({
-          tweets: update(this.state.tweets[index], {$push: data})
+        console.log(this)
+        let newState = update(this.state, {
+          tweets: {[index]:  {
+            comments: {
+              $push : [data]
+            }
+          }}
         })
-        console.log(data)
+        this.setState(newState)
       }).catch(err=>console.log(err))
       e.target.value = ''
     }
@@ -166,6 +167,7 @@ export default class Twitter extends Component {
   }
   render() {
     let actionNode
+    console.log(this.state.tweets)
     if (this.state.editMode) {
       let key = Object.keys(this.state.editMode)[0]
       actionNode = (
@@ -181,7 +183,6 @@ export default class Twitter extends Component {
           <button className='ui button blue' type='submit'>
             Confirm
           </button>
-
         </form>
       )
     }
@@ -197,11 +198,10 @@ export default class Twitter extends Component {
           </div>
           <div className='ui segment'>
             <TweetList
-              ref="tweetList"
               className='ui four column grid'
               edit={this.handleEdit}
               delete={this.handleDelete}
-              onkeyup={this.addComment}
+              onkeyup={this.addComment.bind(this)}
               addLike={this.addLikeHandler}
               tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets}
             />
@@ -223,7 +223,6 @@ export default class Twitter extends Component {
   }
   componentDidMount() {
     KinveyRequester.retrieve('posts').then((tweets) => {
-
 
       this.setState({
         tweets: tweets.reverse()

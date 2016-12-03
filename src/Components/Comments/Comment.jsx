@@ -5,15 +5,15 @@ class Comment extends Component {
     return(
       <div className="comment">
         <a className="avatar">
-          <img src="/images/avatar/small/matt.jpg"/>
+          <img src={this.props.url}/>
         </a>
         <div className="content">
           <a className="author">{this.props.author}</a>
           <div className="metadata">
-            <span className="date">{this.props.created}</span>
+            <span className="date">{this.props.commentDate}</span>
           </div>
           <div className="text">
-            {this.props.content}
+            <h2>{this.props.text}</h2>
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ function getHeaders () {
   return {'Authorization': 'Kinvey ' + sessionStorage.getItem('authToken')}
 }
 const KinveyRequester = (function () {
-  function create (collection, e, value) {
+  function create (collection, e,value) {
     let text
     let tags = []
     let post
@@ -23,15 +23,11 @@ const KinveyRequester = (function () {
         tags: tags,
         author: sessionStorage.getItem('username'),
         likes: 0,
-        isLiked: 'admin, '
+        comments: [null],
+        isLiked: 'admin, ',
+        avatarUrl: sessionStorage.getItem('url')
       }
       e.target[0].value = ''
-    } else if(value) {
-      post = {
-        content: value.text,
-        postId: value.postId,
-        author: sessionStorage.getItem('username'),
-      }
     } else {
       post = {
         content: value.content,
@@ -42,7 +38,6 @@ const KinveyRequester = (function () {
       }
     }
 
-
     return $.ajax({
       method: 'POST',
       url: url + collection,
@@ -50,7 +45,22 @@ const KinveyRequester = (function () {
       data: post
     })
   }
+  function createComment (e, value) {
 
+      let post = {
+        commentText: value.text,
+        postId: value.postId,
+        author: sessionStorage.getItem('username'),
+        avatarUrl: sessionStorage.getItem('url')
+      }
+
+    return $.ajax({
+      method: 'POST',
+      url: url + 'comments',
+      headers: getHeaders(),
+      data: post
+    })
+  }
   function retrieve (collection) {
     return $.ajax({
       method: 'GET',
@@ -90,6 +100,7 @@ const KinveyRequester = (function () {
     retrieve,
     update,
     remove,
-    getCommentsByPostId}
+    getCommentsByPostId,
+    createComment}
 })()
 export default KinveyRequester
