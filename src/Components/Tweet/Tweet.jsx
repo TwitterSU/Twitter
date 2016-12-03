@@ -35,6 +35,9 @@ export default class Tweet extends Component {
             <div className='date'>
               {this.props.created}
             </div>
+            <div className='date'>
+              {this.props.tags}
+            </div>
             {ownerActions}
             <div className='content'>
               <h1>{this.props.content}</h1>
