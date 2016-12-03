@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import CommentList from '../Comments/CommentList.jsx'
 import KinveyRequester from '../../Controllers/KinveyRequester'
-
+import AddComment from '../AddComment/AddComment.jsx'
 export default class Tweet extends Component {
 
   render() {
@@ -51,9 +51,11 @@ export default class Tweet extends Component {
               <i className='like icon' style={style} ></i>
               {this.props.likes} Love it </button>
           </div>
-          <CommentList onkeyup={this.props.onkeyup.bind(this)}
-                       comments={this.props.comments}
-                       />
+         <div className='ui comments'>
+            <h3 className='ui dividing header'>Comments</h3>
+            <AddComment onkeyup={this.props.onkeyup.bind(null, this.props.id)} />
+            <CommentList comments={this.props.comments}/>
+          </div>
           <hr />
         </div>
       </div>

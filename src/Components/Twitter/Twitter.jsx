@@ -21,6 +21,7 @@ export default class Twitter extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
+    this.addComment = this.addComment.bind(this)
     this.search = this.search.bind(this)
     this.getTweets = this.getTweets.bind(this)
   }
@@ -49,12 +50,12 @@ export default class Twitter extends Component {
   tweetSubmitHandler(e) {
     e.preventDefault()
     KinveyRequester.create('posts', e)
-      .then((data) => {
-        this.setState({
-          tweets: [data, ...this.state.tweets]
-        })
+    .then((data) => {
+      this.setState({
+        tweets: [data, ...this.state.tweets]
       })
-      .catch((error) => console.log(error))
+    })
+    .catch((error) => console.log(error))
   }
   tweetEditHandler(e) {
     e.persist()
@@ -64,12 +65,12 @@ export default class Twitter extends Component {
       let content = this.state.tweets[index]
       this.state.tweets[index].content = e.target[0].value
       KinveyRequester.update('posts',this.state.tweets[index]._id, content).
-        then(data => {
-          this.setState({
-            editMode: null,
-            tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content } })
-          })
+      then(data => {
+        this.setState({
+          editMode: null,
+          tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content } })
         })
+      })
     }
     else {
       this.setState({
@@ -132,19 +133,31 @@ export default class Twitter extends Component {
       editMode: { [index]: this.state.tweets[index] }
     })
   }
-  addComment(e){
-     e.preventDefault()
-     if (e.keyCode == 13 && e.target.value.trim() != '') {
-       console.dir(e.target.value)
-       console.log(this)
-       e.persist()
-       KinveyRequester.create('comments', null, {
-         text: e.target.value,
-         postId: this.props.id,
-       }).then((data)=>{
-          console.log(data)
-       }).catch(err=>console.log(err))
-     }
+  addComment(postId,e){
+    e.persist()
+    e.preventDefault()
+
+    if (e.keyCode == 13 && e.target.value.trim() != '') {
+
+      KinveyRequester.create('comments', null, {
+        text: e.target.value.trim(),
+        postId: postId,
+      }).then((data)=>{
+        // let index = -1
+        // this.state.tweets.map((item, i) => {
+        //   if (item._id == postId) {
+        //     return  index = i
+        //   }
+        // })
+        // console.log(data)
+        // console.log(this.state.tweets[index].comments)
+        // this.setState({
+        //   tweets: update(this.state.tweets[index], {$push: data})
+        // })
+        console.log(data)
+      }).catch(err=>console.log(err))
+      e.target.value = ''
+    }
   }
   handleLogout(e) {
     logout()
@@ -158,14 +171,14 @@ export default class Twitter extends Component {
           <div className='field'>
             <label>
               Edit tweet
-              </label>
+            </label>
             <textarea name='content'
-              id={key}
-              defaultValue={this.state.editMode[key].content} />
+                      id={key}
+                      defaultValue={this.state.editMode[key].content} />
           </div>
           <button className='ui button blue' type='submit'>
             Confirm
-             </button>
+          </button>
 
         </form>
       )
@@ -189,7 +202,7 @@ export default class Twitter extends Component {
               onkeyup={this.addComment}
               addLike={this.addLikeHandler}
               tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets}
-              />
+            />
           </div>
         </div>
       </div>
@@ -198,20 +211,21 @@ export default class Twitter extends Component {
   getTweets() {
 
     KinveyRequester.retrieve('posts').then((tweets) => {
+      this.setState({
+        tweets: tweets.reverse()
+      })
+    }).catch((err)=>console.log(err))
+  }
+  getComments(tweet){
+    return KinveyRequester.getCommentsByPostId(tweet._id)
+  }
+  componentDidMount() {
+    KinveyRequester.retrieve('posts').then((tweets) => {
+
 
       this.setState({
         tweets: tweets.reverse()
       })
-    })
-  }
-  getComments(tweet){
-   return KinveyRequester.getCommentsByPostId(tweet._id)
-  }
-  componentDidMount() {
-    KinveyRequester.retrieve('posts').then((tweets) => {
-      this.setState({
-        tweets: tweets.reverse()
-      })
-    })
+    }).catch((err)=> console.log(err))
   }
 }
