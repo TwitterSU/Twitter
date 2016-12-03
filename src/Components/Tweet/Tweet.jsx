@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import CommentList from '../Comments/CommentList.jsx'
+import KinveyRequester from '../../Controllers/KinveyRequester'
 
 export default class Tweet extends Component {
 
@@ -47,10 +48,15 @@ export default class Tweet extends Component {
               <i className='like icon' style={style} ></i>
               {this.props.likes} Love it </button>
           </div>
-          <CommentList onSubmit={this.props.submitComment} />
+          <CommentList onkeyup={this.props.onkeyup.bind(this)}
+                       comments={this.props.comments}
+                       />
           <hr />
         </div>
       </div>
     )
   }
+
+
+
 }

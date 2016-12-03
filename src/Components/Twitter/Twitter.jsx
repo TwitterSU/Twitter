@@ -13,6 +13,7 @@ export default class Twitter extends Component {
       tweets: null,
       editMode: null,
       searchedTweets: []
+
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
@@ -47,17 +48,13 @@ export default class Twitter extends Component {
   }
   tweetSubmitHandler(e) {
     e.preventDefault()
-
     KinveyRequester.create('posts', e)
-
       .then((data) => {
-
         this.setState({
           tweets: [data, ...this.state.tweets]
         })
       })
       .catch((error) => console.log(error))
-
   }
   tweetEditHandler(e) {
     e.persist()
@@ -66,9 +63,8 @@ export default class Twitter extends Component {
     if (this.state.tweets[index].content != e.target[0].value) {
       let content = this.state.tweets[index]
       this.state.tweets[index].content = e.target[0].value
-      KinveyRequester.update(this.state.tweets[index]._id, content).
+      KinveyRequester.update('posts',this.state.tweets[index]._id, content).
         then(data => {
-          console.log(data)
           this.setState({
             editMode: null,
             tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content } })
@@ -85,10 +81,8 @@ export default class Twitter extends Component {
   }
   addLikeHandler(e) {
     e.persist()
-
     let index = -1
     let id = e.target.value
-
 
     this.state.tweets.map((tweet, i) => {
       if (id == tweet._id) {
@@ -99,7 +93,7 @@ export default class Twitter extends Component {
     let content = this.state.tweets[index]
     //RETARDED KINVEY
     this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
-    KinveyRequester.update(id, content).then(data => {
+    KinveyRequester.update('posts',id, content).then(data => {
       this.setState({
         tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
 
@@ -112,7 +106,6 @@ export default class Twitter extends Component {
     KinveyRequester.remove('posts', e.target.value).then(data => {
       let index = -1
       let id = e.target.value
-
 
       this.state.tweets.map((tweet, i) => {
         if (id == tweet._id) {
@@ -139,7 +132,20 @@ export default class Twitter extends Component {
       editMode: { [index]: this.state.tweets[index] }
     })
   }
-
+  addComment(e){
+     e.preventDefault()
+     if (e.keyCode == 13 && e.target.value.trim() != '') {
+       console.dir(e.target.value)
+       console.log(this)
+       e.persist()
+       KinveyRequester.create('comments', null, {
+         text: e.target.value,
+         postId: this.props.id,
+       }).then((data)=>{
+          console.log(data)
+       }).catch(err=>console.log(err))
+     }
+  }
   handleLogout(e) {
     logout()
   }
@@ -180,6 +186,7 @@ export default class Twitter extends Component {
               className='ui four column grid'
               edit={this.handleEdit}
               delete={this.handleDelete}
+              onkeyup={this.addComment}
               addLike={this.addLikeHandler}
               tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets}
               />
@@ -189,6 +196,7 @@ export default class Twitter extends Component {
     )
   }
   getTweets() {
+
     KinveyRequester.retrieve('posts').then((tweets) => {
 
       this.setState({
@@ -196,9 +204,11 @@ export default class Twitter extends Component {
       })
     })
   }
+  getComments(tweet){
+   return KinveyRequester.getCommentsByPostId(tweet._id)
+  }
   componentDidMount() {
     KinveyRequester.retrieve('posts').then((tweets) => {
-
       this.setState({
         tweets: tweets.reverse()
       })

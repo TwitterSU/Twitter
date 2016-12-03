@@ -7,15 +7,16 @@ function getHeaders () {
 }
 const KinveyRequester = (function () {
   function create (collection, e, value) {
-    let text = e.target[0].value.split(' ')
+    let text
     let tags = []
-    text.map(word => {
-      if (word[0] == '#') {
-        tags.push(word)
-      }
-    })
     let post
     if (e) {
+      text = e.target[0].value.split(' ')
+      text.map(word => {
+        if (word[0] == '#') {
+          tags.push(word)
+        }
+      })
       e.preventDefault()
       post = {
         content: e.target[0].value,
@@ -23,6 +24,13 @@ const KinveyRequester = (function () {
         author: sessionStorage.getItem('username'),
         likes: 0,
         isLiked: 'admin, '
+      }
+      e.target[0].value = ''
+    } else if(value) {
+      post = {
+        content: value.text,
+        postId: value.postId,
+        author: sessionStorage.getItem('username'),
       }
     } else {
       post = {
@@ -33,8 +41,8 @@ const KinveyRequester = (function () {
         authorURL: sessionStorage.getItem('url')
       }
     }
-    e.target[0].value = ''
-    e.target[1].value = ''
+
+
     return $.ajax({
       method: 'POST',
       url: url + collection,
@@ -51,10 +59,11 @@ const KinveyRequester = (function () {
       headers: getHeaders()
     })
   }
-  function update (entityId, content) {
+  function update (collection, entityId, content) {
+
     return $.ajax({
       method: 'PUT',
-      url: url + 'posts/' + entityId,
+      url: url + collection + '/' + entityId,
       headers: getHeaders(),
       contentType: 'application/json',
       data: JSON.stringify(content)
@@ -69,11 +78,18 @@ const KinveyRequester = (function () {
 
     })
   }
-
+  function getCommentsByPostId(postId) {
+    return $.ajax({
+      method: 'GET',
+      url: url + 'comments/' + '?query=' + {postId:[postId]},
+      headers: getHeaders(),
+    })
+  }
   return {
     create,
     retrieve,
     update,
-  remove}
+    remove,
+    getCommentsByPostId}
 })()
 export default KinveyRequester
