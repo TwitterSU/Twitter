@@ -5,32 +5,6 @@ import KinveyRequester from '../../Controllers/KinveyRequester.js'
 import update from 'immutability-helper'
 
 export default class Tweet extends Component {
-  constructor(){
-    super()
-    this.state = {
-      comments: []
-    }
-    this.addComment = this.addComment.bind(this)
-  }
-  addComment(e){
-    e.preventDefault()
-    if (e.keyCode == 13 && e.target.value.trim() != '') {
-      e.persist()
-      KinveyRequester.createComment(e, {
-        text: e.target.value.trim(),
-        postId: this.props.id,
-      }).then((data)=>{
-        console.log(data)
-        let newState = update(this.state, {
-            comments: {
-              $push : [data]
-            }
-        })
-        this.setState(newState)
-      }).catch(err=>console.log(err))
-      e.target.value = ''
-    }
-  }
   render() {
     let ownerActions
     if (this.props.owner === sessionStorage.getItem('userId')) {
@@ -84,22 +58,14 @@ export default class Tweet extends Component {
           </div>
           <div className='ui comments'>
             <h3 className='ui dividing header'>Comments</h3>
-            <AddComment onkeyup={this.addComment}/>
-            <CommentList comments={this.state.comments}/>
+            <AddComment onkeyup={this.props.onkeyup.bind(null,this)}/>
+            <CommentList comments={this.props.comments}/>
           </div>
           <hr />
         </div>
       </div>
     )
   }
-  componentDidMount(){
-    KinveyRequester.crudCommentsByPostId(this.props.id,{collection:'comments'}).then((comments)=>{
-      console.log(comments)
-      this.setState({
-        comments: comments
-      })
-    })
-      .catch(err=>console.log(err))
-  }
+  
 
 }

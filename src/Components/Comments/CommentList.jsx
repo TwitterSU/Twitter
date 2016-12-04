@@ -6,15 +6,15 @@ class CommentList extends Component {
     return (
       <div>
         { this.props.comments ?
-          this.props.comments.map((c) => {
+          this.props.comments.map((c,i) => {
           return (<Comment
             text={c.commentText}
             author={c.author}
             url={c.avatarUrl}
             commentDate={c._kmd.lmt}
             id={c._id}
-            key={c._id}/>)
-        }) : null}
+            key={i}/>)
+          }) :  null}
       </div>
     )
   }
