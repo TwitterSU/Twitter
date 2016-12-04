@@ -6,7 +6,7 @@ import Registration from '../Registration/Registration'
 import Twitter from '../Twitter/Twitter'
 import NotFound from '../NotFound/NotFound'
 import { checkLoggedIn } from '../../utils'
-
+import Subscribed from '../Subscribed/Subscribed'
 class App extends Component {
 
   render () {
@@ -15,6 +15,7 @@ class App extends Component {
         <Route path='/' component={Login} />
         <Route path='/registration' component={Registration} />
         <Route path='twitter' component={Twitter} onEnter={checkLoggedIn} />
+        <Route path='subscribed' component={Subscribed} />
         <Route path='*' component={NotFound} />
       </Router>
     )
