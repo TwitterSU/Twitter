@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './User.css'
+import './Subscribed.css'
 export default class User extends Component {
   render () {
     return (
