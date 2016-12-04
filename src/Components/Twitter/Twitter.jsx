@@ -64,10 +64,26 @@ export default class Twitter extends Component {
             tweets: [data]
           })
         }
+        if(data.tags){
+          //this.tagsHandler({postId: data._id,tag: data.tags[0]})
+        }
       })
       .catch((error) => console.log(error))
   }
-  
+  tagsHandler(value){
+    // KinveyRequester.tagOperations(value.tag,{method:'GET', byId: '_id', qStr: '/?query=', })
+    // .then((data,status)=> {
+    //   console.log(data,status)
+    // }).catch((error)=>{
+    //   console.log('GetTags error: ' + error)
+    // })
+    //
+    // KinveyRequester.addTags(null,value).then((data,status)=>{
+    //   console.log(data,status)
+    // }).catch((error)=>{
+    //   console.log('AddTags error: ' + error)
+    // })
+  }
   tweetEditHandler(e) {
     e.persist()
     e.preventDefault()
@@ -231,7 +247,7 @@ export default class Twitter extends Component {
     }
     return (
       <div>
-        <NavigationBar onClick={this.handleLogout} search={this.search}/>
+        <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets.bind(this)} search={this.search}/>
         < div className='ui container centered'>
           <div className='ui segment'>
             {actionNode}
@@ -250,7 +266,11 @@ export default class Twitter extends Component {
       </div>
     )
   }
-  
+  getMyTweets(e){
+    e.preventDefault()
+    
+    console.log(this,e)
+  }
   getTweets() {
     
     KinveyRequester.retrieve('posts').then((tweets) => {

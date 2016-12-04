@@ -37,7 +37,7 @@ export default class Tweet extends Component {
               {this.props.author}
             </a>
             <div className='date'>
-              {this.props.postDate}
+              {new Date(this.props.postDate).toLocaleString()}
             </div>
             <div className='date'>
               {this.props.tags}

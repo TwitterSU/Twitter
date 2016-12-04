@@ -14,6 +14,7 @@ const KinveyRequester = (function () {
         tags.push(word)
       }
     })
+    
     let post = {
       content:value,
       tags: tags,
@@ -30,7 +31,27 @@ const KinveyRequester = (function () {
       data: post
     })
   }
-  
+  function tagOperations(tag,options){
+    
+    //+ options.byId? + options.qStr + '{'+ options.byId + '}' : ''
+    return $.ajax({
+      method: options.method,
+      url: url + 'tags' ,
+      headers: getHeaders(),
+    })
+  }
+  function addTags(e,value) {
+    let body = {
+      postId: value.postId,
+      _id: value.tag
+    }
+    return $.ajax({
+      method: 'POST',
+      url: url + 'tags',
+      headers: getHeaders(),
+      data: body
+    })
+  }
   function createComment(e, value) {
     
     let post = {
@@ -95,7 +116,9 @@ const KinveyRequester = (function () {
     update,
     remove,
     crudCommentsByPostId,
-    createComment
+    createComment,
+    addTags,
+    tagOperations
   }
 })()
 export default KinveyRequester

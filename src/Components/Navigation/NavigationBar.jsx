@@ -9,7 +9,7 @@ export default class NavigationBar extends Component {
 
       <div className='ui secondary  menu'>
         <a className='active item'>Profile</a>
-        <a className='item'>Messages</a>
+        <a className='item' onClick={this.props.mytweet}>MyTweets</a>
         <a className='item'>Friends</a>
 
         <div className='ui container centered'>
@@ -19,6 +19,7 @@ export default class NavigationBar extends Component {
               <a className='ui item' onClick={this.props.search}>Search</a>
             </div>
           </div>
+          <p>{'Hello ' + sessionStorage.getItem('username') + '!'}</p>
         </div>
         <a className='ui item' onClick={this.props.onClick}>Logout</a>
 
