@@ -11,8 +11,9 @@ export default class Twitter extends Component {
     super(props)
     this.state = {
       tweets: [],
-      editMode: null,
-      searchedTweets: []
+      editNode: null,
+      searchedTweets: [],
+      open: false
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
@@ -22,7 +23,7 @@ export default class Twitter extends Component {
     this.search = this.search.bind(this)
     this.getTweets = this.getTweets.bind(this)
   }
-
+  
   search (e) {
     e.persist()
 
@@ -90,13 +91,13 @@ export default class Twitter extends Component {
       this.state.tweets[index].content = e.target[0].value
       KinveyRequester.update('posts', this.state.tweets[index]._id, content).then(data => {
         this.setState({
-          editMode: null,
+          editNode: null,
           tweets: update(this.state.tweets, {index: {$set: this.state.tweets[index].content}})
         })
       })
     } else {
       this.setState({
-        editMode: null
+        editNode: null
       })
     }
   }
@@ -124,31 +125,37 @@ export default class Twitter extends Component {
   }
 
   handleDelete (nodeComponent, e) {
-    e.persist()
     e.preventDefault()
+    e.stopPropagation()
+    e.persist()
 
     KinveyRequester.remove('posts', nodeComponent.props.id).then((response, status) => {
       if (status == 'success') {
         console.log(status)
+        
         KinveyRequester.crudCommentsByPostId(nodeComponent.props.id, {method: 'DELETE', collection: 'comments'})
           .then((response, status) => {
-            console.log(response, status)
+          console.log(status)
+            let msg =`${nodeComponent.props.id} `
+            console.dir(response)
+            console.log(msg)
+            let index = -1
+            let id = nodeComponent.props.id
+  
+            this.state.tweets.map((tweet, i) => {
+              if (id == tweet._id) {
+                index = i
+              }
+            })
+            let newState = update(this.state, {
+              tweets: {
+                $splice:[[index,1]]}
+            })
+            this.setState(newState)
           }).catch((error) => {
-          console.log(error)
+          console.dir(`${nodeComponent.props.id} `+ error )
         })
       }
-      let index = -1
-      let id = nodeComponent.props.id
-
-      this.state.tweets.map((tweet, i) => {
-        if (id == tweet._id) {
-          index = i
-        }
-      })
-
-      this.setState({
-        tweets: update(this.state.tweets, {$splice: [[index, 1]]})
-      })
 
       return response
     }).catch((error) => {
@@ -156,18 +163,29 @@ export default class Twitter extends Component {
     })
   }
 
-  handleEdit (e) {
-    let index = -1
-    let id = e.target.value
-    this.state.tweets.find((item, i) => {
-      if (item._id == id) {
-        return index = i
-      }
-    })
-
-    this.setState({
-      editMode: {[index]: this.state.tweets[index]}
-    })
+  handleEdit (item, e) {
+    e.persist()
+    console.log(item)
+    console.log(e)
+    console.log(this)
+    KinveyRequester.crudByPostId(item.props.id, {method: 'GET', collection: 'posts'})
+      .then((data,response)=>{
+      console.log('in edit')
+       
+        
+        return response
+      }).catch((error)=> console.log(error))
+    // let index = -1
+    // let id = e.target.value
+    // this.state.tweets.find((item, i) => {
+    //   if (item._id == id) {
+    //     return index = i
+    //   }
+    // })
+    //
+    // this.setState({
+    //   editNode: {[index]: this.state.tweets[index]}
+    // })
   }
 
   addComment (item, e) {
@@ -213,17 +231,16 @@ export default class Twitter extends Component {
   }
 
   render () {
- 
     let actionNode
-    if (this.state.editMode) {
-      let key = Object.keys(this.state.editMode)[0]
+    if (this.state.editNode) {
+      let key = Object.keys(this.state.editNode)[0]
       actionNode = (
         <form className='ui form' onSubmit={this.tweetEditHandler.bind(this)}>
           <div className='field'>
             <label>
               Edit tweet
             </label>
-            <textarea name='content' id={key} defaultValue={this.state.editMode[key].content} />
+            <textarea name='content' id={key} defaultValue={this.state.editNode[key].content} />
           </div>
           <button className='ui button blue' type='submit'>
             Confirm
@@ -245,6 +262,7 @@ export default class Twitter extends Component {
             {actionNode}
           </div>
           <div className='ui segment'>
+            
             <TweetList
               className='ui four column grid'
               edit={this.handleEdit}
@@ -272,7 +290,7 @@ export default class Twitter extends Component {
   }
 
   getComments (id) {
-    return KinveyRequester.crudCommentsByPostId(id, {method: 'GET', collection: 'comments'})
+    return KinveyRequester.crudByPostId(id, {method: 'GET', collection: 'comments'})
   }
 
   componentDidMount () {
@@ -305,6 +323,7 @@ export default class Twitter extends Component {
       })
     }).catch((err) => console.log(err))
   }
+  
   componentWillReceiveProps () {
     alert('recived props')
   }

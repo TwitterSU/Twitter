@@ -17,7 +17,7 @@ export default class Tweet extends Component {
                         <button
                           className='ui right floated button blue'
                           style={{'fontSize': '0.75em'}}
-                          onClick={this.props.edit}
+                          onClick={this.props.edit.bind(null, this)}
                           value={this.props.id}>
                           Edit
                         </button>
@@ -67,6 +67,8 @@ export default class Tweet extends Component {
       </div>
     )
   }
-
+  componentWillUnmount(){
+    console.log('unmount')
+  }
 
 }
