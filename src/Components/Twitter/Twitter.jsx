@@ -13,7 +13,7 @@ export default class Twitter extends Component {
     super(props)
     this.state = {
       tweets: [],
-      editNode: null,
+      editMode: false,
       loading: false,
       searchedTweets: [],
       open: false
@@ -308,6 +308,7 @@ export default class Twitter extends Component {
 
               <TweetList
                 className='ui four column grid'
+                editMode={this.state.editMode}
                 edit={this.handleEdit}
                 delete={this.handleDelete}
                 onkeyup={this.addComment}

@@ -15,7 +15,7 @@ export default class Tweet extends Component {
                           value={this.props.id}>
                           Delete
                         </button>
-                        <EditNode ref='modal' edit={this.props.edit.bind(null,this)} open={this.props.open} content={this.props.content} />
+                        <EditNode edit={this.props.edit.bind(null,this)} open={this.props.open} content={this.props.content} />
                        
                       </div>)
     }
