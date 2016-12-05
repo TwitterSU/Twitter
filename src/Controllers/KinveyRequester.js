@@ -82,8 +82,7 @@ const KinveyRequester = (function () {
       method: 'PUT',
       url: url + collection + '/' + entityId,
       headers: getHeaders(),
-      contentType: 'application/json',
-      data: JSON.stringify(content)
+      data: content
     })
   }
   
