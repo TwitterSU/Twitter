@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+import { Form } from 'semantic-ui-react'
 import TweetList from '../Tweet/TweetList.jsx'
+import EditNode from '../Tweet/EditNode.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
 import update from 'immutability-helper'
@@ -170,9 +172,10 @@ export default class Twitter extends Component {
     console.log(this)
     KinveyRequester.crudByPostId(item.props.id, {method: 'GET', collection: 'posts'})
       .then((data,response)=>{
-      console.log('in edit')
-       
-        
+      
+        this.setState({
+          editNode:true
+        })
         return response
       }).catch((error)=> console.log(error))
     // let index = -1
@@ -231,33 +234,15 @@ export default class Twitter extends Component {
   }
 
   render () {
-    let actionNode
-    if (this.state.editNode) {
-      let key = Object.keys(this.state.editNode)[0]
-      actionNode = (
-        <form className='ui form' onSubmit={this.tweetEditHandler.bind(this)}>
-          <div className='field'>
-            <label>
-              Edit tweet
-            </label>
-            <textarea name='content' id={key} defaultValue={this.state.editNode[key].content} />
-          </div>
-          <button className='ui button blue' type='submit'>
-            Confirm
-          </button>
-        </form>
-      )
-    }else {
-      actionNode = this.state.tweets ? <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} /> :
+    let actionNode = this.state.tweets ? <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} /> :
         <button onClick={this.getTweets} className='ui button blue'>
           Back
         </button>
-    }
     return (
-      <div>
+      <div ref='app'>
         <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets.bind(this)} search={this.search}/>
         
-        < div className='ui container centered'>
+        <div className='ui container centered'>
           <div className='ui segment'>
             {actionNode}
           </div>

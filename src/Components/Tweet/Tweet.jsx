@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import CommentList from '../Comments/CommentList.jsx'
+import EditNode from '../Tweet/EditNode.jsx'
 import AddComment from '../AddComment/AddComment.jsx'
 
 export default class Tweet extends Component {
@@ -14,13 +15,8 @@ export default class Tweet extends Component {
                           value={this.props.id}>
                           Delete
                         </button>
-                        <button
-                          className='ui right floated button blue'
-                          style={{'fontSize': '0.75em'}}
-                          onClick={this.props.edit.bind(null, this)}
-                          value={this.props.id}>
-                          Edit
-                        </button>
+                        <EditNode ref='modal' edit={this.props.edit.bind(null,this)} open={this.props.open} content={this.props.content} />
+                       
                       </div>)
     }
     let style = {color: this.props.isLiked.split(', ')
