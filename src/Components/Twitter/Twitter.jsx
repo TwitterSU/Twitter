@@ -136,22 +136,22 @@ export default class Twitter extends Component {
       KinveyRequester.getPosts(id)
         .then((res, status) => {
           console.log(res)
-          // if (!res.isLiked) {
-          //   res.isLiked = 'admin, '
-          // }
-          // res.isLiked += (sessionStorage.getItem('username') + ', ')
-          // this.state.tweets[index].likes++
-          // console.log(res)
-          //
-          // // RETARDED KINVEY
-          // this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
-          // KinveyRequester.update('posts', id, res).then(data => {
-          //   console.log(data)
-          //   this.setState({
-          //     tweets: update(this.state.tweets, {index: {$set: this.state.tweets[index].likes}})
-          //
-          //   })
-          // })
+          if (!res.isLiked) {
+            res.isLiked = 'admin, '
+          }
+          res.isLiked += (sessionStorage.getItem('username') + ', ')
+          this.state.tweets[index].likes++
+          console.log(res)
+
+          // RETARDED KINVEY
+          this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
+          KinveyRequester.update('posts', id, res).then(data => {
+            console.log(data)
+            this.setState({
+              tweets: update(this.state.tweets, {index: {$set: this.state.tweets[index].likes}})
+
+            })
+          })
         })
         .catch(err => console.log(err))
       
