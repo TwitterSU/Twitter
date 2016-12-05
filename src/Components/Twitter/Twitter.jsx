@@ -228,7 +228,7 @@ export default class Twitter extends Component {
     })
   }
 
-  handleEdit(item, e) {
+  handleEdit(item,modalNode, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
