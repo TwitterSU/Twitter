@@ -97,7 +97,7 @@ const KinveyRequester = (function () {
     })
   }
   
-  function crudCommentsByPostId(postId, options) {
+  function crudByPostId(postId, options) {
     if(!options) {
       console.log("error")
       return false
@@ -115,7 +115,7 @@ const KinveyRequester = (function () {
     retrieve,
     update,
     remove,
-    crudCommentsByPostId,
+    crudByPostId,
     createComment,
     addTags,
     tagOperations
