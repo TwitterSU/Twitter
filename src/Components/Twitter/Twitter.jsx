@@ -57,18 +57,18 @@ export default class Twitter extends Component {
     e.stopPropagation()
     e.persist()
     let content = null
-    if((e.target.name == 'content') && e.keyCode == 13 && e.target.value.trim() != ''){
+    if ((e.target.name == 'content') && e.keyCode == 13 && e.target.value.trim() != '') {
       content = e.target.value
-    }else if(e.target.name == 'tweetForm'){
+    } else if (e.target.name == 'tweetForm') {
       content = e.target[0].value.trim()
     }
-    if(content){
+    if (content) {
       this.setState({
         loading: true
       })
       KinveyRequester.create('posts', content)
         .then((data) => {
-          if(e.target.name == 'content'){
+          if (e.target.name == 'content') {
             e.target.value = ''
           }
           else {
@@ -92,7 +92,7 @@ export default class Twitter extends Component {
         })
         .catch((error) => console.log(error))
     }
-    
+
   }
   tagsHandler(value) {
     // KinveyRequester.tagOperations(value.tag,{method:'GET', byId: '_id', qStr: '/?query=', })
@@ -132,22 +132,39 @@ export default class Twitter extends Component {
     e.persist()
     let index = -1
     let id = e.target.value
-
-    this.state.tweets.map((tweet, i) => {
-      if (id == tweet._id) {
-        index = i
-      }
-    })
-    this.state.tweets[index].likes++
-    let content = this.state.tweets[index]
-    // RETARDED KINVEY
-    this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
-    KinveyRequester.update('posts', id, content).then(data => {
-      this.setState({
-        tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
-
+    if (this.state.tweets) {
+      this.state.tweets.map((tweet, i) => {
+        if (id == tweet._id) {
+          index = i
+        }
       })
-    })
+      this.state.tweets[index].likes++
+      let content = this.state.tweets[index]
+      // RETARDED KINVEY
+      this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
+      KinveyRequester.update('posts', id, content).then(data => {
+        this.setState({
+          tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
+
+        })
+      })
+    } else {
+      this.state.searchedTweets.map((tweet, i) => {
+        if (id == tweet._id) {
+          index = i
+        }
+      })
+      this.state.searchedTweets[index].likes++
+      let content = this.state.searchedTweets[index]
+      // RETARDED KINVEY
+      this.state.searchedTweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
+      KinveyRequester.update('posts', id, content).then(data => {
+        this.setState({
+          searchedTweets: update(this.state.searchedTweets, { index: { $set: this.state.searchedTweets[index].likes } })
+
+        })
+      })
+    }
   }
 
   handleDelete(nodeComponent, e) {
@@ -313,7 +330,8 @@ export default class Twitter extends Component {
                 delete={this.handleDelete}
                 onkeyup={this.addComment}
                 addLike={this.addLikeHandler}
-                tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets} />
+                tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets}
+                />
             </div>
           </div>
         </div>
