@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import TweetList from '../Tweet/TweetList.jsx'
+import TweetForm from '../Tweet/TweetForm.jsx'
 import EditNode from '../Tweet/EditNode.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
@@ -49,11 +50,14 @@ export default class Twitter extends Component {
     e.target.parentNode.children[0].value = ''
   }
 
+
   tweetSubmitHandler (item, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-    console.log(e)
+    this.setState({
+      loading: true
+    })
     KinveyRequester.create('posts', e.target[0].value)
       .then((data) => {
         e.target[0].value = ''
