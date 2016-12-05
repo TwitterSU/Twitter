@@ -4,24 +4,27 @@ import EditNode from '../Tweet/EditNode.jsx'
 import AddComment from '../AddComment/AddComment.jsx'
 
 export default class Tweet extends Component {
-  render () {
+  render() {
     let ownerActions
     if (this.props.owner === sessionStorage.getItem('userId')) {
       ownerActions = (<div className='ui right'>
-                        <button
-                          className='ui right floated button blue'
-                          style={{'fontSize': '0.75em'}}
-                          onClick={this.props.delete.bind(null, this)}
-                          value={this.props.id}>
-                          Delete
+        <button
+          className='ui right floated button blue'
+          style={{ 'fontSize': '0.75em' }}
+          onClick={this.props.delete.bind(null, this)}
+          value={this.props.id}>
+          Delete
                         </button>
-                        <EditNode edit={this.props.edit}
-                                  content={this.props.content} />
-                       
-                      </div>)
+        <EditNode edit={this.props.edit}
+          content={this.props.content} />
+
+      </div>)
     }
-    let style = {color: this.props.isLiked.split(', ')
-      .includes(sessionStorage.getItem('username')) ? 'red' : 'grey'}
+
+    let style = {
+      color: this.props.isLiked.split(', ')
+        .includes(sessionStorage.getItem('username')) ? 'red' : 'grey'
+    }
 
     return (
       <div className='event' id={this.props.id}>
@@ -51,7 +54,7 @@ export default class Tweet extends Component {
               value={this.props.id}
               disabled={this.props.isLiked.split(', ').includes(sessionStorage.getItem('username'))}>
               <i className='like icon' style={style}></i>
-              {this.props.likes} Love it
+              {this.props.likes}Love it
             </button>
           </div>
           <div className='ui comments'>
@@ -64,7 +67,7 @@ export default class Tweet extends Component {
       </div>
     )
   }
-  componentWillUnmount(){
+  componentWillUnmount() {
     console.log('unmount')
   }
 

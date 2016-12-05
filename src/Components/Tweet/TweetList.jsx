@@ -30,6 +30,7 @@ export default class TweetList extends Component {
           key={i}
           tags={tweet.tags}
           isLiked={tweet.isLiked}
+          
           />)
       })
     }
