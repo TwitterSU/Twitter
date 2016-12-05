@@ -236,7 +236,7 @@ export default class Twitter extends Component {
   }
 
   render () {
-<<<<<<< HEAD
+
  
     let actionNode
     if (this.state.editMode) {
@@ -256,20 +256,20 @@ export default class Twitter extends Component {
       )
     }else {
       actionNode = this.state.tweets ? <CreateTweet onsubmit={this.tweetSubmitHandler} /> :
-=======
+
     let actionNode = this.state.tweets ? <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} /> :
->>>>>>> c3f589d28fdc1034ede76ebf0a70c044977793e8
+
         <button onClick={this.getTweets} className='ui button blue'>
           Back
         </button>
     return (
-<<<<<<< HEAD
+
       <div>
         <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets} search={this.search}/>
-=======
+
       <div ref='app'>
         <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets.bind(this)} search={this.search}/>
->>>>>>> c3f589d28fdc1034ede76ebf0a70c044977793e8
+
         
         <div className='ui container centered'>
           <div className='ui segment'>
