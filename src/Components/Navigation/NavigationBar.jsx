@@ -8,7 +8,7 @@ export default class NavigationBar extends Component {
 
 
       <div className='ui secondary  menu'>
-        <a className='active item'>Profile</a>
+        <a className='item'>Profile</a>
         <a className='item' onClick={this.props.mytweet}>MyTweets</a>
         <a className='item'>Friends</a>
 
