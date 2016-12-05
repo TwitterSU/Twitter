@@ -1,23 +1,19 @@
-import React, { Component } from 'react'
+import React,{Component} from 'react'
 import './CreateTweet.css'
+import {Form, Button} from 'semantic-ui-react'
+
 class CreateTweet extends Component {
   render () {
     return (
-
-      <form className='ui form' onSubmit={this.props.onsubmit}>
-        <div className='field'>
-          <label>
-            New tweet
-          </label>
-          <textarea name='content' placeholder='Tweet...' />
-        </div>
-        <button className='ui button blue' type='submit'>
-          Tweet
-        </button>
-      </form>
+    <Form onSubmit={this.props.onsubmit.bind(null,this)} loading={this.props.loading}>
+      
+      <Form.Field>
+        <label>New Tweet</label>
+        <textarea name='content' placeholder='Tweet...' />
+      </Form.Field>
+      <Button type="submit">Tweet</Button>
+    </Form>
     )
   }
-
 }
-
 export default CreateTweet

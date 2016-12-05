@@ -14,6 +14,7 @@ export default class Twitter extends Component {
     this.state = {
       tweets: [],
       editNode: null,
+      loading: false,
       searchedTweets: [],
       open: false
     }
@@ -47,14 +48,19 @@ export default class Twitter extends Component {
     e.target.parentNode.children[0].value = ''
   }
 
-  tweetSubmitHandler (e) {
+  tweetSubmitHandler (item, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-    console.log(e)
+    this.setState({
+      loading: true
+    })
     KinveyRequester.create('posts', e.target[0].value)
       .then((data) => {
         e.target[0].value = ''
+        this.setState({
+          loading: false
+        })
         if (this.state.tweets || this.state.tweets.length !== 0) {
           this.setState({
             tweets: [data, ...this.state.tweets]
@@ -135,7 +141,7 @@ export default class Twitter extends Component {
       if (status == 'success') {
         console.log(status)
         
-        KinveyRequester.crudCommentsByPostId(nodeComponent.props.id, {method: 'DELETE', collection: 'comments'})
+        KinveyRequester.crudByPostId(nodeComponent.props.id, {method: 'DELETE', collection: 'comments'})
           .then((response, status) => {
           console.log(status)
             let msg =`${nodeComponent.props.id} `
@@ -234,7 +240,7 @@ export default class Twitter extends Component {
   }
 
   render () {
-    let actionNode = this.state.tweets ? <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} /> :
+    let actionNode = this.state.tweets ? <CreateTweet loading={this.state.loading} onsubmit={this.tweetSubmitHandler} /> :
         <button onClick={this.getTweets} className='ui button blue'>
           Back
         </button>
