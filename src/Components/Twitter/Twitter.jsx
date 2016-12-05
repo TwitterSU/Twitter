@@ -23,7 +23,9 @@ export default class Twitter extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.addComment = this.addComment.bind(this)
     this.getTweets = this.getTweets.bind(this)
-    this.getMyTweets = this.getMyTweets.bind(this)
+    this.getMyTweets = <this className="getMyTweets bind">
+      <this></this>
+    </this>
   }
 
   search(e) {
@@ -220,7 +222,7 @@ export default class Twitter extends Component {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-    //console.log(e)
+    console.log(e)
     console.log(item)
     if (e.target.name !== 'cancel') {
 
