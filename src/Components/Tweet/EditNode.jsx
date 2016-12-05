@@ -34,7 +34,7 @@ class EditNode extends Component {
         Edit
       </button>}>
         <Modal.Content image>
-          <Image wrapped size='medium' src={sessionStorage.getItem('url')} />
+          <Image wrapped size='small' src={sessionStorage.getItem('url')} />
           <Modal.Description>
             <Header>Tweet edit</Header>
             <Form>

@@ -27,6 +27,7 @@ export default class Twitter extends Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.addComment = this.addComment.bind(this)
     this.getTweets = this.getTweets.bind(this)
+    this.getMyTweets = this.getMyTweets.bind(this)
   }
 
   search(e) {
@@ -51,7 +52,7 @@ export default class Twitter extends Component {
   }
 
 
-  tweetSubmitHandler (item, e) {
+  tweetSubmitHandler(item, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
@@ -160,24 +161,37 @@ export default class Twitter extends Component {
 
         KinveyRequester.crudByPostId(nodeComponent.props.id, { method: 'DELETE', collection: 'comments' })
           .then((response, status) => {
-          console.log(status)
-            let msg =`${nodeComponent.props.id} `
+            console.log(status)
+            let msg = `${nodeComponent.props.id} `
             console.dir(response)
             console.log(msg)
             let index = -1
             let id = nodeComponent.props.id
-
-            this.state.tweets.map((tweet, i) => {
-              if (id == tweet._id) {
-                index = i
-              }
-            })
-            let newState = update(this.state, {
-              tweets: {
-                $splice: [[index, 1]]
-              }
-            })
-            this.setState(newState)
+            if (this.state.tweets) {
+              this.state.tweets.map((tweet, i) => {
+                if (id == tweet._id) {
+                  index = i
+                }
+              })
+              let newState = update(this.state, {
+                tweets: {
+                  $splice: [[index, 1]]
+                }
+              })
+              this.setState(newState)
+            } else {
+              this.state.searchedTweets.map((tweet, i) => {
+                if (id == tweet._id) {
+                  index = i
+                }
+              })
+              let newState = update(this.state, {
+                searchedTweets: {
+                  $splice: [[index, 1]]
+                }
+              })
+              this.setState(newState)
+            }
           }).catch((error) => {
             console.dir(`${nodeComponent.props.id} ` + error)
           })
@@ -264,7 +278,7 @@ export default class Twitter extends Component {
     if (this.state.editMode) {
       let key = Object.keys(this.state.editMode)[0]
       actionNode = (
-        <form className='ui form'  onSubmit={this.tweetEditHandler}>
+        <form className='ui form' onSubmit={this.tweetEditHandler}>
           <div className='field'>
             <label>
               Edit tweet
@@ -306,9 +320,17 @@ export default class Twitter extends Component {
     }
   }
   getMyTweets(e) {
-    e.preventDefault()
-
-    console.log(this, e)
+    console.log(this.state.tweets)
+    let user = sessionStorage.getItem('username')
+    console.log(user)
+    let myTweets = this.state.tweets.filter(tweet => {
+      return tweet.author == user
+    })
+    this.setState({
+      tweets: null,
+      searchedTweets: myTweets
+    })
+    console.log(myTweets)
   }
   getTweets() {
 
