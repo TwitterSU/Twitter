@@ -13,6 +13,7 @@ export default class TweetList extends Component {
     if (this.props.tweets.length != 0) {
       tweetNodes = this.props.tweets.map((tweet, i) => {
         return (<Tweet
+          ref={tweet._id}
           owner={tweet._acl.creator}
           postDate={tweet._kmd.lmt}
           url={tweet.avatarUrl}
@@ -21,7 +22,6 @@ export default class TweetList extends Component {
           likes={tweet.likes}
           id={tweet._id}
           edit={this.props.edit}
-          
           open={this.props.open}
           delete={this.props.delete}
           addLike={this.props.addLike}

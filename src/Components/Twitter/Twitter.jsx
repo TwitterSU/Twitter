@@ -25,15 +25,15 @@ export default class Twitter extends Component {
     this.getTweets = this.getTweets.bind(this)
     this.getMyTweets = this.getMyTweets.bind(this)
   }
-
+  
   search(e) {
     e.persist()
-
-
+    
+    
     if (e.target.parentNode.children[0].value) {
       let searched = this.state.searchedTweets.concat(this.state.tweets)
-
-
+      
+      
       searched = searched.filter(tweet => {
         return tweet.content.includes(e.target.parentNode.children[0].value)
       })
@@ -46,8 +46,8 @@ export default class Twitter extends Component {
     }
     e.target.parentNode.children[0].value = ''
   }
-
-
+  
+  
   tweetSubmitHandler(item, e) {
     e.preventDefault()
     e.stopPropagation()
@@ -182,7 +182,7 @@ export default class Twitter extends Component {
 
     KinveyRequester.remove('posts', nodeComponent.props.id).then((response, status) => {
       if (status == 'success') {
-
+        
 
         KinveyRequester.crudByPostId(nodeComponent.props.id, { method: 'DELETE', collection: 'comments' })
           .then((response, status) => {
@@ -228,39 +228,54 @@ export default class Twitter extends Component {
     })
   }
 
-  handleEdit(item, e) {
+  handleEdit(item,modalNode, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-    console.log(e)
-    console.log(item)
-    if (e.target.name !== 'cancel') {
+    console.log(modalNode) //EditNode
+    console.log(e) // ProxyEvent
+    console.log(this) // Twitter
+    console.log(item) //EditNode
+    if (e.target.textContent !== 'Cancel') {
+      console.log(e.target.form[0].value)
+      if(e.target.form[0].value !== e.target.form[0].defaultValue){
+        KinveyRequester.getPosts(item.props.id)
+          .then((res, response) => {
+            
+            let index = -1
+            let id = res._id
+            res.content = e.target.form[0].value
+            // this.setState({
+            //   tweetUpdate: true
+            // })
+            KinveyRequester.update('posts', id, res).then(updatePost => {
+              this.state.tweets.map((item, i) => {
+                if (item._id == id) {
+                  return index = i
+                }
+              })
+              
+              this.state.tweets[index].content = updatePost.content
+              this.setState({
+                tweets: update(this.state.tweets, {index: {$set: this.state.tweets[index].content}})
+              })
+            })
+            return response
+          }).catch((error) => console.log(error))
+        
 
+        modalNode.refs.editMode.setState({
+          open: false
+        })
+      }
+      
     }
     else {
-      item.refs.editMode.setState({
+      modalNode.refs.editMode.setState({
         open: false
       })
     }
-    // KinveyRequester.crudByPostId(item.props.id, { method: 'GET', collection: 'posts' })
-    //   .then((data, response) => {
-    //
-    //     this.setState({
-    //       editNode: true
-    //     })
-    //     return response
-    //   }).catch((error) => console.log(error))
-    // let index = -1
-    // let id = e.target.value
-    // this.state.tweets.find((item, i) => {
-    //   if (item._id == id) {
-    //     return index = i
-    //   }
-    // })
-    //
-    // this.setState({
-    //   editNode: {[index]: this.state.tweets[index]}
-    // })
+    
   }
 
   addComment(item, e) {
@@ -391,13 +406,26 @@ export default class Twitter extends Component {
     console.log(myTweets)
   }
   getTweets() {
+
+    KinveyRequester.retrieve('posts').then((tweets) => {
+      this.setState({
+        tweets: tweets.reverse()
+      })
+    }).catch((err) => console.log(err))
+  }
+
+  getComments(id) {
+    return KinveyRequester.crudByPostId(id, { method: 'GET', collection: 'comments' })
+  }
+
+  componentDidMount() {
     KinveyRequester.retrieve('posts').then((tweets, status) => {
       console.log(tweets, status)
       tweets.reverse().map((t) => {
-        if (!t.isLiked) {
+        if(!t.isLiked){
           t.isLiked = 'admin, '
         }
-        t.comments = []
+        return t.comments = []
       })
       this.setState({
         tweets: tweets
@@ -407,7 +435,7 @@ export default class Twitter extends Component {
 
         this.state.tweets.map((tweet, i) => {
           if (tweet._id == e._id) {
-            index = i
+            return index = i
           }
         })
         this.getComments(e._id).then(r => {
@@ -417,7 +445,7 @@ export default class Twitter extends Component {
                 [index]: { comments: { $push: r } }
               }
             })
-            this.setState(newState)
+            return this.setState(newState)
           }
         })
       })
