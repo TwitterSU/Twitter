@@ -312,7 +312,8 @@ export default class Twitter extends Component {
                 delete={this.handleDelete}
                 onkeyup={this.addComment}
                 addLike={this.addLikeHandler}
-                tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets} />
+                tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets} 
+                />
             </div>
           </div>
         </div>
