@@ -130,39 +130,49 @@ export default class Twitter extends Component {
     e.persist()
     let index = -1
     let id = e.target.value
-    if (this.state.tweets) {
       this.state.tweets.map((tweet, i) => {
         if (id == tweet._id) {
           index = i
         }
       })
-      this.state.tweets[index].likes++
-      let content = this.state.tweets[index]
-      // RETARDED KINVEY
-      this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
-      KinveyRequester.update('posts', id, content).then(data => {
-        this.setState({
-          tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
+      KinveyRequester.getPosts(id)
+        .then((res, status) => {
+          console.log(res)
+          if (!res.isLiked) {
+            res.isLiked = 'admin, '
+          }
+          res.isLiked += (sessionStorage.getItem('username') + ', ')
+          this.state.tweets[index].likes++
+          
+          res.likes++
+          // RETARDED KINVEY
+          this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
+          KinveyRequester.update('posts', id, res).then(data => {
+            console.log(data)
+            this.setState({
+              tweets: update(this.state.tweets, {index: {$set: this.state.tweets[index].likes}})
 
+            })
+          })
         })
-      })
-    } else {
-      this.state.searchedTweets.map((tweet, i) => {
-        if (id == tweet._id) {
-          index = i
-        }
-      })
-      this.state.searchedTweets[index].likes++
-      let content = this.state.searchedTweets[index]
-      // RETARDED KINVEY
-      this.state.searchedTweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
-      KinveyRequester.update('posts', id, content).then(data => {
-        this.setState({
-          searchedTweets: update(this.state.searchedTweets, { index: { $set: this.state.searchedTweets[index].likes } })
-
-        })
-      })
-    }
+        .catch(err => console.log(err))
+      
+    // } else {
+    //   this.state.searchedTweets.map((tweet, i) => {
+    //     if (id == tweet._id) {
+    //       index = i
+    //     }
+    //   })
+    //   this.state.searchedTweets[index].likes++
+    //   let content = this.state.searchedTweets[index]
+    //   // RETARDED KINVEY
+    //   this.state.searchedTweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
+    //   KinveyRequester.update('posts', id, content).then(data => {
+    //     this.setState({
+    //       searchedTweets: update(this.state.searchedTweets, { index: { $set: this.state.searchedTweets[index].likes } })
+    //
+    //     })
+    //   })
   }
 
   handleDelete(nodeComponent, e) {
@@ -374,6 +384,9 @@ export default class Twitter extends Component {
     KinveyRequester.retrieve('posts').then((tweets, status) => {
       console.log(tweets, status)
       tweets.reverse().map((t) => {
+        if(!t.isLiked){
+          t.isLiked = 'admin, '
+        }
         return t.comments = []
       })
       this.setState({

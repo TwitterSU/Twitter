@@ -82,7 +82,8 @@ const KinveyRequester = (function () {
       method: 'PUT',
       url: url + collection + '/' + entityId,
       headers: getHeaders(),
-      data: content
+      contentType: 'application/json',
+      data: JSON.stringify(content)
     })
   }
   
@@ -95,7 +96,15 @@ const KinveyRequester = (function () {
       
     })
   }
-  
+  function getPosts(postId) {
+      console.log(postId)
+    
+    return $.ajax({
+      method: 'GET',
+      url: url +  'posts/' +postId,
+      headers: getHeaders(),
+    })
+  }
   function crudByPostId(postId, options) {
     if(!options) {
       console.log("error")
@@ -117,7 +126,8 @@ const KinveyRequester = (function () {
     crudByPostId,
     createComment,
     addTags,
-    tagOperations
+    tagOperations,
+    getPosts
   }
 })()
 export default KinveyRequester
