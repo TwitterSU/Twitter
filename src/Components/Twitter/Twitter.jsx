@@ -55,29 +55,43 @@ export default class Twitter extends Component {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-    this.setState({
-      loading: true
-    })
-    KinveyRequester.create('posts', e.target[0].value)
-      .then((data) => {
-        e.target[0].value = ''
-        this.setState({
-          loading: false
-        })
-        if (this.state.tweets || this.state.tweets.length !== 0) {
-          this.setState({
-            tweets: [data, ...this.state.tweets]
-          })
-        } else {
-          this.setState({
-            tweets: [data]
-          })
-        }
-        if (data.tags) {
-          //this.tagsHandler({postId: data._id,tag: data.tags[0]})
-        }
+    let content = null
+    if((e.target.name == 'content') && e.keyCode == 13 && e.target.value.trim() != ''){
+      content = e.target.value
+    }else if(e.target.name == 'tweetForm'){
+      content = e.target[0].value.trim()
+    }
+    if(content){
+      this.setState({
+        loading: true
       })
-      .catch((error) => console.log(error))
+      KinveyRequester.create('posts', content)
+        .then((data) => {
+          if(e.target.name == 'content'){
+            e.target.value = ''
+          }
+          else {
+            e.target[0].value = ''
+          }
+          this.setState({
+            loading: false
+          })
+          if (this.state.tweets || this.state.tweets.length !== 0) {
+            this.setState({
+              tweets: [data, ...this.state.tweets]
+            })
+          } else {
+            this.setState({
+              tweets: [data]
+            })
+          }
+          if (data.tags) {
+            //this.tagsHandler({postId: data._id,tag: data.tags[0]})
+          }
+        })
+        .catch((error) => console.log(error))
+    }
+    
   }
   tagsHandler(value) {
     // KinveyRequester.tagOperations(value.tag,{method:'GET', byId: '_id', qStr: '/?query=', })
