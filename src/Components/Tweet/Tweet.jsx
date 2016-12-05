@@ -4,6 +4,12 @@ import EditNode from '../Tweet/EditNode.jsx'
 import AddComment from '../AddComment/AddComment.jsx'
 
 export default class Tweet extends Component {
+  constructor(){
+    super()
+    this.state = {
+      tweetLoading: false
+    }
+  }
   render() {
     let ownerActions
     if (this.props.owner === sessionStorage.getItem('userId')) {
@@ -15,7 +21,7 @@ export default class Tweet extends Component {
           value={this.props.id}>
           Delete
                         </button>
-        <EditNode edit={this.props.edit}
+        <EditNode edit={this.props.edit.bind(null, this)}
           content={this.props.content} />
 
       </div>)
