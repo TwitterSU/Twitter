@@ -4,9 +4,9 @@ class Comment extends Component {
   render(){
     return(
       <div className="comment">
-        <a className="avatar">
+        <div className="avatar">
           <img src={this.props.url}/>
-        </a>
+        </div>
         <div className="content">
           <a className="author">{this.props.author}</a>
           <div className="metadata">
