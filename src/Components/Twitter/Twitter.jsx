@@ -171,12 +171,13 @@ export default class Twitter extends Component {
     KinveyRequester.remove('posts', nodeComponent.props.id).then((response, status) => {
       if (status == 'success') {
 
-
-        KinveyRequester.crudByPostId(nodeComponent.props.id, { method: 'DELETE', collection: 'comments' })
+        
+        KinveyRequester.crudByPostId(nodeComponent.props.id, {method: 'DELETE', collection: 'comments'})
           .then((response, status) => {
-
+            console.log(status)
             let msg = `${nodeComponent.props.id} `
-
+            console.dir(response)
+            console.log(msg)
             let index = -1
             let id = nodeComponent.props.id
             if (this.state.tweets) {
@@ -223,28 +224,12 @@ export default class Twitter extends Component {
     console.log(item)
     if (e.target.name !== 'cancel') {
 
-
     }
-    else {
+    else{
       item.refs.editMode.setState({
         open: false
       })
     }
-    // let index = e.target[0].id
-    // if (this.state.tweets[index].content != e.target[0].value) {
-    //   let content = this.state.tweets[index]
-    //   this.state.tweets[index].content = e.target[0].value
-    //   KinveyRequester.update('posts', this.state.tweets[index]._id, content).then(data => {
-    //     this.setState({
-    //       editNode: null,
-    //       tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content } })
-    //     })
-    //   })
-    // } else {
-    //   this.setState({
-    //     editNode: null
-    //   })
-    // }
     // KinveyRequester.crudByPostId(item.props.id, { method: 'GET', collection: 'posts' })
     //   .then((data, response) => {
     //
@@ -271,7 +256,8 @@ export default class Twitter extends Component {
     e.stopPropagation()
     if (e.keyCode == 13 && e.target.value.trim() != '') {
       e.persist()
-
+      console.log(item.props.id)
+      console.log(this)
       let id = item.props.id
       KinveyRequester.createComment(e, {
         text: e.target.value.trim(),
@@ -357,9 +343,9 @@ export default class Twitter extends Component {
     }
   }
   getMyTweets(e) {
-
+    console.log(this.state.tweets)
     let user = sessionStorage.getItem('username')
-
+    console.log(user)
     let myTweets = this.state.tweets.filter(tweet => {
       return tweet.author == user
     })
@@ -367,7 +353,7 @@ export default class Twitter extends Component {
       tweets: null,
       searchedTweets: myTweets
     })
-
+    console.log(myTweets)
   }
   getTweets() {
 
@@ -384,7 +370,7 @@ export default class Twitter extends Component {
 
   componentDidMount() {
     KinveyRequester.retrieve('posts').then((tweets, status) => {
-
+      console.log(tweets, status)
       tweets.reverse().map((t) => {
         return t.comments = []
       })
