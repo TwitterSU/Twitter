@@ -219,8 +219,8 @@ export default class Twitter extends Component {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-    console.log(e)
-    
+    //console.log(e)
+    console.log(item)
     if (e.target.name !== 'cancel') {
 
 
