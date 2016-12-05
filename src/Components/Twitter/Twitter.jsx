@@ -25,15 +25,15 @@ export default class Twitter extends Component {
     this.getTweets = this.getTweets.bind(this)
     this.getMyTweets = this.getMyTweets.bind(this)
   }
-  
+
   search(e) {
     e.persist()
-    
-    
+
+
     if (e.target.parentNode.children[0].value) {
       let searched = this.state.searchedTweets.concat(this.state.tweets)
-      
-      
+
+
       searched = searched.filter(tweet => {
         return tweet.content.includes(e.target.parentNode.children[0].value)
       })
@@ -46,8 +46,8 @@ export default class Twitter extends Component {
     }
     e.target.parentNode.children[0].value = ''
   }
-  
-  
+
+
   tweetSubmitHandler(item, e) {
     e.preventDefault()
     e.stopPropagation()
@@ -182,7 +182,7 @@ export default class Twitter extends Component {
 
     KinveyRequester.remove('posts', nodeComponent.props.id).then((response, status) => {
       if (status == 'success') {
-        
+
 
         KinveyRequester.crudByPostId(nodeComponent.props.id, { method: 'DELETE', collection: 'comments' })
           .then((response, status) => {
@@ -228,7 +228,7 @@ export default class Twitter extends Component {
     })
   }
 
-  handleEdit(item,modalNode, e) {
+  handleEdit(item, modalNode, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
@@ -238,10 +238,10 @@ export default class Twitter extends Component {
     console.log(item) //EditNode
     if (e.target.textContent !== 'Cancel') {
       console.log(e.target.form[0].value)
-      if(e.target.form[0].value !== e.target.form[0].defaultValue){
+      if (e.target.form[0].value !== e.target.form[0].defaultValue) {
         KinveyRequester.getPosts(item.props.id)
           .then((res, response) => {
-            
+
             let index = -1
             let id = res._id
             res.content = e.target.form[0].value
@@ -251,31 +251,31 @@ export default class Twitter extends Component {
             KinveyRequester.update('posts', id, res).then(updatePost => {
               this.state.tweets.map((item, i) => {
                 if (item._id == id) {
-                  return index = i
+                   index = i
                 }
               })
-              
+
               this.state.tweets[index].content = updatePost.content
               this.setState({
-                tweets: update(this.state.tweets, {index: {$set: this.state.tweets[index].content}})
+                tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content } })
               })
             })
             return response
           }).catch((error) => console.log(error))
-        
+
 
         modalNode.refs.editMode.setState({
           open: false
         })
       }
-      
+
     }
     else {
       modalNode.refs.editMode.setState({
         open: false
       })
     }
-    
+
   }
 
   addComment(item, e) {
@@ -407,22 +407,10 @@ export default class Twitter extends Component {
   }
   getTweets() {
 
-    KinveyRequester.retrieve('posts').then((tweets) => {
-      this.setState({
-        tweets: tweets.reverse()
-      })
-    }).catch((err) => console.log(err))
-  }
-
-  getComments(id) {
-    return KinveyRequester.crudByPostId(id, { method: 'GET', collection: 'comments' })
-  }
-
-  componentDidMount() {
     KinveyRequester.retrieve('posts').then((tweets, status) => {
       console.log(tweets, status)
       tweets.reverse().map((t) => {
-        if(!t.isLiked){
+        if (!t.isLiked) {
           t.isLiked = 'admin, '
         }
         return t.comments = []
@@ -452,6 +440,9 @@ export default class Twitter extends Component {
     }).catch((err) => console.log(err))
   }
 
+
+
+
   getComments(id) {
     return KinveyRequester.crudByPostId(id, { method: 'GET', collection: 'comments' })
   }
@@ -462,6 +453,6 @@ export default class Twitter extends Component {
   }
 
   componentWillReceiveProps() {
-   
+
   }
 }
