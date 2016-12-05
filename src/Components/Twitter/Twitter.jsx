@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import TweetList from '../Tweet/TweetList.jsx'
-import TweetForm from '../Tweet/TweetForm.jsx'
-import EditNode from '../Tweet/EditNode.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
 import update from 'immutability-helper'
@@ -13,10 +11,8 @@ export default class Twitter extends Component {
     super(props)
     this.state = {
       tweets: [],
-      editMode: false,
       loading: false,
       searchedTweets: [],
-      open: false
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
@@ -219,20 +215,28 @@ export default class Twitter extends Component {
       console.log(error)
     })
   }
-
-  handleEdit(item, e) {
+  
+  handleEdit(item,e) {
+    e.preventDefault()
+    e.stopPropagation()
     e.persist()
-    console.log(item)
-    console.log(e)
-    console.log(this)
-    KinveyRequester.crudByPostId(item.props.id, { method: 'GET', collection: 'posts' })
-      .then((data, response) => {
-
-        this.setState({
-          editNode: true
-        })
-        return response
-      }).catch((error) => console.log(error))
+    if(e.target.name !== 'cancel'){
+      console.log('a')
+      
+    }
+    else{
+      item.refs.editMode.setState({
+        open: false
+      })
+    }
+    // KinveyRequester.crudByPostId(item.props.id, { method: 'GET', collection: 'posts' })
+    //   .then((data, response) => {
+    //
+    //     this.setState({
+    //       editNode: true
+    //     })
+    //     return response
+    //   }).catch((error) => console.log(error))
     // let index = -1
     // let id = e.target.value
     // this.state.tweets.find((item, i) => {
@@ -325,7 +329,6 @@ export default class Twitter extends Component {
 
               <TweetList
                 className='ui four column grid'
-                editMode={this.state.editMode}
                 edit={this.handleEdit}
                 delete={this.handleDelete}
                 onkeyup={this.addComment}
