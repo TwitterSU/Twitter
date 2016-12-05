@@ -20,6 +20,8 @@ export default class Twitter extends Component {
     this.handleEdit = this.handleEdit.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
     this.search = this.search.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
+    this.addComment = this.addComment.bind(this)
     this.getTweets = this.getTweets.bind(this)
   }
 
@@ -218,7 +220,7 @@ export default class Twitter extends Component {
     if (this.state.editMode) {
       let key = Object.keys(this.state.editMode)[0]
       actionNode = (
-        <form className='ui form' onSubmit={this.tweetEditHandler.bind(this)}>
+        <form className='ui form' onSubmit={this.tweetEditHandler}>
           <div className='field'>
             <label>
               Edit tweet
@@ -231,14 +233,14 @@ export default class Twitter extends Component {
         </form>
       )
     }else {
-      actionNode = this.state.tweets ? <CreateTweet onsubmit={this.tweetSubmitHandler.bind(this)} /> :
+      actionNode = this.state.tweets ? <CreateTweet onsubmit={this.tweetSubmitHandler} /> :
         <button onClick={this.getTweets} className='ui button blue'>
           Back
         </button>
     }
     return (
       <div>
-        <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets.bind(this)} search={this.search}/>
+        <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets} search={this.search}/>
         
         < div className='ui container centered'>
           <div className='ui segment'>
@@ -248,8 +250,8 @@ export default class Twitter extends Component {
             <TweetList
               className='ui four column grid'
               edit={this.handleEdit}
-              delete={this.handleDelete.bind(this)}
-              onkeyup={this.addComment.bind(this)}
+              delete={this.handleDelete}
+              onkeyup={this.addComment}
               addLike={this.addLikeHandler}
               tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets} />
           </div>
