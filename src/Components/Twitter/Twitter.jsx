@@ -434,6 +434,6 @@ export default class Twitter extends Component {
   }
 
   componentWillReceiveProps() {
-    alert('recived props')
+   
   }
 }
