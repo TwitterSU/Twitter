@@ -19,7 +19,7 @@ export default class NavigationBar extends Component {
               <a className='ui item' onClick={this.props.search}>Search</a>
             </div>
           </div>
-          <p>{'Hello ' + sessionStorage.getItem('username') + '!'}</p>
+          <p className='ui item'>{'Hello ' + sessionStorage.getItem('username') + '!'}</p>
         </div>
         <a className='ui item' onClick={this.props.onClick}>Logout</a>
 

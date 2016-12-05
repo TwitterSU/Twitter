@@ -136,7 +136,7 @@ export default class Twitter extends Component {
       if (status == 'success') {
         console.log(status)
 
-        KinveyRequester.crudCommentsByPostId(nodeComponent.props.id, { method: 'DELETE', collection: 'comments' })
+        KinveyRequester.crudByPostId(nodeComponent.props.id, { method: 'DELETE', collection: 'comments' })
           .then((response, status) => {
             console.log(status)
             let msg = `${nodeComponent.props.id} `
