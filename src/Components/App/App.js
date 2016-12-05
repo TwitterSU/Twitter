@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+import { Router, Route, browserHistory , IndexRoute } from 'react-router'
 import './App.css'
 import Login from '../Login/Login'
 import Registration from '../Registration/Registration'
@@ -14,8 +14,8 @@ class App extends Component {
       <Router history={browserHistory}>
         <Route path='/' component={Login} />
         <Route path='/registration' component={Registration} />
-        <Route path='twitter' component={Twitter} onEnter={checkLoggedIn} />
-        <Route path='subscribed' component={Subscribed} />
+        <Route path='/twitter' component={Twitter} onEnter={checkLoggedIn} />
+        <Route path='/subscribed' component={Subscribed} />
         <Route path='*' component={NotFound} />
       </Router>
     )

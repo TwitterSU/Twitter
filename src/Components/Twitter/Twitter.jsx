@@ -12,7 +12,7 @@ export default class Twitter extends Component {
     this.state = {
       tweets: [],
       loading: false,
-      searchedTweets: [],
+      searchedTweets: []
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.tweetEditHandler = this.tweetEditHandler.bind(this)
