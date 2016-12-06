@@ -14,6 +14,7 @@ export default class TweetList extends Component {
       tweetNodes = this.props.tweets.map((tweet, i) => {
         return (
           <Tweet
+            
             owner={tweet._acl.creator}
             postDate={tweet._kmd.lmt}
             url={tweet.avatarUrl}

@@ -128,11 +128,20 @@ const KinveyRequester = (function () {
       headers: getHeaders()
     })
   }
-  function getPostsCount() {
-    
+  function getPostsCount(idArray) {
+    let obj = {
+      _id:{
+        $in:[]
+      }
+    }
+    idArray.reverse().forEach(id=>{
+      obj._id.$in.push(id)
+    })
+    console.log(obj)
+    //?query={"_id":{"$in": []}}
     return $.ajax({
       method: 'GET',
-      url: url + 'posts/_count',
+      url: url + 'posts/?query='+ JSON.stringify(obj) ,
       headers: getHeaders()
     })
   }

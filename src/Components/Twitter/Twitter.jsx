@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {handlers} from '../../handlers.js'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
@@ -7,14 +8,17 @@ import NavigationBar from '../Navigation/NavigationBar'
 import {logout} from '../../Models/User/logout.js'
 import {Segment} from 'semantic-ui-react'
 export default class Twitter extends Component {
+  
   constructor(props) {
     super(props)
     this.state = {
       tweets: [],
       loading: false,
-      isSearching: false
-      
+      isSearching: false,
+      newTweet: false,
+      errorState: false
     }
+    this.newTweetStyle = {borderColour: 'blue'}
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.addLikeHandler = this.addLikeHandler.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
@@ -43,26 +47,25 @@ export default class Twitter extends Component {
   }
   
   checkForNewTweets() {
-    KinveyRequester.getPostsCount().then((res) => {
-      console.log(res.count)
-      console.log(this.state.tweets.length)
+    KinveyRequester.getPostsId().then((res) => {
       
-      if (this.state.tweets.length < res.count) {
-        KinveyRequester.getPostsSkippedByCount(this.state.tweets.length)
-          .then((data) => {
-              
-            this.setState({
-              tweets: [...data, ...this.state.tweets]
-            })
+      this.state.tweets.forEach((i) => {
+          res = res.filter((e)=>{
+            return e._id !== i._id
           })
-          .catch(err => {
-            return err
+      })
+      if(res.length > 0){
+        KinveyRequester.getPostsCount(res.map(tweet => tweet._id)).then((response)=>{
+          console.log(response)
+          response.reverse()
+          console.log(response)
+          this.setState({
+            tweets: [...response, ...this.state.tweets]
           })
-        
+        })
       }
-    }).catch(err => {
-      return err
     })
+    
   }
   
   tweetSubmitHandler(item, e) {
@@ -81,6 +84,7 @@ export default class Twitter extends Component {
       })
       KinveyRequester.create('posts', content)
         .then((data) => {
+          
           if (e.target.name == 'content') {
             e.target.value = ''
           } else {
@@ -101,13 +105,13 @@ export default class Twitter extends Component {
           if (data.tags) {
             // this.tagsHandler({postId: data._id,tag: data.tags[0]})
           }
-  
-          
+          this.checkForNewTweets()
         })
-        .then(()=>{
-          //this.updateState()
+
+        .catch((error) => {
+          console.log(error)
+
         })
-        .catch((error) => console.log(error))
     }
   }
   
@@ -161,6 +165,7 @@ export default class Twitter extends Component {
             
           })
         })
+        this.checkForNewTweets()
       })
       .catch(err => console.log(err))
   }
@@ -169,8 +174,9 @@ export default class Twitter extends Component {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-    
+    nodeComponent.tweetStartLoading()
     KinveyRequester.remove('posts', nodeComponent.props.id).then((response, status) => {
+      nodeComponent.tweetStopLoading()
       if (status == 'success') {
         KinveyRequester.deleteCommentsByPostId(nodeComponent.props.id)
           .then((response, status) => {
@@ -253,6 +259,7 @@ export default class Twitter extends Component {
         modalNode.refs.editMode.setState({
           open: false
         })
+        this.checkForNewTweets()
       }
     } else {
       item.tweetStopLoading()
@@ -268,6 +275,7 @@ export default class Twitter extends Component {
     if (e.keyCode == 13 && e.target.value.trim() != '') {
       e.persist()
       let id = item.props.id
+      item.tweetStartLoading()
       KinveyRequester.createComment(e, {
         text: e.target.value.trim(),
         postId: item.props.id
@@ -294,7 +302,7 @@ export default class Twitter extends Component {
           })
           this.setState(newState)
         }
-        
+        item.tweetStopLoading()
         
       }).catch(err => console.log(err))
       e.target.value = ''
@@ -306,48 +314,31 @@ export default class Twitter extends Component {
   }
   
   render() {
-    let actionNode
-    if (this.state.editMode) {
-      let key = Object.keys(this.state.editMode)[0]
-      actionNode = (
-        <form className='ui form' onSubmit={this.tweetEditHandler}>
-          <div className='field'>
-            <label>
-              Edit tweet
-            </label>
-            <textarea name='content' id={key} defaultValue={this.state.editMode[key].content}/>
-          </div>
-          <button className='ui button blue' type='submit'>
-            Confirm
-          </button>
-        </form>
-      )
-    } else {
-      actionNode = this.state.isSearching ? <button onClick={this.getTweets} className='ui button blue'>
-        Back
-      </button> : <CreateTweet loading={this.state.loading} onsubmit={this.tweetSubmitHandler}/>
+    
+    let actionNode = this.state.isSearching ? <button onClick={this.getTweets} className='ui button blue'>
+      Back
+    </button> : <CreateTweet loading={this.state.loading} onsubmit={this.tweetSubmitHandler}/>
+    
+    return (
       
-      return (
-        
-        <div>
-          <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets} search={this.search}/>
-          <div className='ui container centered'>
-            <div className='ui segment'>
-              {actionNode}
-            </div>
-            <Segment className='center'>
-              <TweetList
-                className='ui comments'
-                edit={this.handleEdit}
-                delete={this.handleDelete}
-                onkeyup={this.addComment}
-                addLike={this.addLikeHandler}
-                tweets={this.state.tweets}/>
-            </Segment>
+      <div>
+        <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets} search={this.search}/>
+        <div className='ui container centered'>
+          <div className='ui segment'>
+            {actionNode}
           </div>
+          <Segment className='center'>
+            <TweetList
+              className='ui comments'
+              edit={this.handleEdit}
+              delete={this.handleDelete}
+              onkeyup={this.addComment}
+              addLike={this.addLikeHandler}
+              tweets={this.state.tweets}/>
+          </Segment>
         </div>
-      )
-    }
+      </div>
+    )
   }
   
   getMyTweets(e) {
