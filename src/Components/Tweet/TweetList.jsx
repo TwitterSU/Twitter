@@ -37,7 +37,7 @@ export default class TweetList extends Component {
 
     return (
 
-      <div className='ui comments'>
+      <div className='ui comments middle aligned'>
         {tweetNodes}
       </div>
     )

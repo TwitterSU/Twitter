@@ -30,9 +30,10 @@ export default class Tweet extends Component {
       color: this.props.isLiked.split(', ')
         .includes(sessionStorage.getItem('username')) ? 'red' : 'grey'
     }
-
+    let tweetStyle = { 'left': '33%', 'position': 'relative', 'width': 'auto' }
     return (
-      <Segment raised={true}>
+
+      <Segment raised={true} style={tweetStyle}>
         <Dimmer active={tweetLoading}>
           <Loader />
         </Dimmer>
@@ -43,6 +44,8 @@ export default class Tweet extends Component {
 
           </div>
           <div className="content">
+            {ownerActions}
+
             <div className='summary'>
               <a className='user'>
                 {this.props.author}
@@ -54,9 +57,8 @@ export default class Tweet extends Component {
                 <label>tags: </label>
                 {this.props.tags}
               </div>
-              {ownerActions}
               <div className="content">
-                <h2>{this.props.content}</h2>
+                <h2 style={{ 'color': '#00BFFF', 'wordWrap': 'break-word' }}>{this.props.content}</h2>
               </div>
             </div>
             <div className="meta">
@@ -77,6 +79,7 @@ export default class Tweet extends Component {
           </div>
         </div>
       </Segment>
+
     )
   }
   componentDidUpdate() {
