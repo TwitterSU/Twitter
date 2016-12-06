@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {handlers} from '../../handlers.js'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
@@ -13,9 +14,11 @@ export default class Twitter extends Component {
     this.state = {
       tweets: [],
       loading: false,
-      isSearching: false
-      
+      isSearching: false,
+      newTweet: false,
+      errorState: false
     }
+    this.newTweetStyle = {borderColour: 'blue'}
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.addLikeHandler = this.addLikeHandler.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
@@ -51,40 +54,18 @@ export default class Twitter extends Component {
             return e._id !== i._id
           })
       })
-      if(res){
+      if(res.length > 0){
         KinveyRequester.getPostsCount(res.map(tweet => tweet._id)).then((response)=>{
+          console.log(response)
+          response.reverse()
+          console.log(response)
           this.setState({
-            tweets: [...response, this.state.tweets]
+            tweets: [...response, ...this.state.tweets]
           })
         })
       }
     })
-    // KinveyRequester.getPostsCount().then((res) => {
-    //   console.log('Enries ' + res.count)
-    //   console.log('State entries ' + this.state.tweets.length)
-    //
-    //   let dataEntries = res.count
-    //   let stateEntries = this.state.tweets.length
-    //
-    //   if (stateEntries < dataEntries) {
-    //     if (this.state.loading) {
-    //       KinveyRequester.getPostsSkippedByCount(this.state.tweets.length - 1)
-    //         .then((data) => {
-    //
-    //           this.setState({
-    //             tweets: [...data, ...this.state.tweets]
-    //           })
-    //         })
-    //         .catch(err => {
-    //           return err
-    //         })
-    //
-    //     }
-    //   }
-    //
-    // }).catch(err => {
-    //   return err
-    // })
+    
   }
   
   tweetSubmitHandler(item, e) {
@@ -124,9 +105,11 @@ export default class Twitter extends Component {
           if (data.tags) {
             // this.tagsHandler({postId: data._id,tag: data.tags[0]})
           }
-          
+          this.checkForNewTweets()
         })
-        .catch((error) => console.log(error))
+        .catch((error) => {
+          console.log(error)
+        })
     }
   }
   
@@ -180,6 +163,7 @@ export default class Twitter extends Component {
             
           })
         })
+        this.checkForNewTweets()
       })
       .catch(err => console.log(err))
   }
@@ -273,6 +257,7 @@ export default class Twitter extends Component {
         modalNode.refs.editMode.setState({
           open: false
         })
+        this.checkForNewTweets()
       }
     } else {
       item.tweetStopLoading()
@@ -327,7 +312,6 @@ export default class Twitter extends Component {
   }
   
   render() {
-    
     
     let actionNode = this.state.isSearching ? <button onClick={this.getTweets} className='ui button blue'>
       Back
