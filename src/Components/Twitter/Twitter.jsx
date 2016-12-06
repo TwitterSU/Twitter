@@ -105,7 +105,7 @@ export default class Twitter extends Component {
           
         })
         .then(()=>{
-          this.updateState()
+          //this.updateState()
         })
         .catch((error) => console.log(error))
     }
