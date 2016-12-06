@@ -5,11 +5,12 @@ import EditNode from '../Tweet/EditNode.jsx'
 import AddComment from '../AddComment/AddComment.jsx'
 
 export default class Tweet extends Component {
-  state = { tweetLoading: false }
+  state = { tweetLoading: false, tweet: true }
   tweetStartLoading = () => { return this.setState({ tweetLoading: true }) }
   tweetStopLoading = () => { return this.setState({ tweetLoading: false }) }
+  disassemble = () => {return this.setState({tweet: 'none'})}
   render() {
-    const {tweetLoading} = this.state
+    const {tweetLoading, tweet} = this.state
     let ownerActions
     if (this.props.owner === sessionStorage.getItem('userId')) {
       ownerActions = (<div className='ui right'>
@@ -25,7 +26,13 @@ export default class Tweet extends Component {
 
       </div>)
     }
-
+    let newTweet = (
+      <a className="ui label right" style={{backgroundColor: 'aqua', display: tweet}}>
+        NewTweet
+        <i className="delete icon"
+        onClick={this.disassemble}></i>
+        </a>
+    )
     let style = {
       color: this.props.isLiked.split(', ')
         .includes(sessionStorage.getItem('username')) ? 'red' : 'grey'
@@ -38,11 +45,11 @@ export default class Tweet extends Component {
           <Loader />
         </Dimmer>
         <div className="comment" id={this.props.id}>
-
+          
           <div className="avatar">
             <img src={this.props.url} />
-
           </div>
+          {this.props.newTweet? newTweet : null}
           <div className="content">
             {ownerActions}
 

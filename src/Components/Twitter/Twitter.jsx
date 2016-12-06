@@ -15,10 +15,9 @@ export default class Twitter extends Component {
       tweets: [],
       loading: false,
       isSearching: false,
-      newTweet: false,
       errorState: false
     }
-    this.newTweetStyle = {borderColour: 'blue'}
+    
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
     this.addLikeHandler = this.addLikeHandler.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
@@ -57,7 +56,9 @@ export default class Twitter extends Component {
       if (res.length > 0) {
         KinveyRequester.getPostsCount(res.map(tweet => tweet._id)).then((response) => {
           console.log(response)
-          response.reverse()
+          response.reverse().map(i=>{
+            i.newTweet = true
+          })
           console.log(response)
           this.setState({
             tweets: [...response, ...this.state.tweets]
