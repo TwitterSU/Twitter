@@ -174,7 +174,7 @@ export default class Twitter extends Component {
       if (status == 'success') {
 
 
-        KinveyRequester.crudByPostId(nodeComponent.props.id, { method: 'DELETE', collection: 'comments' })
+        KinveyRequester.deleteCommentsByPostId(nodeComponent.props.id)
           .then((response, status) => {
             console.log(status)
             let msg = `${nodeComponent.props.id} `
@@ -231,7 +231,7 @@ export default class Twitter extends Component {
       console.log(e.target.form[0].value)
       if (e.target.form[0].value !== e.target.form[0].defaultValue) {
         item.tweetStartLoading()
-        KinveyRequester.getPosts(item.props.id)
+        KinveyRequester.getPostById(item.props.id)
           .then((res, response) => {
 
             let index = -1
@@ -440,7 +440,7 @@ export default class Twitter extends Component {
 
 
   getComments(id) {
-    return KinveyRequester.crudByPostId(id, { method: 'GET', collection: 'comments' })
+    return KinveyRequester.getCommentsByPostId(id)
   }
 
   componentDidMount() {

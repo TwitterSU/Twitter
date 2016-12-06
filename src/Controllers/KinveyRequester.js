@@ -96,24 +96,27 @@ const KinveyRequester = (function () {
       
     })
   }
-  function getPosts(postId) {
-      console.log(postId)
+  function getPostById(postId) {
     
     return $.ajax({
       method: 'GET',
-      url: url +  'posts/' +postId,
+      url: url +  'posts/' + postId,
       headers: getHeaders(),
     })
   }
-  function crudByPostId(postId, options) {
-    if(!options) {
-      console.log("error")
-      return false
-    }
+  function deleteCommentsByPostId(postId) {
     
     return $.ajax({
-      method: options.method,
-      url: url + options.collection + '/?query=' + JSON.stringify({postId: postId}),
+      method: 'DELETE',
+      url: url + 'comments' + '/?query=' + JSON.stringify({postId: postId}),
+      headers: getHeaders(),
+    })
+  }
+  function getCommentsByPostId(postId) {
+    
+    return $.ajax({
+      method: 'GET',
+      url: url + 'comments' + '/?query=' + JSON.stringify({postId: postId}),
       headers: getHeaders(),
     })
   }
@@ -123,11 +126,12 @@ const KinveyRequester = (function () {
     retrieve,
     update,
     remove,
-    crudByPostId,
+    getCommentsByPostId,
+    deleteCommentsByPostId,
     createComment,
     addTags,
     tagOperations,
-    getPosts
+    getPostById
   }
 })()
 export default KinveyRequester
