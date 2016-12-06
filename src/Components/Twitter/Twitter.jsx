@@ -365,7 +365,7 @@ export default class Twitter extends Component {
         </button>
       return (
 
-        <divclassName="centered">
+        <div className="centered">
           <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets} search={this.search} />
 
           <div className='ui container centered'>
