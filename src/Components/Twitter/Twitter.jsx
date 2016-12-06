@@ -8,7 +8,7 @@ import { logout } from '../../Models/User/logout.js'
 import { Segment } from 'semantic-ui-react'
 
 export default class Twitter extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       tweets: [],
@@ -28,7 +28,7 @@ export default class Twitter extends Component {
     this.getMyTweets = this.getMyTweets.bind(this)
   }
 
-  search (e) {
+  search(e) {
     e.persist()
 
     if (e.target.parentNode.children[0].value) {
@@ -44,7 +44,7 @@ export default class Twitter extends Component {
     e.target.parentNode.children[0].value = ''
   }
 
-  tweetSubmitHandler (item, e) {
+  tweetSubmitHandler(item, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
@@ -84,7 +84,7 @@ export default class Twitter extends Component {
         .catch((error) => console.log(error))
     }
   }
-  tagsHandler (value) {
+  tagsHandler(value) {
     // KinveyRequester.tagOperations(value.tag,{method:'GET', byId: '_id', qStr: '/?query=', })
     // .then((data,status)=> {
     //   console.log(data,status)
@@ -99,7 +99,7 @@ export default class Twitter extends Component {
     // })
   }
 
-  addLikeHandler (item, e) {
+  addLikeHandler(item, e) {
     e.persist()
     let index = -1
     let id = e.target.value
@@ -138,7 +138,7 @@ export default class Twitter extends Component {
       .catch(err => console.log(err))
   }
 
-  handleDelete (nodeComponent, e) {
+  handleDelete(nodeComponent, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
@@ -176,8 +176,8 @@ export default class Twitter extends Component {
               this.setState(newState)
             }
           }).catch((error) => {
-          console.dir(`${nodeComponent.props.id} ` + error)
-        })
+            console.dir(`${nodeComponent.props.id} ` + error)
+          })
       }
 
       return response
@@ -186,13 +186,13 @@ export default class Twitter extends Component {
     })
   }
 
-  handleEdit (item, modalNode, e) {
+  handleEdit(item, modalNode, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-  
+
     if (e.target.textContent !== 'Cancel') {
-      
+
       if (e.target.form[0].value !== e.target.form[0].defaultValue) {
         item.tweetStartLoading()
         KinveyRequester.getPostById(item.props.id)
@@ -219,9 +219,9 @@ export default class Twitter extends Component {
             })
             return response
           }).catch((error) => {
-          item.tweetStopLoading()
-          console.log(error)
-        })
+            item.tweetStopLoading()
+            console.log(error)
+          })
 
         modalNode.refs.editMode.setState({
           open: false
@@ -235,7 +235,7 @@ export default class Twitter extends Component {
     }
   }
 
-  addComment (item, e) {
+  addComment(item, e) {
     e.preventDefault()
     e.stopPropagation()
     if (e.keyCode == 13 && e.target.value.trim() != '') {
@@ -272,11 +272,11 @@ export default class Twitter extends Component {
     }
   }
 
-  handleLogout (e) {
+  handleLogout(e) {
     logout()
   }
 
-  render () {
+  render() {
     let actionNode
     if (this.state.editMode) {
       let key = Object.keys(this.state.editMode)[0]
@@ -295,18 +295,18 @@ export default class Twitter extends Component {
       )
     } else {
       actionNode = this.state.isSearching ? <button onClick={this.getTweets} className='ui button blue'>
-                                              Back
+        Back
                                             </button> : <CreateTweet loading={this.state.loading} onsubmit={this.tweetSubmitHandler} />
 
       return (
 
-        <div>
+        < div >
           <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets} search={this.search} />
           <div className='ui container centered'>
             <div className='ui segment'>
               {actionNode}
             </div>
-            <div className=' container fluid'>
+            <div className='container fluid' >
               <TweetList
                 className='ui comments'
                 edit={this.handleEdit}
@@ -316,11 +316,11 @@ export default class Twitter extends Component {
                 tweets={this.state.tweets} />
             </div>
           </div>
-        </div>
+        </div >
       )
     }
   }
-  getMyTweets (e) {
+  getMyTweets(e) {
     let user = sessionStorage.getItem('username')
 
     this.setState({
@@ -330,7 +330,7 @@ export default class Twitter extends Component {
       isSearching: true
     })
   }
-  getTweets () {
+  getTweets() {
     KinveyRequester.retrieve('posts').then((tweets, status) => {
       tweets.reverse().map((t) => {
         if (!t.isLiked) {
@@ -364,13 +364,13 @@ export default class Twitter extends Component {
     }).catch((err) => console.log(err))
   }
 
-  getComments (id) {
+  getComments(id) {
     return KinveyRequester.getCommentsByPostId(id)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getTweets()
   }
 
-  componentWillReceiveProps () {}
+  componentWillReceiveProps() { }
 }

@@ -5,10 +5,11 @@ import { register } from '../../Models/User/register.js'
 
 
 export default class Registration extends Component {
-
   render () {
+    let style = { 'margin-top': '25px' }
+
     return (
-      <div className='ui middle aligned center aligned grid'>
+      <div className='ui middle aligned center aligned grid' style={style}>
         <div className='column'>
           <form className='ui large form'>
             <div className='ui stacked segment'>
@@ -53,7 +54,7 @@ export default class Registration extends Component {
     )
   }
 
-  componentDidMount () {
+  componentDidMount() {
     window.jQuery('.ui.form')
       .form({
         fields: {
