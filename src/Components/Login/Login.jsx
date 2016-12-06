@@ -5,9 +5,10 @@ import { login } from '../../Models/User/login.js'
 
 export default class Login extends Component {
 
-  render () {
+  render() {
+    let style = { 'margin-top': '25px' }
     return (
-      <div className='ui middle aligned center aligned grid'>
+      <div className='ui middle aligned center aligned grid' style={style}>
         <div className='column'>
           <h2 className='ui blue image header'><img src='images/logo.png' className='image' role='presentation' /> <div className='content'> Log-in to your account </div></h2>
           <form className='ui large form'>
@@ -42,7 +43,7 @@ export default class Login extends Component {
     )
   }
 
-  componentDidMount () {
+  componentDidMount() {
     window.jQuery('.ui.form')
       .form({
         fields: {

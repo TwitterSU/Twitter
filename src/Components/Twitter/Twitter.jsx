@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Segment, Image } from 'semantic-ui-react'
 import TweetList from '../Tweet/TweetList.jsx'
 import CreateTweet from '../CreateTweet/CreateTweet'
 import KinveyRequester from '../../Controllers/KinveyRequester'
@@ -366,12 +365,14 @@ export default class Twitter extends Component {
         </button>
       return (
 
-        <div className="centered">
+        <divclassName="centered">
           <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets} search={this.search} />
 
           <div className='ui container centered'>
             <div className='ui segment'>
               {actionNode}
+            </div>
+            <div className='container fluid' >
               <TweetList
                 className='ui comments'
                 edit={this.handleEdit}
