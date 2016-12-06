@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import Tweet from './Tweet.jsx'
-import update from 'immutability-helper'
 
 export default class TweetList extends Component {
-  
-  sortProps(){
-    this.props.tweets.sort((a,b) => a._kmd.lmt - b._kmd.lmt)
+
+  sortProps() {
+    this.props.tweets.sort((a, b) => a._kmd.lmt - b._kmd.lmt)
   }
   render() {
     //console.log('render TweetList')
@@ -31,7 +30,7 @@ export default class TweetList extends Component {
             key={i}
             tags={tweet.tags}
             isLiked={tweet.isLiked}
-          />
+            />
         )
       })
     }

@@ -9,7 +9,7 @@ const KinveyRequester = (function () {
   function create(collection, value) {
     let tags = []
     let text = value.split(' ')
-    text.map(word => {
+    text.forEach(word => {
       if (word[0] == '#') {
         tags.push(word)
       }
