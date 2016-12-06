@@ -372,7 +372,7 @@ export default class Twitter extends Component {
             <div className='ui segment'>
               {actionNode}
             </div>
-            <div className='container fluid' >
+            <div className="ui segment">
               <TweetList
                 className='ui comments'
                 edit={this.handleEdit}
