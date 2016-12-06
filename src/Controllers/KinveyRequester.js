@@ -32,7 +32,7 @@ const KinveyRequester = (function () {
     })
   }
   function tagOperations(tag,options){
-    
+    //TODO
     //+ options.byId? + options.qStr + '{'+ options.byId + '}' : ''
     return $.ajax({
       method: options.method,
@@ -120,7 +120,22 @@ const KinveyRequester = (function () {
       headers: getHeaders(),
     })
   }
+  function getPostsSkippedByCount(lastIndex) {
   
+    return $.ajax({
+      method: 'GET',
+      url: url + 'posts/?query={}&skip=' + lastIndex,
+      headers: getHeaders()
+    })
+  }
+  function getPostsCount() {
+    
+    return $.ajax({
+      method: 'GET',
+      url: url + 'posts/_count',
+      headers: getHeaders()
+    })
+  }
   return {
     create,
     retrieve,
@@ -131,7 +146,9 @@ const KinveyRequester = (function () {
     createComment,
     addTags,
     tagOperations,
-    getPostById
+    getPostById,
+    getPostsCount,
+    getPostsSkippedByCount
   }
 })()
 export default KinveyRequester
