@@ -20,7 +20,6 @@ function successHandler (response) {
   sessionStorage.setItem('userId', response._id)
   sessionStorage.setItem('username', response.username)
   sessionStorage.setItem('url', response.avatar)
-  console.log('success')
   browserHistory.push('/twitter')
   return { response}
 }
