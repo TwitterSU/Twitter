@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Router, Route, browserHistory , IndexRoute } from 'react-router'
+import { Router, Route, browserHistory } from 'react-router'
 import './App.css'
 import Login from '../Login/Login'
 import Registration from '../Registration/Registration'
