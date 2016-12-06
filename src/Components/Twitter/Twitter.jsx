@@ -123,7 +123,7 @@ export default class Twitter extends Component {
       })
       
       item.tweetStartLoading()
-      KinveyRequester.getPosts(id)
+      KinveyRequester.getPostById(id)
         .then((res, status) => {
           console.log(res)
           if (!res.isLiked) {
