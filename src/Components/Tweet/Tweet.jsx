@@ -30,9 +30,10 @@ export default class Tweet extends Component {
       color: this.props.isLiked.split(', ')
         .includes(sessionStorage.getItem('username')) ? 'red' : 'grey'
     }
-
+    let tweetStyle = { 'left':'33%', 'position':'relative', 'width':'auto' }
     return (
-      <Segment raised={true}>
+
+      <Segment raised={true} style={tweetStyle}>
         <Dimmer active={tweetLoading}>
           <Loader />
         </Dimmer>
@@ -77,6 +78,7 @@ export default class Tweet extends Component {
           </div>
         </div>
       </Segment>
+
     )
   }
   componentDidUpdate() {
