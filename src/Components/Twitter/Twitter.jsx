@@ -12,10 +12,11 @@ export default class Twitter extends Component {
     this.state = {
       tweets: [],
       loading: false,
-      searchedTweets: []
+      searchedTweets: [],
+      
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
-    this.tweetEditHandler = this.tweetEditHandler.bind(this)
+    
     this.addLikeHandler = this.addLikeHandler.bind(this)
     this.handleEdit = this.handleEdit.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
@@ -25,7 +26,7 @@ export default class Twitter extends Component {
     this.getTweets = this.getTweets.bind(this)
     this.getMyTweets = this.getMyTweets.bind(this)
   }
-
+  
   search(e) {
     e.persist()
 
@@ -104,36 +105,24 @@ export default class Twitter extends Component {
     //   console.log('AddTags error: ' + error)
     // })
   }
-  tweetEditHandler(e) {
-    e.persist()
-    e.preventDefault()
-    let index = e.target[0].id
-    if (this.state.tweets[index].content != e.target[0].value) {
-      let content = this.state.tweets[index]
-      this.state.tweets[index].content = e.target[0].value
-      KinveyRequester.update('posts', this.state.tweets[index]._id, content).then(data => {
-        this.setState({
-          editNode: null,
-          tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content } })
-        })
-      })
-    } else {
-      this.setState({
-        editNode: null
-      })
-    }
-  }
+  
 
-  addLikeHandler(e) {
+  addLikeHandler(item, e) {
     e.persist()
     let index = -1
     let id = e.target.value
+    console.log(e)
+    console.log(this)
+    console.log(item)
+    
     if (this.state.tweets) {
       this.state.tweets.map((tweet, i) => {
         if (id == tweet._id) {
           index = i
         }
       })
+      
+      item.tweetStartLoading()
       KinveyRequester.getPosts(id)
         .then((res, status) => {
           console.log(res)
@@ -148,6 +137,7 @@ export default class Twitter extends Component {
           this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
           KinveyRequester.update('posts', id, res).then(data => {
             console.log(data)
+            item.tweetStopLoading()
             this.setState({
               tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
 
@@ -236,9 +226,11 @@ export default class Twitter extends Component {
     console.log(e) // ProxyEvent
     console.log(this) // Twitter
     console.log(item) //EditNode
+    
     if (e.target.textContent !== 'Cancel') {
       console.log(e.target.form[0].value)
       if (e.target.form[0].value !== e.target.form[0].defaultValue) {
+        item.tweetStartLoading()
         KinveyRequester.getPosts(item.props.id)
           .then((res, response) => {
 
@@ -259,11 +251,15 @@ export default class Twitter extends Component {
               this.setState({
                 tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content } })
               })
+              item.tweetStopLoading()
             })
             return response
-          }).catch((error) => console.log(error))
-
-
+          }).catch((error) => {
+            item.tweetStopLoading()
+            console.log(error)
+           })
+  
+        
         modalNode.refs.editMode.setState({
           open: false
         })
@@ -271,11 +267,11 @@ export default class Twitter extends Component {
 
     }
     else {
+      item.tweetStopLoading()
       modalNode.refs.editMode.setState({
         open: false
       })
     }
-
   }
 
   addComment(item, e) {
@@ -376,10 +372,9 @@ export default class Twitter extends Component {
             <div className='ui segment'>
               {actionNode}
             </div>
-            <div className='ui segment'>
-
+              <div className=" container fluid">
               <TweetList
-                className='ui four column grid'
+                className='ui comments'
                 edit={this.handleEdit}
                 delete={this.handleDelete}
                 onkeyup={this.addComment}
@@ -420,12 +415,13 @@ export default class Twitter extends Component {
       })
       this.state.tweets.forEach((e) => {
         let index = -1
-
+          console.log(e)
         this.state.tweets.map((tweet, i) => {
           if (tweet._id == e._id) {
             return index = i
           }
         })
+        
         this.getComments(e._id).then(r => {
           if (r.length > 0) {
             let newState = update(this.state, {
