@@ -32,7 +32,7 @@ export default class Tweet extends Component {
     }
 
     return (
-      <Segment>
+      <Segment raised={true}>
         <Dimmer active={tweetLoading}>
           <Loader />
         </Dimmer>

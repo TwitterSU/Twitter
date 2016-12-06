@@ -5,14 +5,15 @@ import KinveyRequester from '../../Controllers/KinveyRequester'
 import update from 'immutability-helper'
 import NavigationBar from '../Navigation/NavigationBar'
 import { logout } from '../../Models/User/logout.js'
+import { Segment } from 'semantic-ui-react'
 
 export default class Twitter extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       tweets: [],
       loading: false,
-      searchedTweets: [],
+      isSearching: false
       
     }
     this.tweetSubmitHandler = this.tweetSubmitHandler.bind(this)
@@ -27,29 +28,23 @@ export default class Twitter extends Component {
     this.getMyTweets = this.getMyTweets.bind(this)
   }
   
-  search(e) {
+  search (e) {
     e.persist()
-
-
+    
     if (e.target.parentNode.children[0].value) {
-      let searched = this.state.searchedTweets.concat(this.state.tweets)
-
-
-      searched = searched.filter(tweet => {
-        return tweet.content.includes(e.target.parentNode.children[0].value)
-      })
       this.setState({
-        tweets: null,
-        searchedTweets: searched
+        tweets: this.state.tweets.filter(tweet => {
+          return tweet.content.includes(e.target.parentNode.children[0].value)
+        }),
+        isSearching: true
       })
     } else {
       this.getTweets()
     }
     e.target.parentNode.children[0].value = ''
   }
-
-
-  tweetSubmitHandler(item, e) {
+  
+  tweetSubmitHandler (item, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
@@ -67,8 +62,7 @@ export default class Twitter extends Component {
         .then((data) => {
           if (e.target.name == 'content') {
             e.target.value = ''
-          }
-          else {
+          } else {
             e.target[0].value = ''
           }
           this.setState({
@@ -84,14 +78,13 @@ export default class Twitter extends Component {
             })
           }
           if (data.tags) {
-            //this.tagsHandler({postId: data._id,tag: data.tags[0]})
+            // this.tagsHandler({postId: data._id,tag: data.tags[0]})
           }
         })
         .catch((error) => console.log(error))
     }
-
   }
-  tagsHandler(value) {
+  tagsHandler (value) {
     // KinveyRequester.tagOperations(value.tag,{method:'GET', byId: '_id', qStr: '/?query=', })
     // .then((data,status)=> {
     //   console.log(data,status)
@@ -106,80 +99,55 @@ export default class Twitter extends Component {
     // })
   }
   
-
-  addLikeHandler(item, e) {
+  addLikeHandler (item, e) {
     e.persist()
     let index = -1
     let id = e.target.value
-    console.log(e)
-    console.log(this)
-    console.log(item)
     
-    if (this.state.tweets) {
-      this.state.tweets.map((tweet, i) => {
-        if (id == tweet._id) {
-          index = i
+    this.state.tweets.forEach((tweet, i) => {
+      if (id == tweet._id) {
+        index = i
+      }
+    })
+    
+    item.tweetStartLoading()
+    KinveyRequester.getPostById(id)
+      .then((res, status) => {
+        
+        if (!res.isLiked) {
+          res.isLiked = 'admin, '
         }
-      })
-      
-      item.tweetStartLoading()
-      KinveyRequester.getPostById(id)
-        .then((res, status) => {
-          console.log(res)
-          if (!res.isLiked) {
-            res.isLiked = 'admin, '
-          }
-          res.isLiked += (sessionStorage.getItem('username') + ', ')
-          this.state.tweets[index].likes++
-
-          res.likes++
-          // RETARDED KINVEY
-          this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
-          KinveyRequester.update('posts', id, res).then(data => {
-            console.log(data)
-            item.tweetStopLoading()
-            this.setState({
-              tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes } })
-
-            })
+        res.isLiked += (sessionStorage.getItem('username') + ', ')
+        
+        res.likes++
+        // RETARDED KINVEY
+        
+        KinveyRequester.update('posts', id, res).then(data => {
+          
+          item.tweetStopLoading()
+          this.setState({
+            tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].likes++ } })
+            
+          })
+          this.setState({
+            tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].isLiked += (sessionStorage.getItem('username') + ', ') } })
+            
           })
         })
-        .catch(err => console.log(err))
-
-    } else {
-      this.state.searchedTweets.map((tweet, i) => {
-        if (id == tweet._id) {
-          index = i
-        }
       })
-      this.state.searchedTweets[index].likes++
-      let content = this.state.searchedTweets[index]
-      // RETARDED KINVEY
-      this.state.searchedTweets[index].isLiked += (sessionStorage.getItem('username') + ', ')
-      KinveyRequester.update('posts', id, content).then(data => {
-        this.setState({
-          searchedTweets: update(this.state.searchedTweets, { index: { $set: this.state.searchedTweets[index].likes } })
-
-        })
-      })
-    }
+      .catch(err => console.log(err))
   }
-
-  handleDelete(nodeComponent, e) {
+  
+  handleDelete (nodeComponent, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-
+    
     KinveyRequester.remove('posts', nodeComponent.props.id).then((response, status) => {
       if (status == 'success') {
-
-
         KinveyRequester.deleteCommentsByPostId(nodeComponent.props.id)
           .then((response, status) => {
-            console.log(status)
             let msg = `${nodeComponent.props.id} `
-            console.dir(response)
-            console.log(msg)
             let index = -1
             let id = nodeComponent.props.id
             if (this.state.tweets) {
@@ -208,32 +176,28 @@ export default class Twitter extends Component {
               this.setState(newState)
             }
           }).catch((error) => {
-            console.dir(`${nodeComponent.props.id} ` + error)
-          })
+          console.dir(`${nodeComponent.props.id} ` + error)
+        })
       }
-
+      
       return response
     }).catch((error) => {
       console.log(error)
     })
   }
-
-  handleEdit(item, modalNode, e) {
+  
+  handleEdit (item, modalNode, e) {
     e.preventDefault()
     e.stopPropagation()
     e.persist()
-    console.log(modalNode) //EditNode
-    console.log(e) // ProxyEvent
-    console.log(this) // Twitter
-    console.log(item) //EditNode
     
     if (e.target.textContent !== 'Cancel') {
-      console.log(e.target.form[0].value)
+      
       if (e.target.form[0].value !== e.target.form[0].defaultValue) {
         item.tweetStartLoading()
         KinveyRequester.getPostById(item.props.id)
           .then((res, response) => {
-
+            
             let index = -1
             let id = res._id
             res.content = e.target.form[0].value
@@ -243,105 +207,76 @@ export default class Twitter extends Component {
             KinveyRequester.update('posts', id, res).then(updatePost => {
               this.state.tweets.map((item, i) => {
                 if (item._id == id) {
-                   index = i
+                  index = i
                 }
               })
-
-              this.state.tweets[index].content = updatePost.content
+              
+              // this.state.tweets[index].content = updatePost.content
               this.setState({
-                tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content } })
+                tweets: update(this.state.tweets, { index: { $set: this.state.tweets[index].content = updatePost.content } })
               })
               item.tweetStopLoading()
             })
             return response
           }).catch((error) => {
-            item.tweetStopLoading()
-            console.log(error)
-           })
-  
+          item.tweetStopLoading()
+          console.log(error)
+        })
         
         modalNode.refs.editMode.setState({
           open: false
         })
       }
-
-    }
-    else {
+    } else {
       item.tweetStopLoading()
       modalNode.refs.editMode.setState({
         open: false
       })
     }
   }
-
-  addComment(item, e) {
+  
+  addComment (item, e) {
     e.preventDefault()
     e.stopPropagation()
     if (e.keyCode == 13 && e.target.value.trim() != '') {
       e.persist()
-      console.log(item.props.id)
-      console.log(this)
       let id = item.props.id
       KinveyRequester.createComment(e, {
         text: e.target.value.trim(),
         postId: item.props.id
       }).then((data) => {
         let index = -1
-        if (this.state.tweets) {
-          this.state.tweets.forEach((tweet, i) => {
-            if (id == tweet._id) {
-              index = i
+        
+        this.state.tweets.forEach((tweet, i) => {
+          if (id == tweet._id) {
+            index = i
+          }
+        })
+        if (this.state.tweets[index].comments) {
+          let newState = update(this.state, {
+            tweets: {
+              [index]: { comments: { $push: [data] } }
             }
           })
-          if (this.state.tweets[index].comments) {
-            let newState = update(this.state, {
-              tweets: {
-                [index]: { comments: { $push: [data] } }
-              }
-            })
-            this.setState(newState)
-          } else {
-            let newState = update(this.state, {
-              tweets: {
-                [index]: { comments: { $set: [data] } }
-              }
-            })
-            this.setState(newState)
-          }
+          this.setState(newState)
         } else {
-          this.state.searchedTweets.forEach((tweet, i) => {
-            if (id == tweet._id) {
-              index = i
+          let newState = update(this.state, {
+            tweets: {
+              [index]: { comments: { $set: [data] } }
             }
           })
-          if (this.state.searchedTweets[index].comments) {
-            let newState = update(this.state, {
-              searchedTweets: {
-                [index]: { comments: { $push: [data] } }
-              }
-            })
-            this.setState(newState)
-          } else {
-            let newState = update(this.state, {
-              searchedTweets: {
-                [index]: { comments: { $set: [data] } }
-              }
-            })
-            this.setState(newState)
-          }
+          this.setState(newState)
         }
       }).catch(err => console.log(err))
       e.target.value = ''
     }
   }
-
-  handleLogout(e) {
+  
+  handleLogout (e) {
     logout()
   }
-
-  render() {
-
-
+  
+  render () {
     let actionNode
     if (this.state.editMode) {
       let key = Object.keys(this.state.editMode)[0]
@@ -359,66 +294,59 @@ export default class Twitter extends Component {
         </form>
       )
     } else {
-      actionNode = this.state.tweets ? <CreateTweet loading={this.state.loading} onsubmit={this.tweetSubmitHandler} /> :
-        <button onClick={this.getTweets} className='ui button blue'>
-          Back
-        </button>
+      actionNode = this.state.isSearching ? <button onClick={this.getTweets} className='ui button blue'>
+        Back
+      </button> : <CreateTweet loading={this.state.loading} onsubmit={this.tweetSubmitHandler} />
+      
       return (
-
-        <div className="centered">
+        
+        <div>
           <NavigationBar onClick={this.handleLogout} mytweet={this.getMyTweets} search={this.search} />
-
           <div className='ui container centered'>
             <div className='ui segment'>
               {actionNode}
             </div>
-            <div className="ui segment">
+            <Segment className='center'>
               <TweetList
                 className='ui comments'
                 edit={this.handleEdit}
                 delete={this.handleDelete}
                 onkeyup={this.addComment}
                 addLike={this.addLikeHandler}
-                tweets={this.state.tweets ? this.state.tweets : this.state.searchedTweets}
-                />
-            </div>
+                tweets={this.state.tweets} />
+            </Segment>
           </div>
         </div>
       )
     }
   }
-  getMyTweets(e) {
-    console.log(this.state.tweets)
+  getMyTweets (e) {
     let user = sessionStorage.getItem('username')
-    console.log(user)
-    let myTweets = this.state.tweets.filter(tweet => {
-      return tweet.author == user
-    })
+    
     this.setState({
-      tweets: null,
-      searchedTweets: myTweets
+      tweets: this.state.tweets.filter(tweet => {
+        return tweet.author == user
+      }),
+      isSearching: true
     })
-    console.log(myTweets)
   }
-  getTweets() {
-
+  getTweets () {
     KinveyRequester.retrieve('posts').then((tweets, status) => {
-      console.log(tweets, status)
       tweets.reverse().map((t) => {
         if (!t.isLiked) {
           t.isLiked = 'admin, '
         }
-        return t.comments = []
+        t.comments = []
       })
       this.setState({
-        tweets: tweets
+        tweets: tweets,
+        isSearching: false
       })
       this.state.tweets.forEach((e) => {
         let index = -1
-          console.log(e)
         this.state.tweets.map((tweet, i) => {
           if (tweet._id == e._id) {
-            return index = i
+            index = i
           }
         })
         
@@ -435,20 +363,14 @@ export default class Twitter extends Component {
       })
     }).catch((err) => console.log(err))
   }
-
-
-
-
-  getComments(id) {
+  
+  getComments (id) {
     return KinveyRequester.getCommentsByPostId(id)
   }
-
-  componentDidMount() {
-
+  
+  componentDidMount () {
     this.getTweets()
   }
-
-  componentWillReceiveProps() {
-
-  }
+  
+  componentWillReceiveProps () {}
 }
