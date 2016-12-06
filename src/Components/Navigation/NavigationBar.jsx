@@ -8,11 +8,8 @@ export default class NavigationBar extends Component {
 
 
       <div className='ui secondary  menu'>
-        <a className='item'>Profile</a>
         <a className='item' onClick={this.props.mytweet}>MyTweets</a>
-        <a className='item'>Friends</a>
-
-        <div className='ui container centered'>
+        <div className='ui container center aligned grid'>
           <div className='item'>
             <div className='ui icon input'>
               <input type='text' placeholder='Search by hashtag...' />

@@ -57,7 +57,7 @@ export default class Tweet extends Component {
               </div>
               {ownerActions}
               <div className="content">
-                <h2>{this.props.content}</h2>
+                <h2 style={{'color':'#00BFFF'}}>{this.props.content}</h2>
               </div>
             </div>
             <div className="meta">
