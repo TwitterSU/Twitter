@@ -136,6 +136,15 @@ const KinveyRequester = (function () {
       headers: getHeaders()
     })
   }
+  function getPostsId() {
+    
+    //?query={}&fields=_id
+    return $.ajax({
+      method: 'GET',
+      url: url + 'posts/?query={}&fields=_id',
+      headers: getHeaders()
+    })
+  }
   return {
     create,
     retrieve,
@@ -148,7 +157,8 @@ const KinveyRequester = (function () {
     tagOperations,
     getPostById,
     getPostsCount,
-    getPostsSkippedByCount
+    getPostsSkippedByCount,
+    getPostsId
   }
 })()
 export default KinveyRequester
