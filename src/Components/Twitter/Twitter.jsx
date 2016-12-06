@@ -164,7 +164,7 @@ export default class Twitter extends Component {
 
           })
         })
-        this.checkForNewTweets()
+     
       })
       .catch(err => console.log(err))
   }
@@ -257,7 +257,6 @@ export default class Twitter extends Component {
         modalNode.refs.editMode.setState({
           open: false
         })
-        this.checkForNewTweets()
       }
     } else {
       item.tweetStopLoading()
@@ -367,7 +366,6 @@ export default class Twitter extends Component {
             index = i
           }
         })
-
         this.getComments(e._id).then(r => {
           if (r.length > 0) {
             let newState = update(this.state, {

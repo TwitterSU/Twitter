@@ -6,7 +6,7 @@ import { register } from '../../Models/User/register.js'
 
 export default class Registration extends Component {
   render () {
-    let style = { 'margin-top': '25px' }
+    let style = { 'marginTop': '25px' }
 
     return (
       <div className='ui middle aligned center aligned grid' style={style}>

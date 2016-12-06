@@ -6,7 +6,7 @@ import { login } from '../../Models/User/login.js'
 export default class Login extends Component {
 
   render() {
-    let style = { 'margin-top': '25px' }
+    let style = { 'marginTop': '25px' }
     return (
       <div className='ui middle aligned center aligned grid' style={style}>
         <div className='column'>
