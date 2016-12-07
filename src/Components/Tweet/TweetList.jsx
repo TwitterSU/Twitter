@@ -3,12 +3,8 @@ import Tweet from './Tweet.jsx'
 
 export default class TweetList extends Component {
 
-  sortProps() {
-    this.props.tweets.sort((a, b) => a._kmd.lmt - b._kmd.lmt)
-  }
   render() {
-    //console.log('render TweetList')
-    //console.dir(this.props.tweets)
+    
     let tweetNodes = <h1>Loading</h1>
     if (this.props.tweets.length != 0) {
       tweetNodes = this.props.tweets.map((tweet, i) => {
@@ -28,7 +24,7 @@ export default class TweetList extends Component {
             addLike={this.props.addLike}
             onkeyup={this.props.onkeyup}
             comments={tweet.comments}
-            key={i}
+            key={tweet._id}
             tags={tweet.tags}
             isLiked={tweet.isLiked}
             />
